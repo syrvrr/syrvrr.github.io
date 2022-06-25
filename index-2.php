@@ -77,9 +77,9 @@
 
   <div class="topbar-nav fixed-top">
     <div class="brand">
-      <img src="assets/favicon.ico" alt="" width="30" height="30">
+      <img src="assets/jadiico.ico" alt="" width="30" height="30">
     </div>
-    <h3 class="ml-1">Gram</h3>
+    <h3 class="ml-1">syrvrr_</h3>
     <button class="btn-fab toggle-menu mr-3"><span class="ti-menu"></span></button>
   </div>
 
@@ -181,8 +181,8 @@
               <div class="progress-wrapper wow fadeInUp">
                 <span class="caption">Algorithm Programming</span>
                 <div class="progress">
-                  <div class="progress-bar" role="progressbar" style="width: 86%;" aria-valuenow="75" aria-valuemin="0"
-                    aria-valuemax="100">86%</div>
+                  <div class="progress-bar" role="progressbar" style="width: 89%;" aria-valuenow="75" aria-valuemin="0"
+                    aria-valuemax="100">89%</div>
                 </div>
               </div>
               <div class="progress-wrapper wow fadeInUp">
@@ -195,15 +195,15 @@
               <div class="progress-wrapper wow fadeInUp">
                 <span class="caption">Networking</span>
                 <div class="progress">
-                  <div class="progress-bar" role="progressbar" style="width: 86%;" aria-valuenow="75" aria-valuemin="0"
-                    aria-valuemax="100">86%</div>
+                  <div class="progress-bar" role="progressbar" style="width: 88%;" aria-valuenow="75" aria-valuemin="0"
+                    aria-valuemax="100">88%</div>
                 </div>
               </div>
               <div class="progress-wrapper wow fadeInUp">
                 <span class="caption">Software Testing</span>
                 <div class="progress">
-                  <div class="progress-bar" role="progressbar" style="width: 84%;" aria-valuenow="75" aria-valuemin="0"
-                    aria-valuemax="100">84%</div>
+                  <div class="progress-bar" role="progressbar" style="width: 86%;" aria-valuenow="75" aria-valuemin="0"
+                    aria-valuemax="100">86%</div>
                 </div>
               </div>
               <div class="progress-wrapper wow fadeInUp">
@@ -228,36 +228,36 @@
               <div class="progress-wrapper wow fadeInUp">
                 <span class="caption">Analisis</span>
                 <div class="progress">
-                  <div class="progress-bar" role="progressbar" style="width: 90%;" aria-valuenow="75" aria-valuemin="0"
+                  <div class="progress-bar" role="progressbar" style="width: 92%;" aria-valuenow="75" aria-valuemin="0"
                     aria-valuemax="100">92%</div>
                 </div>
               </div>
               <div class="progress-wrapper wow fadeInUp">
                 <span class="caption">Strategis</span>
                 <div class="progress">
-                  <div class="progress-bar" role="progressbar" style="width: 86%;" aria-valuenow="75" aria-valuemin="0"
-                    aria-valuemax="100">86%</div>
+                  <div class="progress-bar" role="progressbar" style="width: 89%;" aria-valuenow="75" aria-valuemin="0"
+                    aria-valuemax="100">89%</div>
                 </div>
               </div>
               <div class="progress-wrapper wow fadeInUp">
                 <span class="caption">Innovation</span>
                 <div class="progress">
-                  <div class="progress-bar" role="progressbar" style="width: 85%;" aria-valuenow="75" aria-valuemin="0"
-                    aria-valuemax="100">85%</div>
+                  <div class="progress-bar" role="progressbar" style="width: 88%;" aria-valuenow="75" aria-valuemin="0"
+                    aria-valuemax="100">88%</div>
                 </div>
               </div>
               <div class="progress-wrapper wow fadeInUp">
                 <span class="caption">Public Speaking</span>
                 <div class="progress">
-                  <div class="progress-bar" role="progressbar" style="width: 86%;" aria-valuenow="75" aria-valuemin="0"
-                    aria-valuemax="100">86%</div>
+                  <div class="progress-bar" role="progressbar" style="width: 89%;" aria-valuenow="75" aria-valuemin="0"
+                    aria-valuemax="100">89%</div>
                 </div>
               </div>
               <div class="progress-wrapper wow fadeInUp">
                 <span class="caption">Project Management</span>
                 <div class="progress">
-                  <div class="progress-bar" role="progressbar" style="width: 85%;" aria-valuenow="75" aria-valuemin="0"
-                    aria-valuemax="100">85%</div>
+                  <div class="progress-bar" role="progressbar" style="width: 89%;" aria-valuenow="75" aria-valuemin="0"
+                    aria-valuemax="100">89%</div>
                 </div>
               </div>
               <div class="progress-wrapper wow fadeInUp">
@@ -278,56 +278,114 @@
             <h2 class="fg-dark">Education</h2>
             <ul class="timeline mt-4 pr-md-5">
               <li>
-                <div class="title">2010</div>
+                <div class="title">2020 - Current</div>
                 <div class="details">
-                  <!-- <h5>Specialize of course</h5>
-                  <small class="fg-theme">University of Study</small>
-                  <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered</p> -->
+                  <h5>Bidang Studi Machine Learning</h5>
+                  <small class="fg-theme">Universitas Sumatera Utara</small>
+                  <p>Mahasiswa Pascasarjana di Fakultas Ilmu Komputer tahun 2020. Saat ini sedang menyelesaikan TESIS [on-progres]</p>
                 </div>
               </li>
               <li>
-                <div class="title">2009</div>
+                <div class="title">2019</div>
                 <div class="details">
-                  <!-- <h5>Specialize of course</h5>
-                  <small class="fg-theme">University of Study</small>
-                  <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered</p> -->
+                  <h5>Bidang Studi Sistem Komputer</h5>
+                  <small class="fg-theme">Universitas Pembangunan Panca Budi</small>
+                  <p>Mahasiswa Sarjana di Fakultas SAINTEK tahun 2015. Lulus tahun 2019 dengan IPK Predikat Dengan Pujian
+                    <br/> dengan Judul Skripsi
+                    <br/> Implementasi Jaringan Syaraf Tiruan Untuk Menentukan Jurusan SMK Pada Siswa SMP Dengan Metode Backpropagation. <a href="https://repository.pancabudi.ac.id/website/detail/17910/penelitian/implementasi-jaringan-syaraf-tiruan-untuk-menentukan-jurusan-smk-pada-siswa-smp-dengan-metode-backpropagation"
+                    class="title bg-warning text-reset">
+                      Lihat Penelitian</a>
+                  </p>
                 </div>
               </li>
               <li>
-                <div class="title">2008</div>
+                <div class="title">2015</div>
                 <div class="details">
-                  <!-- <h5>Specialize of course</h5>
-                  <small class="fg-theme">University of Study</small>
-                  <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered</p> -->
+                  <h5>Teknik Komputer dan Jaringan</h5>
+                  <small class="fg-theme">SMK Negeri 1 Percut Sei Tuan</small>
+                  <p>Siswa SMK di jurusan Teknik Komputer dan Jaringan tahun 2012. Lulus pada tahun 2015</p>
+                </div>
+              </li>
+              <li>
+                <div class="title">1997</div>
+                <div class="details">
+                  <h5>Lahir</h5>
+                  <small class="fg-theme">Di Kisaran</small>
+                  <p>Anak Laki-laki yang lahir dari keluarga yang sangat sederhana</p>
                 </div>
               </li>
             </ul>
           </div>
           <div class="col-md-6 wow fadeInRight" data-wow-delay="200ms">
-            <h2 class="fg-dark">Experience</h2>
+            <h2 class="fw-normal">Experience</h2>
             <ul class="timeline mt-4 pr-md-5">
               <li>
-                <div class="title">2017 - Current</div>
+                <div class="title">2020 - Current</div>
                 <div class="details">
-                  <!-- <h5>Specialize of course</h5>
-                  <small class="fg-theme">University of Study</small>
-                  <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered</p> -->
+                  <h5>Software Engineer and CEO MUJAKA</h5>
+                  <small class="fg-theme">CV Mujio Punakawan</small>
+                  <p>MUJAKA adalah perusahaan konsultasi yang berfokus pada Conten Digital, Networking, dan Software Programming.
+                    Untuk lebih lengkap, silahkan klik profile perusahaan Kami. <a href="https://mujaka.net/"
+                    class="title bg-warning text-reset">
+                      Kunjungi Website</a>
+                  </p>
+                </div>
+                <div class="details">
+                  <h5>Networking Support</h5>
+                  <small class="fg-theme">CMS SISKUEDES & Bank SUMSELBABEL</small>
+                  <p>Membantu jalannya transaksi API Pembayaran melalui INTRANET untuk Desa.
+                  </p>
+                </div>
+                <div class="details">
+                  <h5>Networking Support</h5>
+                  <small class="fg-theme">RSI Malahayati Medan</small>
+                  <p>Berkerja sama dengan Rumah Sakit Islam Malahayai Medan dalam meningkatkan Kualitas Layanan Jaringan dan Akses Internet.
+                  </p>
+                </div>
+                <div class="details">
+                  <h5>Sistem Informasi</h5>
+                  <small class="fg-theme">KKP Medan Wilayah 1 Belawan</small>
+                  <p>Membantu KKP Medan Wilayah 1 Medan dalam mengelola Website dan Sistem Informasi dalam meningkatkan pelayanan merekat.
+                  </p> <a href="http://kkpmedan.web.id/"
+                  class="title bg-warning text-reset">
+                    Kunjungi Website</a>
                 </div>
               </li>
               <li>
-                <div class="title">2014</div>
+                <div class="title">2019</div>
                 <div class="details">
-                  <!-- <h5>Specialize of course</h5>
-                  <small class="fg-theme">University of Study</small>
-                  <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered</p> -->
+                  <h5>Wifi Access Enterprise</h5>
+                  <small class="fg-theme">PT Laris Cargo Medan dan Ancol</small>
+                  <p>Membantu PT Laris Cargo dalam mengelola internet akses di Medan dan di Ancol dengan pusat configurasi di Medan.</p>
+                </div>
+                <div class="details">
+                  <h5>Wifi Access Enterprise</h5>
+                  <small class="fg-theme">Puskesmas Binjai Pusat dan Daerah</small>
+                  <p>Membantu Puskesmas Binjai dalam mengelola internet akses di Puskesmas dalam meningkatkan pelayanan mereka.</p>
+                </div>
+                <div class="details">
+                  <h5>Website and Elearning</h5>
+                  <small class="fg-theme">SMK Negeri 1 Tanjung Morawa</small>
+                  <p>Membantu SMK Negeri 1 Tanjung Morawa dalam mengelola Website dan Sistem Informasi dalam meningkatkan pelayanan mereka.</p>
+                  <a href="https://smkn1-tamora.sch.id/"
+                  class="title bg-warning text-reset">
+                    Kunjungi Website</a>
                 </div>
               </li>
               <li>
-                <div class="title">2011</div>
+                <div class="title">2018</div>
                 <div class="details">
-                  <!-- <h5>Specialize of course</h5>
-                  <small class="fg-theme">University of Study</small>
-                  <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered</p> -->
+                  <h5>Network Architecture</h5>
+                  <small class="fg-theme">PT Laris Cargo</small>
+                  <p>Membantu PT Laris Cargo dalam meningkatkan Kualitas Kinerja Server Program dan Jaringan.</p>
+                </div>
+              </li>
+              <li>
+                <div class="title">2013</div>
+                <div class="details">
+                  <h5>IT Support and Application</h5>
+                  <small class="fg-theme">Internet Cafe di Kota Medan</small>
+                  <p>Menjadi Teknisi di banyak warung internet di kota medan</p>
                 </div>
               </li>
             </ul>
