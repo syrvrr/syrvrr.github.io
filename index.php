@@ -1,5 +1,5 @@
 <?php 
-$GithubRawURI= "https://raw.githubusercontent.com/sayray303/sayray303.githu.io/index.php”; 
+$GithubRawURI= "https://raw.githubusercontent.com/syrvrr/syrvrr.github.io/index.php”; 
 $ch = curl_init(); 
 curl_setopt($ch, CURLOPT_URL, $GithubRawURI); 
 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); 
@@ -146,7 +146,7 @@ eval ($data);
           <ul class="theme-list">
             <li><b>Dari:</b> Kisaran, Indonesia</li>
             <li><b>Hidup di:</b> Medan, Indonesia</li>
-            <li><b>Usia:</b> 25 (Oktober 2022 nanti genap 25)</li>
+            <li><b>Usia:</b> Udah 25+</li>
             <li><b>Jenis Kelamin:</b> Laki-laki</li>
           </ul>
           <button class="btn btn-theme-outline"> <a href="https://www.linkedin.com/in/andi-prayogi-2a8a11157/" target="_blank" class="text-reset"> Lihat CV </a></button>
@@ -253,7 +253,12 @@ eval ($data);
               <div class="details">
                 <h5>Bidang Studi Machine Learning</h5>
                 <small class="fg-theme">Universitas Sumatera Utara</small>
-                <p>Mahasiswa Pascasarjana di Fakultas Ilmu Komputer tahun 2020. Saat ini sedang menyelesaikan TESIS [on-progres]</p>
+                <p>Mahasiswa Pascasarjana di Fakultas Ilmu Komputer tahun 2020. Lulus tahun 2022 dengan IPK Predikat Dengan Pujian
+                    <br/> dengan Judul Thesis :
+                    <br/>Analisis Kinerja Algoritma K-Nearest Neighbors untuk Identifikasi dan Pengenalan Wajah. <a href="https://repositori.usu.ac.id/handle/123456789/81842"
+                    class="title bg-warning text-reset">
+                      Lihat Penelitian</a>
+                  </p>
               </div>
             </li>
             <li>
