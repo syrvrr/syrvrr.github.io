@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://syrvrr.github.io/sitemap.xml
