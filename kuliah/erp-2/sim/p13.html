@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>P13 · Jalur Kritis dan Earned Value</title>
+<meta name="description" content="Simulasi interaktif Pertemuan 13 mata kuliah Enterprise Resource Planning II (STIP-4156): Jalur Kritis dan Earned Value. Prodi Sistem dan Teknologi Informasi, Institut Teknologi Sawit Indonesia.">
+<link rel="canonical" href="https://syrvrr.github.io/kuliah/erp-2/sim/p13.html">
+<link rel="icon" href="../../../favicon.svg" type="image/svg+xml">
+</head>
+<body>
+<title>Jalur Kritis dan Earned Value</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Seri latihan ASD: pita tab di atas, satu panggung interaktif per bab, panel rumus di samping (bertumpuk di ponsel). */
+:root{
+  --bg:#F3F6F2; --panel:#FFFFFF; --ink:#1B2A22; --muted:#5B6B62; --line:#D5DED7;
+  --palm:#1F6B45; --palm-soft:#DCEFE3; --fruit:#D2502A; --fruit-soft:#FBE3D9;
+  --amber:#E2A400; --amber-soft:#FFF2C7; --sky:#2B6CB0; --sky-soft:#DCE9F7; --road:#3C4744; --slot:#EEF2EE;
+  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"JetBrains Mono", ui-monospace, Consolas, monospace;
+  --r:10px;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#111915; --panel:#18231D; --ink:#E6EFE9; --muted:#9DB0A5; --line:#2C3B33;
+  --palm:#5CC08A; --palm-soft:#1E3A2B; --fruit:#F07A52; --fruit-soft:#3E2219;
+  --amber:#F2C443; --amber-soft:#3A3115; --sky:#6FA8E8; --sky-soft:#1C2C40; --road:#26302D; --slot:#1F2A24; color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#111915; --panel:#18231D; --ink:#E6EFE9; --muted:#9DB0A5; --line:#2C3B33;
+  --palm:#5CC08A; --palm-soft:#1E3A2B; --fruit:#F07A52; --fruit-soft:#3E2219;
+  --amber:#F2C443; --amber-soft:#3A3115; --sky:#6FA8E8; --sky-soft:#1C2C40; --road:#26302D; --slot:#1F2A24; color-scheme:dark }
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.55;
+  padding-left:max(16px, env(safe-area-inset-left,0px));padding-right:max(16px, env(safe-area-inset-right,0px));padding-block:20px 48px}
+.wrap{max-width:1120px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+h1,h2,h3{font-family:var(--f-display);margin:0;text-wrap:balance;line-height:1.15}
+h1{font-size:clamp(28px,4.4vw,44px);font-weight:800;letter-spacing:-.01em}
+h2{font-size:clamp(21px,3vw,27px);font-weight:800}
+h3{font-size:18px;font-weight:600}
+p{margin:0;max-width:68ch}
+code,.mono{font-family:var(--f-mono);font-size:.92em}
+header.top{display:flex;flex-direction:column;gap:8px}
+.eyebrow{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--palm);font-weight:700}
+.lead{color:var(--muted);font-size:17px}
+nav.tabs{display:flex;gap:6px;flex-wrap:wrap;border-bottom:2px solid var(--line)}
+nav.tabs a{padding:10px 14px;text-decoration:none;color:var(--muted);font-weight:700;border-radius:8px 8px 0 0;border:2px solid transparent;border-bottom:none;margin-bottom:-2px;font-size:15px}
+nav.tabs a .no{font-family:var(--f-mono);font-size:12px;margin-right:6px;opacity:.75}
+nav.tabs a[aria-current="page"]{color:var(--ink);background:var(--panel);border-color:var(--line)}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+section.bab{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:20px;align-items:start}
+@media (max-width:860px){section.bab{grid-template-columns:1fr}}
+.stage{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:18px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.side{display:flex;flex-direction:column;gap:14px;min-width:0}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.card.rumus{border-left:5px solid var(--palm)}
+.btns{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+button{font:inherit;font-weight:700;border-radius:8px;border:2px solid var(--palm);background:var(--palm);color:var(--panel);padding:8px 14px;cursor:pointer;min-height:40px}
+button.alt{background:transparent;color:var(--palm)}
+button.warn{background:var(--fruit);border-color:var(--fruit)}
+button:disabled{opacity:.45;cursor:not-allowed}
+.status{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font-family:var(--f-mono);font-size:13px;background:var(--slot);border:1px solid var(--line);border-radius:999px;padding:4px 10px;font-variant-numeric:tabular-nums}
+.chip b{font-weight:600;color:var(--palm)}
+.say{background:var(--amber-soft);border-radius:8px;padding:10px 12px;min-height:48px}
+.say.bad{background:var(--fruit-soft)}
+.say.good{background:var(--palm-soft)}
+.f{font-family:var(--f-mono);font-size:14.5px;background:var(--slot);border-radius:8px;padding:10px 12px;overflow-x:auto;white-space:pre-wrap;line-height:1.6}
+.f .hl,.hl{background:var(--amber-soft);color:var(--ink);border-radius:4px;padding:0 3px;font-weight:600}
+pre.kode{margin:0;font-family:var(--f-mono);font-size:13px;background:var(--slot);border-radius:8px;padding:10px 12px;overflow-x:auto;line-height:1.5}
+pre.kode span{display:block;padding:0 4px;border-radius:4px;white-space:pre}
+pre.kode span.on{background:var(--amber-soft);font-weight:600}
+ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:4px}
+.small{font-size:14px;color:var(--muted)}
+input[type=number],input[type=text],select,textarea{font:inherit;padding:7px 10px;border-radius:8px;border:2px solid var(--line);background:var(--panel);color:var(--ink);min-width:0}
+input[type=number]{width:96px}
+input[type=range]{accent-color:var(--palm);max-width:100%}
+label.inl{display:inline-flex;align-items:center;gap:6px;font-size:14px;flex-wrap:wrap}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+@media (max-width:520px){.grid2{grid-template-columns:1fr}}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:6px}
+.stats div{background:var(--slot);border-radius:6px;padding:6px 8px;font-size:12px;color:var(--muted)}
+.stats b{display:block;font-family:var(--f-mono);font-size:17px;color:var(--ink);font-variant-numeric:tabular-nums}
+.stats div.alarm b{color:var(--fruit)}
+.scroll{overflow-x:auto;max-width:100%}
+table.t{border-collapse:collapse;font-size:14px;width:100%;font-variant-numeric:tabular-nums}
+table.t th{background:var(--palm);color:var(--panel);text-align:left;padding:6px 8px;font-weight:700}
+table.t td{border-bottom:1px solid var(--line);padding:5px 8px}
+table.t tr.on td{background:var(--amber-soft);font-weight:700}
+.cells{display:flex;gap:4px;flex-wrap:wrap}
+.cell{min-width:44px;border:2px solid var(--line);border-radius:6px;text-align:center;padding:5px 3px;font-family:var(--f-mono);font-weight:600;background:var(--panel);transition:background .25s,border-color .25s,transform .25s}
+.cell small{display:block;font-size:10px;color:var(--muted);font-weight:400}
+.cell.a{background:var(--amber-soft);border-color:var(--amber)}
+.cell.b{background:var(--fruit-soft);border-color:var(--fruit)}
+.cell.g{background:var(--palm-soft);border-color:var(--palm)}
+.cell.s{background:var(--sky-soft);border-color:var(--sky)}
+.cell.dim{opacity:.35}
+.legend{display:flex;flex-wrap:wrap;gap:12px;font-size:13px;color:var(--muted)}
+.legend i{display:inline-block;width:14px;height:14px;border-radius:4px;vertical-align:-2px;margin-right:4px;border:2px solid}
+svg.viz{width:100%;height:auto;display:block;max-width:100%}
+.stepbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.stepbar .ctr{font-family:var(--f-mono);font-size:13px;color:var(--muted)}
+.q{display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--line);padding-top:14px}
+.opts{display:flex;flex-direction:column;gap:6px}
+.opts button{background:var(--panel);color:var(--ink);border:2px solid var(--line);text-align:left;font-weight:400}
+.opts button.ok{border-color:var(--palm);background:var(--palm-soft);font-weight:700}
+.opts button.no{border-color:var(--fruit);background:var(--fruit-soft)}
+.fb{font-size:14px}
+.score{font-family:var(--f-display);font-size:22px;font-weight:800}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+.srt{border:2px solid var(--line);border-radius:8px;padding:10px 12px;display:flex;flex-direction:column;gap:8px}
+.srt.ok{border-color:var(--palm);background:var(--palm-soft)}
+.srt.no{border-color:var(--fruit);background:var(--fruit-soft)}
+.srt .btns button{min-height:34px;padding:4px 10px;font-size:14px}
+.hb{display:grid;grid-template-columns:minmax(90px,170px) 1fr 70px;gap:8px;align-items:center;font-size:14px;margin:4px 0}
+.hb>div{background:var(--slot);border-radius:6px;height:22px;overflow:hidden}
+.hb i{display:block;height:100%;border-radius:6px;transition:width .4s}
+.hb b{font-family:var(--f-mono);font-variant-numeric:tabular-nums;text-align:right}
+@media (max-width:520px){.hb{grid-template-columns:90px 1fr 56px}}
+
+
+.cp{display:grid;grid-template-columns:minmax(150px,1.2fr) 64px minmax(0,2fr);gap:6px;align-items:center;font-size:13.5px;border-bottom:1px solid var(--line);padding:4px 0}
+.gbar{position:relative;height:22px;background:var(--slot);border-radius:5px}
+.gbar i{position:absolute;top:2px;bottom:2px;border-radius:4px;background:var(--sky)}
+.gbar i.k{background:var(--fruit)}
+.gbar s{position:absolute;top:8px;height:6px;background:var(--line);border-radius:3px;text-decoration:none}
+@media (max-width:560px){.cp{grid-template-columns:110px 56px 1fr}}
+
+</style>
+<div class="wrap">
+  <header class="top">
+    <div class="eyebrow">Pertemuan 13 · Enterprise Resource Planning II</div>
+    <h1>Jalur Kritis dan Earned Value</h1>
+    <p class="lead">Proyek agen AI PT BSL dikejar tenggat EUDR. Ubah durasi tugas dan lihat jalur kritis bergeser, lalu ukur kesehatan proyek di minggu ke-4 dengan indeks jadwal dan indeks biaya.</p>
+  </header>
+  <nav class="tabs" aria-label="Bab latihan"><a href="#cpm"><span class="no">1</span>Jalur kritis</a><a href="#evm"><span class="no">2</span>Earned value</a><a href="#kuis"><span class="no">3</span>Kuis</a></nav>
+<section class="bab" data-view="cpm" data-tab="Jalur kritis">
+  <div class="stage">
+    <h2>Tujuh tugas, durasi dalam hari kerja</h2>
+    <div id="cp"></div>
+    <div class="scroll"><table class="t" id="ct"></table></div>
+    <div class="say" id="cSay"></div>
+  </div>
+  <div class="side">
+    <div class="card rumus"><h3>Rumus metode jalur kritis</h3><div class="f">maju : ES = max(EF pendahulu), EF = ES + d
+mundur: LF = min(LS penerus),  LS = LF − d
+float = LS − ES
+kritis ⇔ float = 0
+durasi proyek = max(EF)</div><p class="small">Batang merah = kritis. Garis abu-abu di belakang batang biru = float, waktu longgar yang boleh dipakai tanpa menggeser akhir proyek.</p></div>
+  </div>
+</section>
+<section class="bab" data-view="evm" data-tab="Earned value" hidden>
+  <div class="stage">
+    <h2>Minggu ke-4 proyek</h2>
+    <div class="grid2">
+      <label class="inl">Anggaran total BAC (juta) <input type="number" id="bac" value="500"></label>
+      <label class="inl">Rencana s.d. hari ini PV (juta) <input type="number" id="pv" value="200"></label>
+      <label class="inl">% pekerjaan selesai <input type="range" id="pc" min="0" max="100" value="32"> <b id="pcv"></b></label>
+      <label class="inl">Biaya sudah keluar AC (juta) <input type="number" id="ac" value="180"></label>
+    </div>
+    <div class="stats" id="eS"></div>
+    <div class="f" id="eF"></div>
+    <div class="say" id="eSay"></div>
+  </div>
+  <div class="side">
+    <div class="card rumus"><h3>Rumus earned value</h3><div class="f">EV  = % selesai × BAC
+SPI = EV / PV    (&lt; 1 terlambat)
+CPI = EV / AC    (&lt; 1 boros)
+SV  = EV − PV    CV = EV − AC
+EAC = BAC / CPI  (perkiraan biaya akhir)</div></div>
+  </div>
+</section>
+<section class="bab" data-view="kuis" data-tab="Kuis" hidden>
+  <div class="stage" id="quiz"><h2>Uji pemahaman</h2><p class="small">Pilih satu jawaban. Penjelasan muncul langsung.</p></div>
+  <div class="side"><div class="card"><h3>Skor</h3><div class="score" id="qScore"></div><button id="qReset" class="alt">Ulang kuis</button></div>
+    <div class="card rumus"><h3>Ringkasan</h3><ul class="plain"><li>Jalur kritis: float = 0.</li><li>SPI = EV / PV, CPI = EV / AC.</li><li>EAC = BAC / CPI.</li></ul></div></div>
+</section>
+</div>
+<script>
+/* Bantuan bersama seri latihan ASD */
+const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const sleep = ms => new Promise(r => setTimeout(r, RM ? 0 : ms));
+const fmt = (x, d = 0) => Number(x).toLocaleString('id-ID', { minimumFractionDigits: d, maximumFractionDigits: d });
+const onView = {};
+function tabs() {
+  const views = $$('section.bab').map(s => s.dataset.view);
+  function show() {
+    const v = views.includes(location.hash.slice(1)) ? location.hash.slice(1) : views[0];
+    $$('section.bab').forEach(s => s.hidden = s.dataset.view !== v);
+    $$('nav.tabs a').forEach(a => a.getAttribute('href') === '#' + v ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current'));
+    Object.entries(onView).forEach(([k, f]) => f(k === v));
+  }
+  addEventListener('hashchange', show); show();
+}
+/* Langkah demi langkah: steps = [{...state, say}], draw(step, i) menggambar */
+function Stepper(root, draw, ms = 900) {
+  const el = typeof root === 'string' ? $(root) : root;
+  el.innerHTML = '<button data-a="prev" class="alt">‹ Sebelumnya</button><button data-a="next">Berikutnya ›</button><button data-a="play" class="alt">Putar otomatis</button><span class="ctr"></span>';
+  const S = { steps: [], i: 0, timer: null };
+  const ctr = el.querySelector('.ctr'), bp = el.querySelector('[data-a=play]');
+  function go(i) { S.i = Math.max(0, Math.min(S.steps.length - 1, i)); draw(S.steps[S.i], S.i, S.steps); ctr.textContent = `langkah ${S.i + 1} / ${S.steps.length}`; }
+  function stop() { clearInterval(S.timer); S.timer = null; bp.textContent = 'Putar otomatis'; }
+  el.querySelector('[data-a=prev]').onclick = () => { stop(); go(S.i - 1); };
+  el.querySelector('[data-a=next]').onclick = () => { stop(); go(S.i + 1); };
+  bp.onclick = () => {
+    if (S.timer) return stop();
+    if (S.i >= S.steps.length - 1) go(0);
+    bp.textContent = 'Jeda';
+    S.timer = setInterval(() => { if (S.i >= S.steps.length - 1) return stop(); go(S.i + 1); }, RM ? 400 : ms);
+  };
+  return { load(steps, start = 0) { stop(); S.steps = steps; go(start); }, stop, get i() { return S.i; }, go };
+}
+/* Kuis: QUIZ = [[soal, [pilihan], indeksBenar, penjelasan]] */
+function quiz(box, scoreEl, resetBtn, QUIZ) {
+  const J = {};
+  function draw() {
+    box.querySelectorAll('.q').forEach(e => e.remove());
+    QUIZ.forEach(([t, ops, ok, ex], n) => {
+      const d = document.createElement('div'); d.className = 'q'; const j = J[n];
+      d.innerHTML = `<b>${n + 1}. ${t}</b><div class="opts">${ops.map((o, i) => `<button data-i="${i}" ${j !== undefined ? 'disabled' : ''} class="${j !== undefined && i === ok ? 'ok' : j === i ? 'no' : ''}">${o}</button>`).join('')}</div>` +
+        (j !== undefined ? `<div class="fb">${j === ok ? '<b>Benar.</b> ' : '<b>Belum tepat.</b> '}${ex}</div>` : '');
+      d.querySelectorAll('button').forEach(b => b.onclick = () => { J[n] = +b.dataset.i; draw(); });
+      box.appendChild(d);
+    });
+    scoreEl.textContent = `${Object.entries(J).filter(([n, j]) => QUIZ[n][2] === j).length} / ${QUIZ.length}`;
+  }
+  resetBtn.onclick = () => { Object.keys(J).forEach(k => delete J[k]); draw(); };
+  draw();
+}
+function kode(el, lines) { el.innerHTML = lines.map((l, i) => `<span data-l="${i}">${l.replace(/&/g, '&amp;').replace(/</g, '&lt;') || ' '}</span>`).join(''); return on => el.querySelectorAll('span').forEach(s => s.classList.toggle('on', (on || []).includes(+s.dataset.l))); }
+/* Permainan memilah: ITEMS = [[teks, kunciBenar, penjelasan]], KEYS = [[kunci, label]] */
+function sortir(box, scoreEl, ITEMS, KEYS) {
+  const J = {};
+  function draw() {
+    box.innerHTML = ITEMS.map(([t, k, ex], n) => {
+      const j = J[n];
+      return `<div class="srt${j === undefined ? '' : j === k ? ' ok' : ' no'}"><div>${t}</div><div class="btns">${KEYS.map(([kk, l]) => `<button class="${j === undefined ? 'alt' : kk === k ? '' : j === kk ? 'warn' : 'alt'}" data-n="${n}" data-k="${kk}" ${j !== undefined ? 'disabled' : ''}>${l}</button>`).join('')}</div>${j !== undefined ? `<div class="fb">${j === k ? '<b>Tepat.</b> ' : '<b>Belum tepat.</b> '}${ex}</div>` : ''}</div>`;
+    }).join('');
+    box.querySelectorAll('button').forEach(b => b.onclick = () => { J[b.dataset.n] = b.dataset.k; draw(); });
+    const benar = Object.entries(J).filter(([n, j]) => ITEMS[n][1] === j).length;
+    if (scoreEl) scoreEl.textContent = `${benar} benar dari ${Object.keys(J).length} dijawab (${ITEMS.length} kartu)`;
+  }
+  draw(); return { reset() { Object.keys(J).forEach(k => delete J[k]); draw(); } };
+}
+/* Batang horizontal sederhana: rows = [[label, nilai, warnaVar?]] */
+function bars(el, rows, max, fmtv = v => fmt(v)) {
+  max = max || Math.max(...rows.map(r => r[1]), 1);
+  el.innerHTML = rows.map(([l, v, c]) => `<div class="hb"><span>${l}</span><div><i style="width:${Math.max(0.5, v / max * 100)}%;background:var(${c || '--palm'})"></i></div><b>${fmtv(v)}</b></div>`).join('');
+}
+
+
+const T = [['A', 'Analisis kebutuhan', 5, []], ['B', 'Pendataan STDB petani', 10, ['A']], ['C', 'Konfigurasi ERPNext', 7, ['A']], ['D', 'Bangun agen n8n', 8, ['C']], ['E', 'UAT', 4, ['B', 'D']], ['F', 'Pelatihan pengguna', 3, ['C']], ['G', 'Go-live', 1, ['E', 'F']]];
+$('#cp').innerHTML = T.map(([k, n, d, p], i) => `<div class="cp"><span><b>${k}</b> ${n}${p.length ? `<br><span class="small">setelah ${p.join(', ')}</span>` : ''}</span><input type="number" min="1" max="30" value="${d}" data-i="${i}" aria-label="durasi ${n}"><div class="gbar" id="g${k}"></div></div>`).join('');
+function cpm() {
+  const d = {}; T.forEach(([k], i) => d[k] = Math.max(1, +$(`#cp input[data-i="${i}"]`).value || 1));
+  const ES = {}, EF = {}; T.forEach(([k, , , p]) => { ES[k] = Math.max(0, ...p.map(x => EF[x])); EF[k] = ES[k] + d[k]; });
+  const end = Math.max(...Object.values(EF)), LF = {}, LS = {};
+  [...T].reverse().forEach(([k]) => { const nx = T.filter(t => t[3].includes(k)).map(t => LS[t[0]]); LF[k] = nx.length ? Math.min(...nx) : end; LS[k] = LF[k] - d[k]; });
+  T.forEach(([k]) => { const fl = LS[k] - ES[k]; $('#g' + k).innerHTML = `${fl ? `<s style="left:${EF[k] / end * 100}%;width:${fl / end * 100}%"></s>` : ''}<i class="${fl ? '' : 'k'}" style="left:${ES[k] / end * 100}%;width:${d[k] / end * 100}%"></i>`; });
+  $('#ct').innerHTML = '<tr><th>Tugas</th><th>d</th><th>ES</th><th>EF</th><th>LS</th><th>LF</th><th>Float</th></tr>' + T.map(([k]) => `<tr class="${LS[k] - ES[k] ? '' : 'on'}"><td>${k}</td><td>${d[k]}</td><td>${ES[k]}</td><td>${EF[k]}</td><td>${LS[k]}</td><td>${LF[k]}</td><td>${LS[k] - ES[k]}</td></tr>`).join('');
+  const crit = T.filter(([k]) => LS[k] === ES[k]).map(t => t[0]);
+  $('#cSay').textContent = `Durasi proyek ${end} hari kerja. Jalur kritis: ${crit.join(' → ')}. Pelatihan (F) punya float ${LS.F - ES.F} hari, jadi bisa digeser tanpa menunda go-live. Coba naikkan durasi pendataan STDB (B) ke 15 hari.`;
+}
+$('#cp').oninput = cpm; cpm();
+function evm() {
+  const g = id => +$('#' + id).value || 0; $('#pcv').textContent = g('pc') + '%';
+  const EV = g('pc') / 100 * g('bac'), spi = EV / g('pv'), cpi = EV / g('ac'), eac = g('bac') / cpi;
+  $('#eS').innerHTML = `<div>EV<b>Rp${fmt(EV)} jt</b></div><div class="${spi < 1 ? 'alarm' : ''}">SPI<b>${fmt(spi, 2)}</b></div><div class="${cpi < 1 ? 'alarm' : ''}">CPI<b>${fmt(cpi, 2)}</b></div><div class="${eac > g('bac') ? 'alarm' : ''}">EAC<b>Rp${fmt(eac)} jt</b></div>`;
+  $('#eF').innerHTML = `EV = ${g('pc')}% × ${g('bac')} = ${fmt(EV, 1)}\nSPI = ${fmt(EV, 1)} / ${g('pv')} = ${fmt(spi, 2)}   SV = ${fmt(EV - g('pv'), 1)}\nCPI = ${fmt(EV, 1)} / ${g('ac')} = ${fmt(cpi, 2)}   CV = ${fmt(EV - g('ac'), 1)}\nEAC = ${g('bac')} / ${fmt(cpi, 2)} = <span class="hl">Rp${fmt(eac, 1)} jt</span>`;
+  $('#eSay').className = 'say ' + (spi < 1 || cpi < 1 ? 'bad' : 'good');
+  $('#eSay').textContent = spi < 1 && cpi < 1 ? 'Terlambat dan boros. Bila tren ini berlanjut, biaya akhir melampaui anggaran. Tindakan: tambah orang di jalur kritis, kurangi lingkup, atau minta persetujuan geser jadwal.' : spi < 1 ? 'Terlambat tetapi hemat. Mungkin kekurangan orang.' : cpi < 1 ? 'Tepat waktu tetapi boros.' : 'Proyek sehat.';
+}
+$$('#evm input').forEach(e => e.oninput = evm); evm();
+quiz($('#quiz'), $('#qScore'), $('#qReset'), [
+  ['EV Rp160 jt, PV Rp200 jt. SPI?', ['0,80', '1,25', '0,89', '1,00'], 0, '160 / 200 = 0,80: terlambat.'],
+  ['EV Rp160 jt, AC Rp180 jt. CPI?', ['0,80', '0,89', '1,13', '1,00'], 1, '160 / 180 = 0,89: boros.'],
+  ['BAC Rp500 jt, CPI 0,89. EAC?', ['Rp445 jt', 'Rp500 jt', 'Rp562 jt', 'Rp890 jt'], 2, '500 / 0,89 = 562.'],
+  ['Tugas dengan float 0 disebut …', ['tugas opsional', 'tugas kritis', 'tugas selesai', 'tugas paralel'], 1, 'Keterlambatannya langsung menggeser akhir proyek.'],
+  ['Pada contoh awal, jalur kritis proyek adalah …', ['A → B → E → G', 'A → C → D → E → G', 'A → C → F → G', 'A → B → F → G'], 1, 'A(5) + C(7) + D(8) + E(4) + G(1) = 25 hari, lebih panjang dari jalur lewat B (5 + 10 + 4 + 1 = 20).'],
+]);
+tabs();
+
+</script>
+
+<script>(function(){
+var d=document;
+function rgb(s){var m=s&&s.match(/rgba?\(([\d.]+),\s*([\d.]+),\s*([\d.]+)(?:,\s*([\d.]+))?/);return m?[+m[1],+m[2],+m[3],m[4]===undefined?1:+m[4]]:null}
+function lum(c){return [0,1,2].reduce(function(s,i,k){var v=c[i]/255;v=v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4);return s+v*[.2126,.7152,.0722][k]},0)}
+function ratio(a,b){var x=lum(a),y=lum(b);return (Math.max(x,y)+.05)/(Math.min(x,y)+.05)}
+function mix(a,b,t){return [0,1,2].map(function(i){return Math.round(a[i]+(b[i]-a[i])*t)})}
+function bgOf(el){var stack=[];for(var n=el;n&&n.nodeType===1;n=n.parentElement){var cs=getComputedStyle(n);if(cs.backgroundImage&&cs.backgroundImage!=='none')return null;var c=rgb(cs.backgroundColor);if(c&&c[3]>0){stack.push(c);if(c[3]>=1)break}}
+ var base=[255,255,255];for(var i=stack.length-1;i>=0;i--){var s=stack[i];base=mix(base,s,s[3])}return base}
+function own(el){for(var i=0;i<el.childNodes.length;i++){var t=el.childNodes[i];if(t.nodeType===3&&t.nodeValue.trim())return true}return false}
+function fix(el){var cs=getComputedStyle(el);if(cs.visibility==='hidden'||cs.display==='none')return;var fg=rgb(cs.color),bg=bgOf(el);if(!fg||!bg)return;
+ var op=1;for(var n=el;n&&n.nodeType===1;n=n.parentElement)op*=+getComputedStyle(n).opacity;if(op<.999){var q2=el;while(q2&&+getComputedStyle(q2).opacity>=.999)q2=q2.parentElement;var ef=mix(bg,fg,fg[3]*op);if(ratio(ef,bg)<4.6&&q2){q2.style.setProperty('opacity','1','important');return fix(el)}}fg=mix(bg,fg,fg[3]);var size=parseFloat(cs.fontSize),bold=+cs.fontWeight>=700,need=(size>=24||(bold&&size>=18.66))?3.1:4.6;
+ if(ratio(fg,bg)>=need)return;
+ var ob0=rgb(cs.backgroundColor);if(ob0&&ob0[3]>=1&&lum(fg)>.5){for(var j=1;j<=20;j++){var bb=mix(ob0,[0,0,0],j/20);if(ratio(fg,bb)>=need){el.style.setProperty('background-color','rgb('+bb.join(',')+')','important');return}}}
+ var best=null;[[0,0,0],[255,255,255]].forEach(function(t){for(var k=1;k<=20;k++){var c=mix(fg,t,k/20);if(ratio(c,bg)>=need){if(!best||k<best.k)best={c:c,k:k};break}}});
+ if(best){el.style.setProperty('color','rgb('+best.c.join(',')+')','important');return}
+ var ob=rgb(cs.backgroundColor);if(ob&&ob[3]>=1){var to=lum(fg)>.5?[0,0,0]:[255,255,255];for(var k=1;k<=20;k++){var b2=mix(ob,to,k/20);if(ratio(fg,b2)>=need){el.style.setProperty('background-color','rgb('+b2.join(',')+')','important');return}}}}
+function name(el){var t=el.getAttribute('placeholder')||el.getAttribute('title')||el.name||el.id||'';if(!t){var p=el.closest('tr,li,div,p,td');if(p){var tx=(p.innerText||'').trim().split('\n')[0];t=tx.slice(0,60)}}return t||'isian'}
+function run(){
+ if(!d.documentElement.lang)d.documentElement.lang='id';
+ if(!d.querySelector('main,[role=main]')){var big=null,ba=0;[].forEach.call(d.body.children,function(c){if(/^(SCRIPT|STYLE|HEADER|NAV|FOOTER|NOSCRIPT)$/.test(c.tagName))return;var a=c.offsetWidth*c.offsetHeight;if(a>ba){ba=a;big=c}});for(var g=0;big&&big.querySelector('header,footer,nav')&&g<4;g++){var nb=null,na=0;[].forEach.call(big.children,function(c){if(/^(SCRIPT|STYLE|HEADER|NAV|FOOTER)$/.test(c.tagName))return;var a=c.offsetWidth*c.offsetHeight;if(a>na){na=a;nb=c}});big=nb}if(big&&!big.getAttribute('role')&&!big.querySelector('header,footer,nav'))big.setAttribute('role','main')}
+ d.querySelectorAll('input:not([type=hidden]),select,textarea').forEach(function(el){if(el.labels&&el.labels.length)return;if(el.getAttribute('aria-label')||el.getAttribute('aria-labelledby'))return;if(/^(button|submit|reset)$/.test(el.type))return;el.setAttribute('aria-label',name(el))});
+ d.querySelectorAll('th').forEach(function(th){if(!(th.textContent||'').trim()&&!th.querySelector('img,svg,input,select')){var td=d.createElement('td');for(var i=0;i<th.attributes.length;i++)td.setAttribute(th.attributes[i].name,th.attributes[i].value);while(th.firstChild)td.appendChild(th.firstChild);th.replaceWith(td)}});
+ d.querySelectorAll('svg[role=img]').forEach(function(s){if(s.getAttribute('aria-label')||s.querySelector('title'))return;var f=s.closest('figure'),c=f&&f.querySelector('figcaption');s.setAttribute('aria-label',c?c.textContent.trim():'diagram')});
+ d.querySelectorAll('body *').forEach(function(el){if(own(el))fix(el)});
+ d.querySelectorAll('body *').forEach(function(el){var cs=getComputedStyle(el);if(/(auto|scroll)/.test(cs.overflowX+cs.overflowY)&&(el.scrollHeight>el.clientHeight||el.scrollWidth>el.clientWidth)&&!el.hasAttribute('tabindex')&&!el.querySelector('a,button,input,select,textarea,[tabindex]'))el.setAttribute('tabindex','0')});
+}
+var q=0;function later(){if(q)return;q=setTimeout(function(){q=0;obs.disconnect();run();obs.observe(d.body,{childList:true,subtree:true,attributes:true,attributeFilter:['class']})},600)}
+var obs=new MutationObserver(later);
+function start(){run();obs.observe(d.body,{childList:true,subtree:true,attributes:true,attributeFilter:['class']})}
+if(d.readyState==='loading')d.addEventListener('DOMContentLoaded',start);else start();
+})();</script>
+</body>
+</html>
