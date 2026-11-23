@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>P7 · Detektif Data: Pencilan dan Korelasi</title>
+<meta name="description" content="Simulasi interaktif Pertemuan 7 mata kuliah Pemrograman I (STIP-3133): Detektif Data: Pencilan dan Korelasi. Prodi Sistem dan Teknologi Informasi, Institut Teknologi Sawit Indonesia.">
+<link rel="canonical" href="https://syrvrr.github.io/kuliah/pemrograman-1/sim/p07.html">
+<link rel="icon" href="../../../favicon.svg" type="image/svg+xml">
+</head>
+<body>
+<title>Detektif Data: Pencilan dan Korelasi</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Seri latihan ASD: pita tab di atas, satu panggung interaktif per bab, panel rumus di samping (bertumpuk di ponsel). */
+:root{
+  --bg:#F3F6F2; --panel:#FFFFFF; --ink:#1B2A22; --muted:#5B6B62; --line:#D5DED7;
+  --palm:#1F6B45; --palm-soft:#DCEFE3; --fruit:#D2502A; --fruit-soft:#FBE3D9;
+  --amber:#E2A400; --amber-soft:#FFF2C7; --sky:#2B6CB0; --sky-soft:#DCE9F7; --road:#3C4744; --slot:#EEF2EE;
+  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"JetBrains Mono", ui-monospace, Consolas, monospace;
+  --r:10px;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#111915; --panel:#18231D; --ink:#E6EFE9; --muted:#9DB0A5; --line:#2C3B33;
+  --palm:#5CC08A; --palm-soft:#1E3A2B; --fruit:#F07A52; --fruit-soft:#3E2219;
+  --amber:#F2C443; --amber-soft:#3A3115; --sky:#6FA8E8; --sky-soft:#1C2C40; --road:#26302D; --slot:#1F2A24; color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#111915; --panel:#18231D; --ink:#E6EFE9; --muted:#9DB0A5; --line:#2C3B33;
+  --palm:#5CC08A; --palm-soft:#1E3A2B; --fruit:#F07A52; --fruit-soft:#3E2219;
+  --amber:#F2C443; --amber-soft:#3A3115; --sky:#6FA8E8; --sky-soft:#1C2C40; --road:#26302D; --slot:#1F2A24; color-scheme:dark }
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.55;
+  padding-left:max(16px, env(safe-area-inset-left,0px));padding-right:max(16px, env(safe-area-inset-right,0px));padding-block:20px 48px}
+.wrap{max-width:1120px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+h1,h2,h3{font-family:var(--f-display);margin:0;text-wrap:balance;line-height:1.15}
+h1{font-size:clamp(28px,4.4vw,44px);font-weight:800;letter-spacing:-.01em}
+h2{font-size:clamp(21px,3vw,27px);font-weight:800}
+h3{font-size:18px;font-weight:600}
+p{margin:0;max-width:68ch}
+code,.mono{font-family:var(--f-mono);font-size:.92em}
+header.top{display:flex;flex-direction:column;gap:8px}
+.eyebrow{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--palm);font-weight:700}
+.lead{color:var(--muted);font-size:17px}
+nav.tabs{display:flex;gap:6px;flex-wrap:wrap;border-bottom:2px solid var(--line)}
+nav.tabs a{padding:10px 14px;text-decoration:none;color:var(--muted);font-weight:700;border-radius:8px 8px 0 0;border:2px solid transparent;border-bottom:none;margin-bottom:-2px;font-size:15px}
+nav.tabs a .no{font-family:var(--f-mono);font-size:12px;margin-right:6px;opacity:.75}
+nav.tabs a[aria-current="page"]{color:var(--ink);background:var(--panel);border-color:var(--line)}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+section.bab{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:20px;align-items:start}
+@media (max-width:860px){section.bab{grid-template-columns:1fr}}
+.stage{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:18px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.side{display:flex;flex-direction:column;gap:14px;min-width:0}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.card.rumus{border-left:5px solid var(--palm)}
+.btns{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+button{font:inherit;font-weight:700;border-radius:8px;border:2px solid var(--palm);background:var(--palm);color:var(--panel);padding:8px 14px;cursor:pointer;min-height:40px}
+button.alt{background:transparent;color:var(--palm)}
+button.warn{background:var(--fruit);border-color:var(--fruit)}
+button:disabled{opacity:.45;cursor:not-allowed}
+.status{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font-family:var(--f-mono);font-size:13px;background:var(--slot);border:1px solid var(--line);border-radius:999px;padding:4px 10px;font-variant-numeric:tabular-nums}
+.chip b{font-weight:600;color:var(--palm)}
+.say{background:var(--amber-soft);border-radius:8px;padding:10px 12px;min-height:48px}
+.say.bad{background:var(--fruit-soft)}
+.say.good{background:var(--palm-soft)}
+.f{font-family:var(--f-mono);font-size:14.5px;background:var(--slot);border-radius:8px;padding:10px 12px;overflow-x:auto;white-space:pre-wrap;line-height:1.6}
+.f .hl,.hl{background:var(--amber-soft);color:var(--ink);border-radius:4px;padding:0 3px;font-weight:600}
+pre.kode{margin:0;font-family:var(--f-mono);font-size:13px;background:var(--slot);border-radius:8px;padding:10px 12px;overflow-x:auto;line-height:1.5}
+pre.kode span{display:block;padding:0 4px;border-radius:4px;white-space:pre}
+pre.kode span.on{background:var(--amber-soft);font-weight:600}
+ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:4px}
+.small{font-size:14px;color:var(--muted)}
+input[type=number],input[type=text],select,textarea{font:inherit;padding:7px 10px;border-radius:8px;border:2px solid var(--line);background:var(--panel);color:var(--ink);min-width:0}
+input[type=number]{width:96px}
+input[type=range]{accent-color:var(--palm);max-width:100%}
+label.inl{display:inline-flex;align-items:center;gap:6px;font-size:14px;flex-wrap:wrap}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+@media (max-width:520px){.grid2{grid-template-columns:1fr}}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:6px}
+.stats div{background:var(--slot);border-radius:6px;padding:6px 8px;font-size:12px;color:var(--muted)}
+.stats b{display:block;font-family:var(--f-mono);font-size:17px;color:var(--ink);font-variant-numeric:tabular-nums}
+.stats div.alarm b{color:var(--fruit)}
+.scroll{overflow-x:auto;max-width:100%}
+table.t{border-collapse:collapse;font-size:14px;width:100%;font-variant-numeric:tabular-nums}
+table.t th{background:var(--palm);color:var(--panel);text-align:left;padding:6px 8px;font-weight:700}
+table.t td{border-bottom:1px solid var(--line);padding:5px 8px}
+table.t tr.on td{background:var(--amber-soft);font-weight:700}
+.cells{display:flex;gap:4px;flex-wrap:wrap}
+.cell{min-width:44px;border:2px solid var(--line);border-radius:6px;text-align:center;padding:5px 3px;font-family:var(--f-mono);font-weight:600;background:var(--panel);transition:background .25s,border-color .25s,transform .25s}
+.cell small{display:block;font-size:10px;color:var(--muted);font-weight:400}
+.cell.a{background:var(--amber-soft);border-color:var(--amber)}
+.cell.b{background:var(--fruit-soft);border-color:var(--fruit)}
+.cell.g{background:var(--palm-soft);border-color:var(--palm)}
+.cell.s{background:var(--sky-soft);border-color:var(--sky)}
+.cell.dim{opacity:.35}
+.legend{display:flex;flex-wrap:wrap;gap:12px;font-size:13px;color:var(--muted)}
+.legend i{display:inline-block;width:14px;height:14px;border-radius:4px;vertical-align:-2px;margin-right:4px;border:2px solid}
+svg.viz{width:100%;height:auto;display:block;max-width:100%}
+.stepbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.stepbar .ctr{font-family:var(--f-mono);font-size:13px;color:var(--muted)}
+.q{display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--line);padding-top:14px}
+.opts{display:flex;flex-direction:column;gap:6px}
+.opts button{background:var(--panel);color:var(--ink);border:2px solid var(--line);text-align:left;font-weight:400}
+.opts button.ok{border-color:var(--palm);background:var(--palm-soft);font-weight:700}
+.opts button.no{border-color:var(--fruit);background:var(--fruit-soft)}
+.fb{font-size:14px}
+.score{font-family:var(--f-display);font-size:22px;font-weight:800}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+.srt{border:2px solid var(--line);border-radius:8px;padding:10px 12px;display:flex;flex-direction:column;gap:8px}
+.srt.ok{border-color:var(--palm);background:var(--palm-soft)}
+.srt.no{border-color:var(--fruit);background:var(--fruit-soft)}
+.srt .btns button{min-height:34px;padding:4px 10px;font-size:14px}
+.hb{display:grid;grid-template-columns:minmax(90px,170px) 1fr 70px;gap:8px;align-items:center;font-size:14px;margin:4px 0}
+.hb>div{background:var(--slot);border-radius:6px;height:22px;overflow:hidden}
+.hb i{display:block;height:100%;border-radius:6px;transition:width .4s}
+.hb b{font-family:var(--f-mono);font-variant-numeric:tabular-nums;text-align:right}
+@media (max-width:520px){.hb{grid-template-columns:90px 1fr 56px}}
+
+
+#ip text,#sc text{font-family:var(--f-body,inherit)}
+
+</style>
+<div class="wrap">
+  <header class="top">
+    <div class="eyebrow">Pertemuan 7 · Pemrograman I</div>
+    <h1>Detektif Data: Pencilan dan Korelasi</h1>
+    <p class="lead">Cari pencilan dengan IQR pada data mentah 301 blok dan putuskan mana yang salah data, mana yang benar. Lalu pilih dua variabel dan lihat korelasi Pearson dihitung langsung beserta jebakannya.</p>
+  </header>
+  <nav class="tabs" aria-label="Bab latihan"><a href="#iqr"><span class="no">1</span>Pencilan IQR</a><a href="#korel"><span class="no">2</span>Korelasi</a><a href="#putus"><span class="no">3</span>Keputusan pembersihan</a><a href="#kuis"><span class="no">4</span>Kuis</a></nav>
+<section class="bab" data-view="iqr" data-tab="Pencilan IQR">
+  <div class="stage">
+    <h2>Pencilan di produksi_blok.csv (data mentah)</h2>
+    <div class="grid2">
+      <label class="inl">Kolom <select id="ko"><option value="5">produktivitas_ton_ha</option><option value="2">luas_ha</option><option value="3">sph</option><option value="4">curah_hujan_mm</option></select></label>
+      <label class="inl">k (pengali IQR) <input type="range" id="kk" min="0.5" max="3" step="0.1" value="1.5"><b id="kkv"></b></label>
+    </div>
+    <svg class="viz" id="ip" viewBox="0 0 560 150" role="img" aria-label="Sebaran nilai dan batas IQR"></svg>
+    <div class="f" id="fi"></div>
+    <div class="scroll"><table class="t" id="ti"></table></div>
+    <div class="say" id="sayi"></div>
+  </div>
+  <div class="side"><div class="card rumus"><h3>Rumus</h3><div class="f">IQR = Q3 − Q1
+bawah = Q1 − k × IQR
+atas  = Q3 + k × IQR</div><p class="small">Titik merah ada di luar batas. Lihat kolom umur di tabel: pencilan produktivitas rendah hampir semuanya blok muda. IQR menandai; pengetahuan kebun yang memutuskan.</p></div></div>
+</section>
+<section class="bab" data-view="korel" data-tab="Korelasi" hidden>
+  <div class="stage">
+    <h2>Dua variabel dari 299 blok bersih</h2>
+    <div class="grid2">
+      <label class="inl">Sumbu x <select id="vx"><option value="0">umur_th</option><option value="1">pupuk_kg_pokok</option><option value="5">bulan_kering</option><option value="4">luas_ha</option><option value="8">curah_hujan_mm</option><option value="7">sph</option></select></label>
+      <label class="inl">Batasi umur <select id="bu"><option value="0">semua umur</option><option value="1">9–15 tahun saja</option></select></label>
+    </div>
+    <svg class="viz" id="sc" viewBox="0 0 560 300" role="img" aria-label="Grafik sebar"></svg>
+    <div class="stats" id="ks"></div>
+    <div class="say" id="sayk"></div>
+  </div>
+  <div class="side"><div class="card rumus"><h3>Pearson r</h3><div class="f">r = Σ(x−x̄)(y−ȳ) / √(Σ(x−x̄)² Σ(y−ȳ)²)
+−1 ≤ r ≤ 1</div><p class="small">r hanya mengukur hubungan lurus. Umur punya r 0,51 padahal hubungannya kuat tetapi melengkung. Batasi ke umur 9–15 tahun dan lihat r umur hampir hilang: di fase puncak, umur tidak lagi menentukan.</p></div></div>
+</section>
+<section class="bab" data-view="putus" data-tab="Keputusan pembersihan" hidden>
+  <div class="stage">
+    <h2>Apa yang Anda lakukan dengan temuan ini?</h2>
+    <div class="chip" id="dS"></div>
+    <div id="dBox" style="display:flex;flex-direction:column;gap:8px"></div>
+    <div class="btns"><button class="alt" id="dR">Ulang</button></div>
+  </div>
+  <div class="side"><div class="card rumus"><h3>Catat setiap keputusan</h3><div class="f">temuan → alasan → tindakan → jumlah baris terdampak</div><p class="small">Orang lain harus bisa mengulang pembersihan Anda dan mendapat 299 blok yang sama.</p></div></div>
+</section>
+<section class="bab" data-view="kuis" data-tab="Kuis" hidden>
+  <div class="stage" id="quiz"><h2>Uji pemahaman</h2><p class="small">Pilih satu jawaban. Penjelasan muncul langsung.</p></div>
+  <div class="side"><div class="card"><h3>Skor</h3><div class="score" id="qScore"></div><button id="qReset" class="alt">Ulang kuis</button></div></div>
+</section>
+</div>
+<script>
+/* Bantuan bersama seri latihan ASD */
+const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const sleep = ms => new Promise(r => setTimeout(r, RM ? 0 : ms));
+const fmt = (x, d = 0) => Number(x).toLocaleString('id-ID', { minimumFractionDigits: d, maximumFractionDigits: d });
+const onView = {};
+function tabs() {
+  const views = $$('section.bab').map(s => s.dataset.view);
+  function show() {
+    const v = views.includes(location.hash.slice(1)) ? location.hash.slice(1) : views[0];
+    $$('section.bab').forEach(s => s.hidden = s.dataset.view !== v);
+    $$('nav.tabs a').forEach(a => a.getAttribute('href') === '#' + v ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current'));
+    Object.entries(onView).forEach(([k, f]) => f(k === v));
+  }
+  addEventListener('hashchange', show); show();
+}
+/* Langkah demi langkah: steps = [{...state, say}], draw(step, i) menggambar */
+function Stepper(root, draw, ms = 900) {
+  const el = typeof root === 'string' ? $(root) : root;
+  el.innerHTML = '<button data-a="prev" class="alt">‹ Sebelumnya</button><button data-a="next">Berikutnya ›</button><button data-a="play" class="alt">Putar otomatis</button><span class="ctr"></span>';
+  const S = { steps: [], i: 0, timer: null };
+  const ctr = el.querySelector('.ctr'), bp = el.querySelector('[data-a=play]');
+  function go(i) { S.i = Math.max(0, Math.min(S.steps.length - 1, i)); draw(S.steps[S.i], S.i, S.steps); ctr.textContent = `langkah ${S.i + 1} / ${S.steps.length}`; }
+  function stop() { clearInterval(S.timer); S.timer = null; bp.textContent = 'Putar otomatis'; }
+  el.querySelector('[data-a=prev]').onclick = () => { stop(); go(S.i - 1); };
+  el.querySelector('[data-a=next]').onclick = () => { stop(); go(S.i + 1); };
+  bp.onclick = () => {
+    if (S.timer) return stop();
+    if (S.i >= S.steps.length - 1) go(0);
+    bp.textContent = 'Jeda';
+    S.timer = setInterval(() => { if (S.i >= S.steps.length - 1) return stop(); go(S.i + 1); }, RM ? 400 : ms);
+  };
+  return { load(steps, start = 0) { stop(); S.steps = steps; go(start); }, stop, get i() { return S.i; }, go };
+}
+/* Kuis: QUIZ = [[soal, [pilihan], indeksBenar, penjelasan]] */
+function quiz(box, scoreEl, resetBtn, QUIZ) {
+  const J = {};
+  function draw() {
+    box.querySelectorAll('.q').forEach(e => e.remove());
+    QUIZ.forEach(([t, ops, ok, ex], n) => {
+      const d = document.createElement('div'); d.className = 'q'; const j = J[n];
+      d.innerHTML = `<b>${n + 1}. ${t}</b><div class="opts">${ops.map((o, i) => `<button data-i="${i}" ${j !== undefined ? 'disabled' : ''} class="${j !== undefined && i === ok ? 'ok' : j === i ? 'no' : ''}">${o}</button>`).join('')}</div>` +
+        (j !== undefined ? `<div class="fb">${j === ok ? '<b>Benar.</b> ' : '<b>Belum tepat.</b> '}${ex}</div>` : '');
+      d.querySelectorAll('button').forEach(b => b.onclick = () => { J[n] = +b.dataset.i; draw(); });
+      box.appendChild(d);
+    });
+    scoreEl.textContent = `${Object.entries(J).filter(([n, j]) => QUIZ[n][2] === j).length} / ${QUIZ.length}`;
+  }
+  resetBtn.onclick = () => { Object.keys(J).forEach(k => delete J[k]); draw(); };
+  draw();
+}
+function kode(el, lines) { el.innerHTML = lines.map((l, i) => `<span data-l="${i}">${l.replace(/&/g, '&amp;').replace(/</g, '&lt;') || ' '}</span>`).join(''); return on => el.querySelectorAll('span').forEach(s => s.classList.toggle('on', (on || []).includes(+s.dataset.l))); }
+/* Permainan memilah: ITEMS = [[teks, kunciBenar, penjelasan]], KEYS = [[kunci, label]] */
+function sortir(box, scoreEl, ITEMS, KEYS) {
+  const J = {};
+  function draw() {
+    box.innerHTML = ITEMS.map(([t, k, ex], n) => {
+      const j = J[n];
+      return `<div class="srt${j === undefined ? '' : j === k ? ' ok' : ' no'}"><div>${t}</div><div class="btns">${KEYS.map(([kk, l]) => `<button class="${j === undefined ? 'alt' : kk === k ? '' : j === kk ? 'warn' : 'alt'}" data-n="${n}" data-k="${kk}" ${j !== undefined ? 'disabled' : ''}>${l}</button>`).join('')}</div>${j !== undefined ? `<div class="fb">${j === k ? '<b>Tepat.</b> ' : '<b>Belum tepat.</b> '}${ex}</div>` : ''}</div>`;
+    }).join('');
+    box.querySelectorAll('button').forEach(b => b.onclick = () => { J[b.dataset.n] = b.dataset.k; draw(); });
+    const benar = Object.entries(J).filter(([n, j]) => ITEMS[n][1] === j).length;
+    if (scoreEl) scoreEl.textContent = `${benar} benar dari ${Object.keys(J).length} dijawab (${ITEMS.length} kartu)`;
+  }
+  draw(); return { reset() { Object.keys(J).forEach(k => delete J[k]); draw(); } };
+}
+/* Batang horizontal sederhana: rows = [[label, nilai, warnaVar?]] */
+function bars(el, rows, max, fmtv = v => fmt(v)) {
+  max = max || Math.max(...rows.map(r => r[1]), 1);
+  el.innerHTML = rows.map(([l, v, c]) => `<div class="hb"><span>${l}</span><div><i style="width:${Math.max(0.5, v / max * 100)}%;background:var(${c || '--palm'})"></i></div><b>${fmtv(v)}</b></div>`).join('');
+}
+
+
+const MEN = [["B003",15,30.1,118,2591.0,21.9],["B007",16,34.9,139,1939.0,19.91],["B019",10,27.4,123,2931.0,17.87],["B021",6,33.0,128,3199.0,10.85],["B029",17,35.6,129,2663.0,17.21],["B037",11,32.5,120,2973.0,18.99],["B039",9,26.1,130,2347.0,20.49],["B043",18,26.7,135,2868.0,20.88],["B048",4,28.7,132,2256.0,6.29],["B053",6,30.0,138,2361.0,9.54],["B079",14,25.0,131,2236.0,22.32],["B085",21,30.5,125,2403.0,15.16],["B087",8,34.2,136,2389.0,22.82],["B097",6,33.2,120,2406.0,6.75],["B103",8,35.4,121,1647.0,15.89],["B111",10,24.9,134,2953.0,25.32],["B118",5,32.0,130,1814.0,9.38],["B119",18,32.5,131,2319.0,21.07],["B128",14,32.6,140,2307.0,0.0],["B134",17,24.0,136,1629.0,20.47],["B154",11,26.8,137,2188.0,20.58],["B155",20,24.9,133,2616.0,22.02],["B158",12,34.1,118,2310.0,22.5],["B159",16,34.6,124,2826.0,25.61],["B163",21,30.4,138,2587.0,18.76],["B165",7,35.4,134,2011.0,13.64],["B167",12,26.9,135,2941.0,23.1],["B168",11,35.3,133,2775.0,20.2],["B170",13,31.0,124,2534.0,26.86],["B191",15,24.7,121,1800.0,19.17],["B193",19,29.7,129,2564.0,17.56],["B204",19,28.7,134,2524.0,21.64],["B207",21,32.9,139,2384.0,20.41],["B209",17,34.8,130,2264.0,19.49],["B212",8,34.1,129,1850.0,18.0],["B221",20,26.8,137,2286.0,19.54],["B228",7,31.9,124,2594.0,9.82],["B232",18,29.4,126,2018.0,20.66],["B234",12,26.5,129,2127.0,17.65],["B251",11,31.2,118,1897.0,22.92],["B252",11,35.7,133,2150.0,23.31],["B269",19,25.0,123,1949.0,19.84],["B285",16,26.5,127,2468.0,23.34],["B286",5,26.7,136,2385.0,9.11],["B287",17,29.1,141,2619.0,22.3],["B293",20,28.6,128,2091.0,18.45],["B294",19,34.3,135,2490.0,24.63],["B298",12,32.2,141,2281.0,26.52],["B002",5,33.1,142,2806.0,13.76],["B016",14,31.3,142,2182.0,20.1],["B020",8,24.7,143,2670.0,17.59],["B025",19,32.8,134,2991.0,26.11],["B038",19,32.5,125,null,18.62],["B040",13,28.1,129,2640.0,19.41],["B045",13,26.7,140,2273.0,23.35],["B054",6,29.5,118,2780.0,12.19],["B057",16,35.0,137,1657.0,21.09],["B060",16,34.7,130,2640.0,20.54],["B062",9,32.2,122,2247.0,21.2],["B069",9,35.4,141,2360.0,23.42],["B080",16,25.0,134,2548.0,23.64],["B084",12,31.1,136,1500.0,19.94],["B086",13,33.6,138,2130.0,21.44],["B090",10,35.1,118,2433.0,21.85],["B096",18,34.1,137,2048.0,20.55],["B124",12,35.9,142,3271.0,23.83],["B127",9,35.5,142,2110.0,24.16],["B129",9,31.3,139,2824.0,18.74],["B135",14,25.8,131,2597.0,24.17],["B140",18,27.2,120,2712.0,24.27],["B145",19,31.5,130,null,21.4],["B153",12,34.2,132,1500.0,21.11],["B157",19,33.4,128,1993.0,14.51],["B160",6,33.1,133,3017.0,14.65],["B162",21,35.1,125,2709.0,16.2],["B181",11,31.7,135,2826.0,20.29],["B183",21,34.2,129,2186.0,18.58],["B184",4,30.6,138,null,7.78],["B185",6,27.5,137,2872.0,15.52],["B187",17,33.9,119,2339.0,21.36],["B198",19,33.5,135,2623.0,19.23],["B213",21,36.0,132,2756.0,23.8],["B220",11,35.3,136,2759.0,21.82],["B230",10,27.9,118,2632.0,19.92],["B238",6,24.1,132,2627.0,15.87],["B248",8,28.7,133,2749.0,19.55],["B250",14,24.5,121,2833.0,21.76],["B255",10,28.5,136,null,19.48],["B257",5,34.6,130,2721.0,7.97],["B261",14,31.6,142,2766.0,20.09],["B270",6,30.7,130,2246.0,6.71],["B291",7,29.4,126,2808.0,17.87],["B292",13,31.3,139,2500.0,25.71],["B300",9,33.2,140,1840.0,29.21],["B005",21,33.7,135,1775.0,15.26],["B006",11,30.1,129,2106.0,21.36],["B008",17,26.9,128,2723.0,19.58],["B010",9,31.6,131,3374.0,23.89],["B034",4,31.3,128,2543.0,5.05],["B035",11,35.6,120,2980.0,25.38],["B036",21,35.1,135,2686.0,18.12],["B044",15,24.8,118,2581.0,27.16],["B049",21,335.0,143,2786.0,21.73],["B050",5,25.5,127,2593.0,3.0],["B052",20,35.1,127,2392.0,19.7],["B055",16,34.9,132,2334.0,20.31],["B058",7,35.0,137,2917.0,11.39],["B070",17,27.3,129,2449.0,20.55],["B071",7,36.0,122,2181.0,15.01],["B076",20,24.1,128,1801.0,21.23],["B077",17,28.4,134,1989.0,18.82],["B081",12,27.2,119,2296.0,24.86],["B083",4,33.3,135,2295.0,3.55],["B089",12,31.3,121,2699.0,23.65],["B092",13,31.3,136,2747.0,23.77],["B093",14,33.3,134,2235.0,24.17],["B101",6,28.6,135,3047.0,12.65],["B104",10,29.6,119,2056.0,21.21],["B105",21,27.6,140,2673.0,24.54],["B106",18,27.0,134,1897.0,14.38],["B108",8,30.9,131,2975.0,20.9],["B110",8,28.6,138,2985.0,16.35],["B116",18,30.1,124,1858.0,20.46],["B126",17,33.7,139,2497.0,24.36],["B131",20,30.3,122,2612.0,15.74],["B133",15,31.5,124,2669.0,24.6],["B136",5,29.0,143,2418.0,11.0],["B141",19,33.7,135,2005.0,16.97],["B144",13,25.1,129,2417.0,24.52],["B166",6,30.2,135,2082.0,7.24],["B169",10,24.6,140,2783.0,25.37],["B174",16,29.8,139,2861.0,20.81],["B177",9,32.9,143,2411.0,19.55],["B203",21,33.4,133,2444.0,16.95],["B208",5,34.2,128,2713.0,10.68],["B211",6,27.8,134,2438.0,7.86],["B217",13,33.3,124,2320.0,20.52],["B224",12,33.1,122,1895.0,20.17],["B229",16,34.6,127,1938.0,18.93],["B231",7,35.4,139,2129.0,20.95],["B233",8,28.8,119,2229.0,20.53],["B237",6,34.2,121,2706.0,11.81],["B246",4,34.7,130,1929.0,3.0],["B253",19,29.2,126,1539.0,14.09],["B258",16,32.8,127,2560.0,22.45],["B259",5,28.1,139,2833.0,14.03],["B267",9,33.3,119,2135.0,19.93],["B271",4,33.4,127,2388.0,3.0],["B278",12,33.2,122,1941.0,21.43],["B284",15,33.4,125,2049.0,23.41],["B288",14,28.4,121,2712.0,21.05],["B289",19,32.6,130,2476.0,22.89],["B296",19,33.6,121,1500.0,17.39],["B004",16,28.9,127,3091.0,27.84],["B009",9,31.2,138,1809.0,18.92],["B018",18,33.6,135,3042.0,18.43],["B026",17,32.6,138,2872.0,23.52],["B027",13,27.5,135,2894.0,25.42],["B030",15,28.2,143,2860.0,25.4],["B031",21,27.3,119,2943.0,14.8],["B033",12,34.5,125,2190.0,23.61],["B042",18,28.8,127,1731.0,11.02],["B046",11,30.9,133,2905.0,21.02],["B056",18,26.7,126,2708.0,21.36],["B059",5,35.5,121,3378.0,8.04],["B067",19,27.0,129,2542.0,16.92],["B068",4,35.1,130,2339.0,5.88],["B074",8,30.9,127,2406.0,19.3],["B075",9,28.7,119,2343.0,19.18],["B091",21,25.0,124,2719.0,19.5],["B094",5,29.1,134,2760.0,14.64],["B095",11,33.0,126,2537.0,16.89],["B100",15,32.5,132,2318.0,19.49],["B102",8,24.3,128,2743.0,14.75],["B114",20,35.0,128,2519.0,17.9],["B122",18,31.8,119,1970.0,18.76],["B142",14,28.5,138,2620.0,18.8],["B143",10,32.7,139,2408.0,24.38],["B147",5,33.9,120,2197.0,9.19],["B152",16,25.9,130,2545.0,22.68],["B172",15,32.9,1360,2040.0,25.35],["B175",8,27.3,140,2024.0,22.19],["B176",9,30.8,136,2169.0,19.08],["B178",15,30.7,121,2782.0,26.18],["B179",14,33.2,122,2321.0,21.45],["B189",12,24.3,126,2512.0,22.53],["B190",19,30.1,130,2803.0,18.31],["B192",21,30.0,137,2457.0,19.97],["B194",13,26.6,142,2577.0,25.81],["B200",17,27.4,142,2231.0,22.06],["B206",20,29.2,136,1829.0,22.52],["B214",15,27.4,119,1935.0,22.9],["B215",21,24.1,129,2611.0,14.89],["B218",4,33.6,118,2475.0,5.25],["B222",4,32.7,141,2388.0,3.0],["B223",6,26.2,141,2123.0,8.84],["B225",17,24.6,136,2811.0,17.53],["B236",21,24.7,139,2989.0,15.5],["B240",12,31.3,120,2358.0,25.98],["B242",21,29.5,123,2421.0,11.77],["B254",21,27.6,126,2824.0,18.82],["B260",14,28.6,133,2674.0,26.64],["B265",14,33.0,130,2712.0,21.4],["B272",6,31.4,138,1973.0,8.61],["B281",16,29.5,128,2181.0,18.7],["B282",14,32.2,137,2130.0,19.89],["B283",13,34.3,141,2528.0,25.42],["B295",17,33.0,130,2192.0,20.15],["B297",17,35.9,131,2060.0,20.21],["B011",19,34.9,140,2485.0,22.13],["B012",19,25.1,124,null,17.78],["B013",17,33.7,137,2083.0,22.37],["B015",17,34.3,127,2687.0,20.91],["B023",17,33.9,141,2561.0,24.11],["B028",7,33.2,124,2223.0,10.88],["B032",21,31.0,127,2098.0,16.34],["B047",9,35.1,137,1793.0,20.23],["B066",6,24.3,130,1641.0,10.5],["B073",13,33.3,143,2040.0,21.12],["B082",19,29.9,118,2431.0,18.26],["B088",11,29.3,127,null,19.63],["B098",16,30.4,121,2486.0,20.92],["B107",6,28.8,124,2631.0,12.75],["B112",8,35.8,127,2429.0,18.99],["B113",12,24.2,121,2437.0,20.49],["B117",6,33.4,134,2395.0,8.93],["B120",6,25.2,130,2367.0,13.78],["B123",17,35.3,126,2299.0,22.62],["B125",17,33.1,140,1923.0,19.41],["B137",13,27.5,125,2601.0,23.74],["B138",11,32.1,137,2768.0,23.31],["B139",7,35.9,122,2608.0,15.04],["B146",10,30.2,118,2264.0,24.42],["B164",18,31.6,121,2825.0,21.57],["B188",13,35.8,122,2621.0,24.94],["B195",16,36.0,142,2669.0,21.16],["B199",17,27.0,120,2663.0,19.69],["B201",12,33.3,135,2519.0,20.76],["B202",4,32.3,121,2956.0,10.96],["B205",16,26.2,128,2570.0,21.77],["B210",10,35.9,133,2434.0,21.72],["B226",14,31.1,141,2033.0,20.06],["B227",14,28.2,133,2171.0,20.3],["B245",12,32.3,136,3111.0,24.77],["B247",8,29.8,133,2380.0,15.65],["B256",20,30.9,119,2167.0,16.08],["B264",18,30.9,125,2707.0,16.83],["B266",19,25.5,129,2786.0,16.96],["B273",7,31.3,134,2356.0,15.56],["B274",8,25.1,134,2666.0,18.17],["B279",9,26.6,127,2175.0,20.6],["B280",8,29.6,123,2466.0,15.44],["B299",11,31.8,139,2251.0,18.29],["B001",20,30.4,131,2410.0,19.49],["B014",7,32.2,122,2525.0,13.88],["B017",19,29.4,120,2363.0,19.86],["B022",12,33.7,136,1711.0,20.82],["B024",14,29.4,126,2305.0,19.31],["B041",15,33.7,122,null,20.23],["B051",11,33.9,118,2365.0,21.41],["B061",13,30.3,130,2417.0,25.14],["B063",18,30.4,119,2716.0,19.51],["B064",9,27.6,121,2203.0,16.97],["B065",17,35.9,123,2139.0,18.47],["B072",10,33.8,133,2521.0,21.38],["B078",10,28.5,126,2225.0,22.14],["B099",4,32.7,130,2933.0,4.0],["B109",13,30.2,142,2348.0,21.0],["B115",14,24.4,125,2619.0,20.6],["B121",16,34.4,118,1759.0,22.61],["B130",21,30.3,130,2568.0,15.73],["B132",16,31.7,127,2636.0,22.57],["B148",12,25.4,124,1951.0,21.51],["B149",5,30.3,143,2338.0,12.07],["B150",14,34.4,141,2857.0,28.45],["B151",14,32.3,142,1816.0,25.92],["B156",4,25.0,129,2245.0,3.32],["B161",10,34.7,122,3025.0,15.67],["B171",12,35.2,132,2137.0,19.29],["B173",13,31.3,126,2806.0,20.73],["B180",14,35.6,138,2126.0,21.21],["B182",8,32.5,128,2677.0,19.73],["B186",4,33.5,140,1963.0,3.0],["B196",20,32.9,135,2007.0,17.25],["B197",6,28.6,139,2999.0,15.55],["B216",5,25.7,127,2399.0,4.1],["B219",14,27.1,138,2736.0,24.62],["B235",18,24.7,134,2540.0,20.79],["B239",20,31.8,129,2216.0,21.37],["B241",20,31.0,136,2485.0,18.97],["B243",20,24.8,125,2497.0,17.18],["B244",5,26.3,136,1986.0,5.71],["B249",20,34.0,141,2151.0,19.5],["B262",8,31.5,133,2245.0,16.39],["B263",5,25.4,118,2394.0,12.43],["B268",9,25.8,126,2010.0,23.17],["B275",16,30.9,136,2802.0,25.81],["B276",4,30.2,129,2203.0,5.33],["B277",16,24.2,126,2642.0,21.2],["B290",8,30.6,121,2237.0,14.0],["B085",21,30.5,125,2403.0,15.16]]; // [blok, umur, luas, sph, ch, prod]
+const NM = { 2: 'luas_ha', 3: 'sph', 4: 'curah_hujan_mm', 5: 'produktivitas_ton_ha' };
+const q = (s, p) => { const i = (s.length - 1) * p, lo = Math.floor(i), hi = Math.ceil(i); return s[lo] + (s[hi] - s[lo]) * (i - lo); };
+function iqr() {
+  const c = +$('#ko').value, k = +$('#kk').value; $('#kkv').textContent = fmt(k, 1);
+  const rows = MEN.filter(r => r[c] !== null), s = rows.map(r => r[c]).sort((a, b) => a - b), q1 = q(s, .25), q3 = q(s, .75), I = q3 - q1, lo = q1 - k * I, hi = q3 + k * I;
+  const out = rows.filter(r => r[c] < lo || r[c] > hi), mn = s[0], mx = s[s.length - 1], X = v => 30 + (v - mn) / (mx - mn || 1) * 500;
+  let g = `<rect x="${X(q1)}" y="55" width="${Math.max(1, X(q3) - X(q1))}" height="40" fill="var(--sky-soft)" stroke="var(--sky)"/><line x1="${X(q(s, .5))}" y1="55" x2="${X(q(s, .5))}" y2="95" stroke="var(--sky)" stroke-width="2"/>`;
+  [lo, hi].forEach(v => { if (v >= mn && v <= mx) g += `<line x1="${X(v)}" y1="30" x2="${X(v)}" y2="120" stroke="var(--fruit)" stroke-dasharray="4 4"/>`; });
+  rows.forEach((r, i) => { const o = r[c] < lo || r[c] > hi; g += `<circle cx="${X(r[c])}" cy="${75 + ((i * 37) % 30) - 15}" r="${o ? 4.5 : 2.5}" fill="${o ? 'var(--fruit)' : 'var(--muted)'}" opacity="${o ? 1 : .5}"/>`; });
+  g += `<text x="30" y="142" font-size="11" fill="var(--muted)">${fmt(mn, 1)}</text><text x="530" y="142" text-anchor="end" font-size="11" fill="var(--muted)">${fmt(mx, 1)}</text>`;
+  $('#ip').innerHTML = g;
+  $('#fi').textContent = `Q1 = ${fmt(q1, 2)}, Q3 = ${fmt(q3, 2)}, IQR = ${fmt(I, 2)}\nbatas = [${fmt(lo, 2)}; ${fmt(hi, 2)}] → ${out.length} pencilan`;
+  $('#ti').innerHTML = '<tr><th>blok</th><th>umur</th><th>' + NM[c] + '</th><th>dugaan</th></tr>' + out.slice(0, 25).map(r => {
+    const v = r[c]; let d = '';
+    if (c === 5) d = v === 0 ? 'blok replanting: buang' : r[1] <= 6 ? 'blok muda: data benar' : 'periksa lapangan';
+    else if (c === 2) d = v > 100 ? 'salah ketik koma: bagi 10' : 'periksa';
+    else if (c === 3) d = v > 200 ? 'salah ketik: 136' : 'periksa';
+    else d = 'curah hujan ekstrem: periksa stasiun';
+    return `<tr><td>${r[0]}</td><td>${r[1]}</td><td>${fmt(v, 2)}</td><td>${d}</td></tr>`;
+  }).join('') + (out.length > 25 ? `<tr><td colspan="4">… ${out.length - 25} lagi</td></tr>` : '');
+  $('#sayi').textContent = c === 5 ? `Dengan k = ${fmt(k, 1)}, ${out.length} blok ditandai. Hanya satu yang benar-benar salah (produktivitas 0, blok replanting); sisanya blok umur 4–6 tahun yang baru berbuah.` : c === 2 ? 'Satu nilai 335 ha jelas salah ketik dari 33,5 ha.' : c === 3 ? 'SPH 1360 adalah salah ketik 136. Blok sawit tidak mungkin berisi 1.360 pokok per hektare.' : '7 sel kosong tidak ikut dihitung. Pencilan curah hujan perlu dicek ke catatan stasiun, bukan langsung dihapus.';
+}
+$('#ko').onchange = $('#kk').oninput = iqr; iqr();
+const BK = [[15,1.63,21.9,0,30.1,2,"I",118,2591],[16,1.63,19.91,0,34.9,2,"I",139,1939],[10,1.61,17.87,0,27.4,3,"I",123,2931],[6,2.86,10.85,1,33.0,1,"I",128,3199],[17,3.26,17.21,1,35.6,3,"I",129,2663],[11,1.55,18.99,1,32.5,2,"I",120,2973],[9,2.27,20.49,1,26.1,2,"I",130,2347],[18,2.68,20.88,0,26.7,3,"I",135,2868],[4,2.04,6.29,0,28.7,1,"I",132,2256],[6,1.6,9.54,0,30.0,3,"I",138,2361],[14,2.75,22.32,0,25.0,2,"I",131,2236],[21,2.18,15.16,0,30.5,1,"I",125,2403],[8,3.15,22.82,0,34.2,0,"I",136,2389],[6,2.44,6.75,0,33.2,4,"I",120,2406],[8,2.96,15.89,0,35.4,4,"I",121,1647],[10,3.43,25.32,0,24.9,1,"I",134,2953],[5,2.27,9.38,0,32.0,1,"I",130,1814],[18,3.46,21.07,0,32.5,3,"I",131,2319],[17,3.07,20.47,1,24.0,1,"I",136,1629],[11,1.74,20.58,0,26.8,1,"I",137,2188],[20,3.48,22.02,0,24.9,1,"I",133,2616],[12,2.59,22.5,0,34.1,2,"I",118,2310],[16,3.27,25.61,0,34.6,2,"I",124,2826],[21,2.76,18.76,1,30.4,3,"I",138,2587],[7,1.93,13.64,0,35.4,0,"I",134,2011],[12,2.36,23.1,0,26.9,1,"I",135,2941],[11,1.52,20.2,0,35.3,4,"I",133,2775],[13,3.2,26.86,0,31.0,0,"I",124,2534],[15,1.85,19.17,0,24.7,1,"I",121,1800],[19,2.11,17.56,1,29.7,2,"I",129,2564],[19,2.71,21.64,0,28.7,1,"I",134,2524],[21,3.2,20.41,0,32.9,1,"I",139,2384],[17,2.34,19.49,0,34.8,3,"I",130,2264],[8,2.69,18.0,0,34.1,2,"I",129,1850],[20,2.44,19.54,0,26.8,3,"I",137,2286],[7,1.77,9.82,1,31.9,0,"I",124,2594],[18,2.27,20.66,1,29.4,0,"I",126,2018],[12,2.3,17.65,1,26.5,1,"I",129,2127],[11,3.39,22.92,1,31.2,0,"I",118,1897],[11,2.45,23.31,0,35.7,0,"I",133,2150],[19,1.85,19.84,0,25.0,1,"I",123,1949],[16,2.95,23.34,0,26.5,4,"I",127,2468],[5,2.29,9.11,0,26.7,1,"I",136,2385],[17,1.95,22.3,0,29.1,1,"I",141,2619],[20,3.07,18.45,1,28.6,1,"I",128,2091],[19,3.29,24.63,0,34.3,0,"I",135,2490],[12,2.96,26.52,0,32.2,0,"I",141,2281],[5,3.12,13.76,0,33.1,0,"II",142,2806],[14,1.64,20.1,0,31.3,3,"II",142,2182],[8,3.24,17.59,0,24.7,2,"II",143,2670],[19,2.83,26.11,0,32.8,0,"II",134,2991],[19,2.12,18.62,0,32.5,2,"II",125,2430],[13,1.96,19.41,1,28.1,3,"II",129,2640],[13,3.36,23.35,1,26.7,0,"II",140,2273],[6,1.9,12.19,0,29.5,1,"II",118,2780],[16,1.76,21.09,0,35.0,1,"II",137,1657],[16,1.67,20.54,0,34.7,1,"II",130,2640],[9,1.86,21.2,0,32.2,0,"II",122,2247],[9,3.31,23.42,1,35.4,0,"II",141,2360],[16,2.87,23.64,0,25.0,2,"II",134,2548],[12,2.78,19.94,0,31.1,2,"II",136,1500],[13,2.14,21.44,0,33.6,2,"II",138,2130],[10,1.88,21.85,0,35.1,1,"II",118,2433],[18,2.13,20.55,0,34.1,2,"II",137,2048],[12,1.7,23.83,1,35.9,0,"II",142,3271],[9,3.36,24.16,0,35.5,1,"II",142,2110],[9,2.0,18.74,1,31.3,3,"II",139,2824],[14,2.55,24.17,0,25.8,1,"II",131,2597],[18,2.75,24.27,0,27.2,1,"II",120,2712],[19,2.74,21.4,0,31.5,0,"II",130,2430],[12,2.09,21.11,0,34.2,2,"II",132,1500],[19,2.0,14.51,1,33.4,2,"II",128,1993],[6,2.59,14.65,0,33.1,0,"II",133,3017],[21,2.15,16.2,0,35.1,2,"II",125,2709],[11,2.05,20.29,0,31.7,1,"II",135,2826],[21,2.57,18.58,0,34.2,3,"II",129,2186],[4,3.12,7.78,0,30.6,1,"II",138,2430],[6,3.09,15.52,0,27.5,2,"II",137,2872],[17,1.89,21.36,0,33.9,2,"II",119,2339],[19,1.86,19.23,0,33.5,2,"II",135,2623],[21,3.5,23.8,1,36.0,0,"II",132,2756],[11,3.04,21.82,0,35.3,2,"II",136,2759],[10,1.95,19.92,1,27.9,2,"II",118,2632],[6,3.5,15.87,0,24.1,0,"II",132,2627],[8,1.68,19.55,0,28.7,1,"II",133,2749],[14,2.32,21.76,1,24.5,1,"II",121,2833],[10,2.43,19.48,0,28.5,3,"II",136,2430],[5,2.36,7.97,0,34.6,0,"II",130,2721],[14,1.75,20.09,1,31.6,1,"II",142,2766],[6,1.93,6.71,1,30.7,0,"II",130,2246],[7,3.2,17.87,0,29.4,2,"II",126,2808],[13,3.44,25.71,0,31.3,0,"II",139,2500],[9,3.47,29.21,0,33.2,1,"II",140,1840],[21,1.8,15.26,0,33.7,2,"III",135,1775],[11,2.82,21.36,0,30.1,1,"III",129,2106],[17,1.66,19.58,0,26.9,4,"III",128,2723],[9,3.22,23.89,0,31.6,1,"III",131,3374],[4,1.92,5.05,0,31.3,1,"III",128,2543],[11,2.49,25.38,0,35.6,0,"III",120,2980],[21,2.75,18.12,0,35.1,1,"III",135,2686],[15,3.16,27.16,0,24.8,1,"III",118,2581],[21,2.18,21.73,0,33.5,0,"III",143,2786],[5,2.06,3.0,1,25.5,3,"III",127,2593],[20,2.44,19.7,0,35.1,0,"III",127,2392],[16,2.0,20.31,0,34.9,1,"III",132,2334],[7,1.69,11.39,0,35.0,4,"III",137,2917],[17,1.92,20.55,0,27.3,0,"III",129,2449],[7,2.47,15.01,0,36.0,1,"III",122,2181],[20,2.14,21.23,0,24.1,0,"III",128,1801],[17,2.09,18.82,1,28.4,2,"III",134,1989],[12,3.26,24.86,0,27.2,1,"III",119,2296],[4,1.71,3.55,0,33.3,1,"III",135,2295],[12,2.39,23.65,0,31.3,1,"III",121,2699],[13,3.24,23.77,0,31.3,2,"III",136,2747],[14,2.83,24.17,0,33.3,2,"III",134,2235],[6,3.4,12.65,0,28.6,3,"III",135,3047],[10,2.32,21.21,0,29.6,1,"III",119,2056],[21,3.25,24.54,0,27.6,0,"III",140,2673],[18,1.64,14.38,0,27.0,3,"III",134,1897],[8,3.4,20.9,0,30.9,3,"III",131,2975],[8,2.23,16.35,1,28.6,2,"III",138,2985],[18,3.31,20.46,0,30.1,2,"III",124,1858],[17,3.5,24.36,0,33.7,2,"III",139,2497],[20,1.94,15.74,0,30.3,2,"III",122,2612],[15,2.11,24.6,0,31.5,2,"III",124,2669],[5,1.95,11.0,0,29.0,0,"III",143,2418],[19,1.61,16.97,0,33.7,1,"III",135,2005],[13,2.12,24.52,0,25.1,1,"III",129,2417],[6,2.2,7.24,0,30.2,3,"III",135,2082],[10,2.75,25.37,0,24.6,2,"III",140,2783],[16,2.03,20.81,1,29.8,2,"III",139,2861],[9,2.11,19.55,1,32.9,0,"III",143,2411],[21,2.06,16.95,1,33.4,0,"III",133,2444],[5,1.86,10.68,0,34.2,0,"III",128,2713],[6,1.71,7.86,0,27.8,1,"III",134,2438],[13,1.71,20.52,0,33.3,0,"III",124,2320],[12,2.51,20.17,0,33.1,2,"III",122,1895],[16,2.04,18.93,0,34.6,3,"III",127,1938],[7,2.98,20.95,0,35.4,0,"III",139,2129],[8,2.78,20.53,0,28.8,0,"III",119,2229],[6,2.36,11.81,0,34.2,0,"III",121,2706],[4,3.33,3.0,0,34.7,3,"III",130,1929],[19,2.37,14.09,0,29.2,3,"III",126,1539],[16,1.91,22.45,0,32.8,1,"III",127,2560],[5,3.31,14.03,0,28.1,0,"III",139,2833],[9,3.36,19.93,1,33.3,1,"III",119,2135],[4,1.77,3.0,0,33.4,0,"III",127,2388],[12,1.83,21.43,0,33.2,1,"III",122,1941],[15,2.62,23.41,0,33.4,0,"III",125,2049],[14,2.72,21.05,1,28.4,2,"III",121,2712],[19,2.33,22.89,0,32.6,1,"III",130,2476],[19,2.0,17.39,0,33.6,1,"III",121,1500],[16,3.1,27.84,0,28.9,0,"IV",127,3091],[9,3.37,18.92,0,31.2,4,"IV",138,1809],[18,1.6,18.43,0,33.6,1,"IV",135,3042],[17,3.26,23.52,1,32.6,2,"IV",138,2872],[13,3.35,25.42,0,27.5,0,"IV",135,2894],[15,2.99,25.4,1,28.2,0,"IV",143,2860],[21,1.93,14.8,0,27.3,2,"IV",119,2943],[12,2.06,23.61,0,34.5,0,"IV",125,2190],[18,1.95,11.02,1,28.8,3,"IV",127,1731],[11,1.85,21.02,0,30.9,1,"IV",133,2905],[18,3.04,21.36,0,26.7,1,"IV",126,2708],[5,2.77,8.04,0,35.5,2,"IV",121,3378],[19,1.51,16.92,1,27.0,1,"IV",129,2542],[4,3.01,5.88,0,35.1,2,"IV",130,2339],[8,2.7,19.3,0,30.9,0,"IV",127,2406],[9,1.56,19.18,1,28.7,1,"IV",119,2343],[21,2.98,19.5,1,25.0,0,"IV",124,2719],[5,2.94,14.64,0,29.1,0,"IV",134,2760],[11,1.72,16.89,0,33.0,2,"IV",126,2537],[15,1.91,19.49,0,32.5,3,"IV",132,2318],[8,1.79,14.75,0,24.3,4,"IV",128,2743],[20,2.04,17.9,0,35.0,0,"IV",128,2519],[18,3.42,18.76,0,31.8,3,"IV",119,1970],[14,1.54,18.8,0,28.5,2,"IV",138,2620],[10,3.06,24.38,1,32.7,1,"IV",139,2408],[5,3.49,9.19,1,33.9,1,"IV",120,2197],[16,1.87,22.68,0,25.9,1,"IV",130,2545],[15,3.09,25.35,0,32.9,1,"IV",136,2040],[8,2.65,22.19,0,27.3,2,"IV",140,2024],[9,1.86,19.08,1,30.8,1,"IV",136,2169],[15,3.13,26.18,1,30.7,1,"IV",121,2782],[14,2.37,21.45,0,33.2,2,"IV",122,2321],[12,2.39,22.53,1,24.3,2,"IV",126,2512],[19,1.88,18.31,0,30.1,0,"IV",130,2803],[21,2.98,19.97,0,30.0,3,"IV",137,2457],[13,3.36,25.81,0,26.6,0,"IV",142,2577],[17,2.37,22.06,0,27.4,2,"IV",142,2231],[20,2.67,22.52,0,29.2,1,"IV",136,1829],[15,3.11,22.9,0,27.4,1,"IV",119,1935],[21,2.54,14.89,0,24.1,1,"IV",129,2611],[4,3.25,5.25,0,33.6,0,"IV",118,2475],[4,1.6,3.0,1,32.7,1,"IV",141,2388],[6,2.64,8.84,1,26.2,4,"IV",141,2123],[17,1.59,17.53,0,24.6,4,"IV",136,2811],[21,1.75,15.5,0,24.7,1,"IV",139,2989],[12,2.88,25.98,0,31.3,0,"IV",120,2358],[21,1.63,11.77,1,29.5,2,"IV",123,2421],[21,3.11,18.82,1,27.6,1,"IV",126,2824],[14,3.2,26.64,0,28.6,2,"IV",133,2674],[14,1.51,21.4,0,33.0,0,"IV",130,2712],[6,2.65,8.61,1,31.4,2,"IV",138,1973],[16,1.93,18.7,0,29.5,1,"IV",128,2181],[14,1.51,19.89,0,32.2,1,"IV",137,2130],[13,3.08,25.42,0,34.3,0,"IV",141,2528],[17,2.69,20.15,0,33.0,1,"IV",130,2192],[17,3.19,20.21,1,35.9,2,"IV",131,2060],[19,2.41,22.13,0,34.9,0,"V",140,2485],[19,1.92,17.78,1,25.1,0,"V",124,2430],[17,1.95,22.37,0,33.7,1,"V",137,2083],[17,2.2,20.91,1,34.3,1,"V",127,2687],[17,2.86,24.11,0,33.9,1,"V",141,2561],[7,2.32,10.88,0,33.2,2,"V",124,2223],[21,2.39,16.34,1,31.0,1,"V",127,2098],[9,1.95,20.23,0,35.1,2,"V",137,1793],[6,2.9,10.5,0,24.3,2,"V",130,1641],[13,2.1,21.12,1,33.3,2,"V",143,2040],[19,3.37,18.26,0,29.9,2,"V",118,2431],[11,2.56,19.63,1,29.3,1,"V",127,2430],[16,3.06,20.92,1,30.4,3,"V",121,2486],[6,2.97,12.75,0,28.8,1,"V",124,2631],[8,3.11,18.99,1,35.8,2,"V",127,2429],[12,2.86,20.49,1,24.2,3,"V",121,2437],[6,2.78,8.93,1,33.4,3,"V",134,2395],[6,1.62,13.78,0,25.2,0,"V",130,2367],[17,2.74,22.62,0,35.3,1,"V",126,2299],[17,2.62,19.41,0,33.1,4,"V",140,1923],[13,3.17,23.74,1,27.5,1,"V",125,2601],[11,2.37,23.31,0,32.1,1,"V",137,2768],[7,1.81,15.04,0,35.9,0,"V",122,2608],[10,2.39,24.42,0,30.2,0,"V",118,2264],[18,2.45,21.57,0,31.6,0,"V",121,2825],[13,2.17,24.94,0,35.8,0,"V",122,2621],[16,2.57,21.16,1,36.0,2,"V",142,2669],[17,2.33,19.69,0,27.0,3,"V",120,2663],[12,1.59,20.76,1,33.3,0,"V",135,2519],[4,2.39,10.96,0,32.3,1,"V",121,2956],[16,2.01,21.77,0,26.2,1,"V",128,2570],[10,2.55,21.72,1,35.9,0,"V",133,2434],[14,2.27,20.06,0,31.1,3,"V",141,2033],[14,2.8,20.3,1,28.2,3,"V",133,2171],[12,2.82,24.77,1,32.3,1,"V",136,3111],[8,1.63,15.65,0,29.8,2,"V",133,2380],[20,1.86,16.08,1,30.9,1,"V",119,2167],[18,1.55,16.83,1,30.9,0,"V",125,2707],[19,1.87,16.96,0,25.5,3,"V",129,2786],[7,1.9,15.56,0,31.3,1,"V",134,2356],[8,2.74,18.17,0,25.1,4,"V",134,2666],[9,2.06,20.6,0,26.6,0,"V",127,2175],[8,2.46,15.44,0,29.6,3,"V",123,2466],[11,1.79,18.29,1,31.8,2,"V",139,2251],[20,3.15,19.49,1,30.4,2,"VI",131,2410],[7,2.08,13.88,1,32.2,0,"VI",122,2525],[19,2.15,19.86,0,29.4,1,"VI",120,2363],[12,3.02,20.82,1,33.7,1,"VI",136,1711],[14,2.13,19.31,0,29.4,2,"VI",126,2305],[15,2.93,20.23,1,33.7,1,"VI",122,2430],[11,2.91,21.41,0,33.9,2,"VI",118,2365],[13,2.91,25.14,0,30.3,1,"VI",130,2417],[18,2.76,19.51,1,30.4,1,"VI",119,2716],[9,2.2,16.97,1,27.6,2,"VI",121,2203],[17,1.65,18.47,1,35.9,1,"VI",123,2139],[10,2.39,21.38,0,33.8,3,"VI",133,2521],[10,2.84,22.14,0,28.5,3,"VI",126,2225],[4,1.7,4.0,0,32.7,3,"VI",130,2933],[13,2.9,21.0,0,30.2,4,"VI",142,2348],[14,3.01,20.6,0,24.4,3,"VI",125,2619],[16,2.14,22.61,0,34.4,2,"VI",118,1759],[21,2.04,15.73,1,30.3,3,"VI",130,2568],[16,1.89,22.57,0,31.7,0,"VI",127,2636],[12,1.68,21.51,0,25.4,0,"VI",124,1951],[5,3.47,12.07,0,30.3,1,"VI",143,2338],[14,2.89,28.45,0,34.4,1,"VI",141,2857],[14,3.49,25.92,1,32.3,0,"VI",142,1816],[4,2.08,3.32,0,25.0,2,"VI",129,2245],[10,1.53,15.67,1,34.7,3,"VI",122,3025],[12,1.83,19.29,0,35.2,2,"VI",132,2137],[13,2.29,20.73,0,31.3,3,"VI",126,2806],[14,3.43,21.21,1,35.6,3,"VI",138,2126],[8,1.98,19.73,0,32.5,1,"VI",128,2677],[4,1.97,3.0,1,33.5,3,"VI",140,1963],[20,1.57,17.25,1,32.9,1,"VI",135,2007],[6,2.94,15.55,0,28.6,2,"VI",139,2999],[5,1.91,4.1,1,25.7,3,"VI",127,2399],[14,2.98,24.62,0,27.1,1,"VI",138,2736],[18,2.36,20.79,1,24.7,0,"VI",134,2540],[20,3.0,21.37,0,31.8,0,"VI",129,2216],[20,3.11,18.97,0,31.0,3,"VI",136,2485],[20,3.1,17.18,1,24.8,2,"VI",125,2497],[5,3.09,5.71,0,26.3,4,"VI",136,1986],[20,3.34,19.5,0,34.0,2,"VI",141,2151],[8,2.19,16.39,0,31.5,2,"VI",133,2245],[5,3.12,12.43,0,25.4,0,"VI",118,2394],[9,2.46,23.17,0,25.8,2,"VI",126,2010],[16,3.45,25.81,0,30.9,3,"VI",136,2802],[4,2.74,5.33,0,30.2,2,"VI",129,2203],[16,1.97,21.2,0,24.2,0,"VI",126,2642],[8,2.06,14.0,0,30.6,3,"VI",121,2237]]; // [umur, pupuk, prod, gambut, luas, bk, afd, sph, ch]
+const VN = { 0: 'umur_th', 1: 'pupuk_kg_pokok', 5: 'bulan_kering', 4: 'luas_ha', 8: 'curah_hujan_mm', 7: 'sph' };
+function pear(x, y) { const n = x.length, mx = x.reduce((a, b) => a + b) / n, my = y.reduce((a, b) => a + b) / n; let sxy = 0, sxx = 0, syy = 0; for (let i = 0; i < n; i++) { sxy += (x[i] - mx) * (y[i] - my); sxx += (x[i] - mx) ** 2; syy += (y[i] - my) ** 2; } return [sxy / Math.sqrt(sxx * syy), sxy / sxx, my - sxy / sxx * mx]; }
+function korel() {
+  const c = +$('#vx').value, b = $('#bu').value === '1', R = BK.filter(r => !b || (r[0] >= 9 && r[0] <= 15)), x = R.map(r => r[c]), y = R.map(r => r[2]);
+  const [r, w1, w0] = pear(x, y), mnx = Math.min(...x), mxx = Math.max(...x), X = v => 55 + (v - mnx) / (mxx - mnx || 1) * 480, Y = v => 265 - v / 32 * 240;
+  let g = `<line x1="55" y1="265" x2="540" y2="265" stroke="var(--line)"/><line x1="55" y1="20" x2="55" y2="265" stroke="var(--line)"/>`;
+  [0, 10, 20, 30].forEach(v => g += `<text x="49" y="${Y(v) + 4}" text-anchor="end" font-size="11" fill="var(--muted)">${v}</text>`);
+  g += `<text x="55" y="283" font-size="11" fill="var(--muted)">${fmt(mnx, 1)}</text><text x="540" y="283" text-anchor="end" font-size="11" fill="var(--muted)">${fmt(mxx, 1)}</text><text x="297" y="296" text-anchor="middle" font-size="11" fill="var(--muted)">${VN[c]}</text><text x="14" y="140" font-size="11" fill="var(--muted)" transform="rotate(-90 14 140)">ton/ha</text>`;
+  const jit = c === 5 || c === 0 ? .25 : 0;
+  R.forEach((rr, i) => g += `<circle cx="${X(rr[c] + (((i * 53) % 11) / 10 - .5) * jit)}" cy="${Y(rr[2])}" r="3" fill="${rr[3] ? 'var(--fruit)' : 'var(--palm)'}" opacity=".65"/>`);
+  g += `<line x1="${X(mnx)}" y1="${Y(w0 + w1 * mnx)}" x2="${X(mxx)}" y2="${Y(w0 + w1 * mxx)}" stroke="var(--ink)" stroke-width="2" stroke-dasharray="6 4"/>`;
+  $('#sc').innerHTML = g;
+  const kuat = Math.abs(r) >= .5 ? 'sedang–kuat' : Math.abs(r) >= .2 ? 'lemah' : 'hampir tidak ada';
+  $('#ks').innerHTML = `<div>n<b>${R.length}</b></div><div>Pearson r<b>${fmt(r, 3)}</b></div><div>r²<b>${fmt(r * r, 3)}</b></div><div>hubungan lurus<b>${kuat}</b></div>`;
+  $('#sayk').textContent = c === 0 && !b ? 'Titik naik lalu datar lalu turun. Garis lurus (putus-putus) tidak mengikuti lengkungan itu, jadi r = 0,51 meremehkan pengaruh umur.' : c === 0 && b ? 'Di umur 9–15 tahun produktivitas sudah di puncak, jadi r umur mendekati nol. Kesimpulan tentang umur bergantung pada rentang data.' : c === 4 ? 'Luas blok tidak berhubungan dengan produktivitas. Fitur ini tidak berguna untuk memprediksi ton/ha.' : `Titik merah = gambut, hijau = mineral. Korelasi ${kuat} bukan bukti sebab-akibat.`;
+}
+$('#vx').onchange = $('#bu').onchange = korel; korel();
+const D = sortir($('#dBox'), $('#dS'), [
+  ['1 baris ganda (blok sama tercatat dua kali)', 'h', 'Hapus dengan drop_duplicates().'], ['luas_ha = 335,0', 'p', 'Salah ketik koma: bagi 10.'], ['sph = 1360', 'p', 'Salah ketik: ganti 136.'], ['produktivitas 0 pada blok umur 14 tahun', 'h', 'Blok replanting; buang dari analisis produktivitas.'],
+  ['17 blok umur 4–6 tahun dengan 3–7 ton/ha', 't', 'Data benar. Tanaman muda memang rendah.'], ['7 sel curah hujan kosong', 'i', 'Isi median (per afdeling) dan catat.'], ['Satu blok gambut 29 ton/ha, tertinggi', 't', 'Mungkin blok terbaik; tidak ada alasan menghapus tanpa bukti salah.'],
+], [['h', 'Hapus'], ['p', 'Perbaiki'], ['i', 'Isi'], ['t', 'Pertahankan']]);
+$('#dR').onclick = () => D.reset();
+quiz($('#quiz'), $('#qScore'), $('#qReset'), [
+  ['Q1 = 15, Q3 = 23. Batas bawah IQR dengan k = 1,5?', ['3', '8', '12', '15'], 0, 'IQR = 8; 15 − 1,5 × 8 = 3.'],
+  ['Pencilan yang ditandai IQR sebaiknya …', ['selalu dihapus', 'diperiksa dulu penyebabnya', 'diganti rata-rata', 'diabaikan'], 1, 'Pencilan bisa salah data atau data benar yang penting.'],
+  ['Pearson r = 0,01 antara luas dan produktivitas berarti …', ['luas menurunkan produktivitas', 'hampir tidak ada hubungan lurus', 'hubungan kuat', 'data salah'], 1, 'Mendekati nol.'],
+  ['Korelasi pupuk 0,27 membuktikan pupuk menaikkan hasil?', ['ya', 'tidak, bisa ada perancu', 'ya bila r > 0,2', 'ya bila n > 100'], 1, 'Blok yang dipupuk lebih banyak mungkin juga dirawat lebih baik.'],
+  ['Urutan langkah EDA?', ['jelajahi, kenali, simpulkan, bersihkan', 'kenali, bersihkan, jelajahi, simpulkan', 'bersihkan, simpulkan, kenali, jelajahi', 'simpulkan dulu'], 1, 'Data dikenali dan dibersihkan sebelum ditafsirkan.'],
+]);
+tabs();
+
+</script>
+
+<script>(function(){
+var d=document;
+function rgb(s){var m=s&&s.match(/rgba?\(([\d.]+),\s*([\d.]+),\s*([\d.]+)(?:,\s*([\d.]+))?/);return m?[+m[1],+m[2],+m[3],m[4]===undefined?1:+m[4]]:null}
+function lum(c){return [0,1,2].reduce(function(s,i,k){var v=c[i]/255;v=v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4);return s+v*[.2126,.7152,.0722][k]},0)}
+function ratio(a,b){var x=lum(a),y=lum(b);return (Math.max(x,y)+.05)/(Math.min(x,y)+.05)}
+function mix(a,b,t){return [0,1,2].map(function(i){return Math.round(a[i]+(b[i]-a[i])*t)})}
+function bgOf(el){var stack=[];for(var n=el;n&&n.nodeType===1;n=n.parentElement){var cs=getComputedStyle(n);if(cs.backgroundImage&&cs.backgroundImage!=='none')return null;var c=rgb(cs.backgroundColor);if(c&&c[3]>0){stack.push(c);if(c[3]>=1)break}}
+ var base=[255,255,255];for(var i=stack.length-1;i>=0;i--){var s=stack[i];base=mix(base,s,s[3])}return base}
+function own(el){for(var i=0;i<el.childNodes.length;i++){var t=el.childNodes[i];if(t.nodeType===3&&t.nodeValue.trim())return true}return false}
+function fix(el){var cs=getComputedStyle(el);if(cs.visibility==='hidden'||cs.display==='none')return;var fg=rgb(cs.color),bg=bgOf(el);if(!fg||!bg)return;
+ var op=1;for(var n=el;n&&n.nodeType===1;n=n.parentElement)op*=+getComputedStyle(n).opacity;if(op<.999){var q2=el;while(q2&&+getComputedStyle(q2).opacity>=.999)q2=q2.parentElement;var ef=mix(bg,fg,fg[3]*op);if(ratio(ef,bg)<4.6&&q2){q2.style.setProperty('opacity','1','important');return fix(el)}}fg=mix(bg,fg,fg[3]);var size=parseFloat(cs.fontSize),bold=+cs.fontWeight>=700,need=(size>=24||(bold&&size>=18.66))?3.1:4.6;
+ if(ratio(fg,bg)>=need)return;
+ var ob0=rgb(cs.backgroundColor);if(ob0&&ob0[3]>=1&&lum(fg)>.5){for(var j=1;j<=20;j++){var bb=mix(ob0,[0,0,0],j/20);if(ratio(fg,bb)>=need){el.style.setProperty('background-color','rgb('+bb.join(',')+')','important');return}}}
+ var best=null;[[0,0,0],[255,255,255]].forEach(function(t){for(var k=1;k<=20;k++){var c=mix(fg,t,k/20);if(ratio(c,bg)>=need){if(!best||k<best.k)best={c:c,k:k};break}}});
+ if(best){el.style.setProperty('color','rgb('+best.c.join(',')+')','important');return}
+ var ob=rgb(cs.backgroundColor);if(ob&&ob[3]>=1){var to=lum(fg)>.5?[0,0,0]:[255,255,255];for(var k=1;k<=20;k++){var b2=mix(ob,to,k/20);if(ratio(fg,b2)>=need){el.style.setProperty('background-color','rgb('+b2.join(',')+')','important');return}}}}
+function name(el){var t=el.getAttribute('placeholder')||el.getAttribute('title')||el.name||el.id||'';if(!t){var p=el.closest('tr,li,div,p,td');if(p){var tx=(p.innerText||'').trim().split('\n')[0];t=tx.slice(0,60)}}return t||'isian'}
+function run(){
+ if(!d.documentElement.lang)d.documentElement.lang='id';
+ if(!d.querySelector('main,[role=main]')){var big=null,ba=0;[].forEach.call(d.body.children,function(c){if(/^(SCRIPT|STYLE|HEADER|NAV|FOOTER|NOSCRIPT)$/.test(c.tagName))return;var a=c.offsetWidth*c.offsetHeight;if(a>ba){ba=a;big=c}});for(var g=0;big&&big.querySelector('header,footer,nav')&&g<4;g++){var nb=null,na=0;[].forEach.call(big.children,function(c){if(/^(SCRIPT|STYLE|HEADER|NAV|FOOTER)$/.test(c.tagName))return;var a=c.offsetWidth*c.offsetHeight;if(a>na){na=a;nb=c}});big=nb}if(big&&!big.getAttribute('role')&&!big.querySelector('header,footer,nav'))big.setAttribute('role','main')}
+ d.querySelectorAll('input:not([type=hidden]),select,textarea').forEach(function(el){if(el.labels&&el.labels.length)return;if(el.getAttribute('aria-label')||el.getAttribute('aria-labelledby'))return;if(/^(button|submit|reset)$/.test(el.type))return;el.setAttribute('aria-label',name(el))});
+ d.querySelectorAll('th').forEach(function(th){if(!(th.textContent||'').trim()&&!th.querySelector('img,svg,input,select')){var td=d.createElement('td');for(var i=0;i<th.attributes.length;i++)td.setAttribute(th.attributes[i].name,th.attributes[i].value);while(th.firstChild)td.appendChild(th.firstChild);th.replaceWith(td)}});
+ d.querySelectorAll('svg[role=img]').forEach(function(s){if(s.getAttribute('aria-label')||s.querySelector('title'))return;var f=s.closest('figure'),c=f&&f.querySelector('figcaption');s.setAttribute('aria-label',c?c.textContent.trim():'diagram')});
+ d.querySelectorAll('body *').forEach(function(el){if(own(el))fix(el)});
+ d.querySelectorAll('body *').forEach(function(el){var cs=getComputedStyle(el);if(/(auto|scroll)/.test(cs.overflowX+cs.overflowY)&&(el.scrollHeight>el.clientHeight||el.scrollWidth>el.clientWidth)&&!el.hasAttribute('tabindex')&&!el.querySelector('a,button,input,select,textarea,[tabindex]'))el.setAttribute('tabindex','0')});
+}
+var q=0;function later(){if(q)return;q=setTimeout(function(){q=0;obs.disconnect();run();obs.observe(d.body,{childList:true,subtree:true,attributes:true,attributeFilter:['class']})},600)}
+var obs=new MutationObserver(later);
+function start(){run();obs.observe(d.body,{childList:true,subtree:true,attributes:true,attributeFilter:['class']})}
+if(d.readyState==='loading')d.addEventListener('DOMContentLoaded',start);else start();
+})();</script>
+</body>
+</html>
