@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>P12 · Git Tim dan Alur Surat Pengantar</title>
+<meta name="description" content="Simulasi interaktif Pertemuan 12 mata kuliah Pemrograman II (STIP-4161): Git Tim dan Alur Surat Pengantar. Prodi Sistem dan Teknologi Informasi, Institut Teknologi Sawit Indonesia.">
+<link rel="canonical" href="https://syrvrr.github.io/kuliah/pemrograman-2/sim/p12.html">
+<link rel="icon" href="../../../favicon.svg" type="image/svg+xml">
+</head>
+<body>
+<title>Git Tim dan Alur Surat Pengantar</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Seri latihan ASD: pita tab di atas, satu panggung interaktif per bab, panel rumus di samping (bertumpuk di ponsel). */
+:root{
+  --bg:#F3F6F2; --panel:#FFFFFF; --ink:#1B2A22; --muted:#5B6B62; --line:#D5DED7;
+  --palm:#1F6B45; --palm-soft:#DCEFE3; --fruit:#D2502A; --fruit-soft:#FBE3D9;
+  --amber:#E2A400; --amber-soft:#FFF2C7; --sky:#2B6CB0; --sky-soft:#DCE9F7; --road:#3C4744; --slot:#EEF2EE;
+  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"JetBrains Mono", ui-monospace, Consolas, monospace;
+  --r:10px;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#111915; --panel:#18231D; --ink:#E6EFE9; --muted:#9DB0A5; --line:#2C3B33;
+  --palm:#5CC08A; --palm-soft:#1E3A2B; --fruit:#F07A52; --fruit-soft:#3E2219;
+  --amber:#F2C443; --amber-soft:#3A3115; --sky:#6FA8E8; --sky-soft:#1C2C40; --road:#26302D; --slot:#1F2A24; color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#111915; --panel:#18231D; --ink:#E6EFE9; --muted:#9DB0A5; --line:#2C3B33;
+  --palm:#5CC08A; --palm-soft:#1E3A2B; --fruit:#F07A52; --fruit-soft:#3E2219;
+  --amber:#F2C443; --amber-soft:#3A3115; --sky:#6FA8E8; --sky-soft:#1C2C40; --road:#26302D; --slot:#1F2A24; color-scheme:dark }
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.55;
+  padding-left:max(16px, env(safe-area-inset-left,0px));padding-right:max(16px, env(safe-area-inset-right,0px));padding-block:20px 48px}
+.wrap{max-width:1120px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+h1,h2,h3{font-family:var(--f-display);margin:0;text-wrap:balance;line-height:1.15}
+h1{font-size:clamp(28px,4.4vw,44px);font-weight:800;letter-spacing:-.01em}
+h2{font-size:clamp(21px,3vw,27px);font-weight:800}
+h3{font-size:18px;font-weight:600}
+p{margin:0;max-width:68ch}
+code,.mono{font-family:var(--f-mono);font-size:.92em}
+header.top{display:flex;flex-direction:column;gap:8px}
+.eyebrow{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--palm);font-weight:700}
+.lead{color:var(--muted);font-size:17px}
+nav.tabs{display:flex;gap:6px;flex-wrap:wrap;border-bottom:2px solid var(--line)}
+nav.tabs a{padding:10px 14px;text-decoration:none;color:var(--muted);font-weight:700;border-radius:8px 8px 0 0;border:2px solid transparent;border-bottom:none;margin-bottom:-2px;font-size:15px}
+nav.tabs a .no{font-family:var(--f-mono);font-size:12px;margin-right:6px;opacity:.75}
+nav.tabs a[aria-current="page"]{color:var(--ink);background:var(--panel);border-color:var(--line)}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+section.bab{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:20px;align-items:start}
+@media (max-width:860px){section.bab{grid-template-columns:1fr}}
+.stage{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:18px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.side{display:flex;flex-direction:column;gap:14px;min-width:0}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.card.rumus{border-left:5px solid var(--palm)}
+.btns{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+button{font:inherit;font-weight:700;border-radius:8px;border:2px solid var(--palm);background:var(--palm);color:var(--panel);padding:8px 14px;cursor:pointer;min-height:40px}
+button.alt{background:transparent;color:var(--palm)}
+button.warn{background:var(--fruit);border-color:var(--fruit)}
+button:disabled{opacity:.45;cursor:not-allowed}
+.status{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font-family:var(--f-mono);font-size:13px;background:var(--slot);border:1px solid var(--line);border-radius:999px;padding:4px 10px;font-variant-numeric:tabular-nums}
+.chip b{font-weight:600;color:var(--palm)}
+.say{background:var(--amber-soft);border-radius:8px;padding:10px 12px;min-height:48px}
+.say.bad{background:var(--fruit-soft)}
+.say.good{background:var(--palm-soft)}
+.f{font-family:var(--f-mono);font-size:14.5px;background:var(--slot);border-radius:8px;padding:10px 12px;overflow-x:auto;white-space:pre-wrap;line-height:1.6}
+.f .hl,.hl{background:var(--amber-soft);color:var(--ink);border-radius:4px;padding:0 3px;font-weight:600}
+pre.kode{margin:0;font-family:var(--f-mono);font-size:13px;background:var(--slot);border-radius:8px;padding:10px 12px;overflow-x:auto;line-height:1.5}
+pre.kode span{display:block;padding:0 4px;border-radius:4px;white-space:pre}
+pre.kode span.on{background:var(--amber-soft);font-weight:600}
+ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:4px}
+.small{font-size:14px;color:var(--muted)}
+input[type=number],input[type=text],select,textarea{font:inherit;padding:7px 10px;border-radius:8px;border:2px solid var(--line);background:var(--panel);color:var(--ink);min-width:0}
+input[type=number]{width:96px}
+input[type=range]{accent-color:var(--palm);max-width:100%}
+label.inl{display:inline-flex;align-items:center;gap:6px;font-size:14px;flex-wrap:wrap}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+@media (max-width:520px){.grid2{grid-template-columns:1fr}}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:6px}
+.stats div{background:var(--slot);border-radius:6px;padding:6px 8px;font-size:12px;color:var(--muted)}
+.stats b{display:block;font-family:var(--f-mono);font-size:17px;color:var(--ink);font-variant-numeric:tabular-nums}
+.stats div.alarm b{color:var(--fruit)}
+.scroll{overflow-x:auto;max-width:100%}
+table.t{border-collapse:collapse;font-size:14px;width:100%;font-variant-numeric:tabular-nums}
+table.t th{background:var(--palm);color:var(--panel);text-align:left;padding:6px 8px;font-weight:700}
+table.t td{border-bottom:1px solid var(--line);padding:5px 8px}
+table.t tr.on td{background:var(--amber-soft);font-weight:700}
+.cells{display:flex;gap:4px;flex-wrap:wrap}
+.cell{min-width:44px;border:2px solid var(--line);border-radius:6px;text-align:center;padding:5px 3px;font-family:var(--f-mono);font-weight:600;background:var(--panel);transition:background .25s,border-color .25s,transform .25s}
+.cell small{display:block;font-size:10px;color:var(--muted);font-weight:400}
+.cell.a{background:var(--amber-soft);border-color:var(--amber)}
+.cell.b{background:var(--fruit-soft);border-color:var(--fruit)}
+.cell.g{background:var(--palm-soft);border-color:var(--palm)}
+.cell.s{background:var(--sky-soft);border-color:var(--sky)}
+.cell.dim{opacity:.35}
+.legend{display:flex;flex-wrap:wrap;gap:12px;font-size:13px;color:var(--muted)}
+.legend i{display:inline-block;width:14px;height:14px;border-radius:4px;vertical-align:-2px;margin-right:4px;border:2px solid}
+svg.viz{width:100%;height:auto;display:block;max-width:100%}
+.stepbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.stepbar .ctr{font-family:var(--f-mono);font-size:13px;color:var(--muted)}
+.q{display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--line);padding-top:14px}
+.opts{display:flex;flex-direction:column;gap:6px}
+.opts button{background:var(--panel);color:var(--ink);border:2px solid var(--line);text-align:left;font-weight:400}
+.opts button.ok{border-color:var(--palm);background:var(--palm-soft);font-weight:700}
+.opts button.no{border-color:var(--fruit);background:var(--fruit-soft)}
+.fb{font-size:14px}
+.score{font-family:var(--f-display);font-size:22px;font-weight:800}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+.srt{border:2px solid var(--line);border-radius:8px;padding:10px 12px;display:flex;flex-direction:column;gap:8px}
+.srt.ok{border-color:var(--palm);background:var(--palm-soft)}
+.srt.no{border-color:var(--fruit);background:var(--fruit-soft)}
+.srt .btns button{min-height:34px;padding:4px 10px;font-size:14px}
+.hb{display:grid;grid-template-columns:minmax(90px,170px) 1fr 70px;gap:8px;align-items:center;font-size:14px;margin:4px 0}
+.hb>div{background:var(--slot);border-radius:6px;height:22px;overflow:hidden}
+.hb i{display:block;height:100%;border-radius:6px;transition:width .4s}
+.hb b{font-family:var(--f-mono);font-variant-numeric:tabular-nums;text-align:right}
+@media (max-width:520px){.hb{grid-template-columns:90px 1fr 56px}}
+
+
+#gg text{font-family:'JetBrains Mono',monospace}
+.out{background:var(--road);color:#E6F4F2;font-family:'JetBrains Mono',monospace;font-size:12.5px;padding:10px 12px;border-radius:8px;white-space:pre-wrap;overflow-wrap:anywhere}
+.cmd{display:flex;flex-wrap:wrap;gap:6px}
+.st{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:8px 0}
+.st span{padding:7px 11px;border-radius:8px;border:1px solid var(--line);font-size:13px}
+.st span.on{background:var(--palm);color:#fff;border-color:var(--palm)}
+.st span.done{background:var(--palm-soft)}
+.st span.x{background:var(--fruit-soft);border-color:var(--fruit)}
+
+</style>
+<div class="wrap">
+  <header class="top">
+    <div class="eyebrow">Pertemuan 12 · Pemrograman II</div>
+    <h1>Git Tim dan Alur Surat Pengantar</h1>
+    <p class="lead">Jalankan perintah Git satu per satu dan lihat grafik commit dan cabang tumbuh, termasuk konflik saat dua orang mengubah baris yang sama. Lalu uji mesin status surat pengantar TBS dari kebun sampai tiket cetak.</p>
+  </header>
+  <nav class="tabs" aria-label="Bab latihan"><a href="#git"><span class="no">1</span>Simulator Git</a><a href="#sp"><span class="no">2</span>Status surat pengantar</a><a href="#kuis"><span class="no">3</span>Kuis</a></nav>
+<section class="bab" data-view="git" data-tab="Simulator Git">
+  <div class="stage">
+    <h2>Repositori SiTBS kelompok</h2>
+    <div class="cmd" id="cm"></div>
+    <svg class="viz" id="gg" viewBox="0 0 560 200" role="img" aria-label="Grafik commit"></svg>
+    <div class="out" id="go"></div>
+    <div class="say" id="say1"></div>
+  </div>
+  <div class="side"><div class="card rumus"><h3>Alur cabang fitur</h3><div class="f">git switch -c fitur-sp
+... commit ...
+git switch main
+git merge fitur-sp</div><p class="small">Coba urutan: commit di fitur, commit di main pada baris yang sama, lalu merge: terjadi konflik. Selesaikan, lalu commit hasil merge.</p></div></div>
+</section>
+<section class="bab" data-view="sp" data-tab="Status surat pengantar" hidden>
+  <div class="stage">
+    <h2>Surat pengantar SP-0412</h2>
+    <div class="st" id="ss"></div>
+    <div class="cmd" id="sa"></div>
+    <div class="out" id="so"></div>
+    <div class="say" id="say2"></div>
+  </div>
+  <div class="side"><div class="card rumus"><h3>Transisi sah</h3><div class="f">draf → dikirim → tiba → ditimbang → selesai
+draf/dikirim → batal
+tiba → ditolak (sortasi)</div><p class="small">Aturan ini ditulis di satu tempat (kelas SuratPengantar). Transisi yang tidak sah melempar exception, bukan diam-diam diterima.</p></div></div>
+</section>
+<section class="bab" data-view="kuis" data-tab="Kuis" hidden>
+  <div class="stage" id="quiz"><h2>Uji pemahaman</h2><p class="small">Pilih satu jawaban. Penjelasan muncul langsung.</p></div>
+  <div class="side"><div class="card"><h3>Skor</h3><div class="score" id="qScore"></div><button id="qReset" class="alt">Ulang kuis</button></div></div>
+</section>
+</div>
+<script>
+/* Bantuan bersama seri latihan ASD */
+const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const sleep = ms => new Promise(r => setTimeout(r, RM ? 0 : ms));
+const fmt = (x, d = 0) => Number(x).toLocaleString('id-ID', { minimumFractionDigits: d, maximumFractionDigits: d });
+const onView = {};
+function tabs() {
+  const views = $$('section.bab').map(s => s.dataset.view);
+  function show() {
+    const v = views.includes(location.hash.slice(1)) ? location.hash.slice(1) : views[0];
+    $$('section.bab').forEach(s => s.hidden = s.dataset.view !== v);
+    $$('nav.tabs a').forEach(a => a.getAttribute('href') === '#' + v ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current'));
+    Object.entries(onView).forEach(([k, f]) => f(k === v));
+  }
+  addEventListener('hashchange', show); show();
+}
+/* Langkah demi langkah: steps = [{...state, say}], draw(step, i) menggambar */
+function Stepper(root, draw, ms = 900) {
+  const el = typeof root === 'string' ? $(root) : root;
+  el.innerHTML = '<button data-a="prev" class="alt">‹ Sebelumnya</button><button data-a="next">Berikutnya ›</button><button data-a="play" class="alt">Putar otomatis</button><span class="ctr"></span>';
+  const S = { steps: [], i: 0, timer: null };
+  const ctr = el.querySelector('.ctr'), bp = el.querySelector('[data-a=play]');
+  function go(i) { S.i = Math.max(0, Math.min(S.steps.length - 1, i)); draw(S.steps[S.i], S.i, S.steps); ctr.textContent = `langkah ${S.i + 1} / ${S.steps.length}`; }
+  function stop() { clearInterval(S.timer); S.timer = null; bp.textContent = 'Putar otomatis'; }
+  el.querySelector('[data-a=prev]').onclick = () => { stop(); go(S.i - 1); };
+  el.querySelector('[data-a=next]').onclick = () => { stop(); go(S.i + 1); };
+  bp.onclick = () => {
+    if (S.timer) return stop();
+    if (S.i >= S.steps.length - 1) go(0);
+    bp.textContent = 'Jeda';
+    S.timer = setInterval(() => { if (S.i >= S.steps.length - 1) return stop(); go(S.i + 1); }, RM ? 400 : ms);
+  };
+  return { load(steps, start = 0) { stop(); S.steps = steps; go(start); }, stop, get i() { return S.i; }, go };
+}
+/* Kuis: QUIZ = [[soal, [pilihan], indeksBenar, penjelasan]] */
+function quiz(box, scoreEl, resetBtn, QUIZ) {
+  const J = {};
+  function draw() {
+    box.querySelectorAll('.q').forEach(e => e.remove());
+    QUIZ.forEach(([t, ops, ok, ex], n) => {
+      const d = document.createElement('div'); d.className = 'q'; const j = J[n];
+      d.innerHTML = `<b>${n + 1}. ${t}</b><div class="opts">${ops.map((o, i) => `<button data-i="${i}" ${j !== undefined ? 'disabled' : ''} class="${j !== undefined && i === ok ? 'ok' : j === i ? 'no' : ''}">${o}</button>`).join('')}</div>` +
+        (j !== undefined ? `<div class="fb">${j === ok ? '<b>Benar.</b> ' : '<b>Belum tepat.</b> '}${ex}</div>` : '');
+      d.querySelectorAll('button').forEach(b => b.onclick = () => { J[n] = +b.dataset.i; draw(); });
+      box.appendChild(d);
+    });
+    scoreEl.textContent = `${Object.entries(J).filter(([n, j]) => QUIZ[n][2] === j).length} / ${QUIZ.length}`;
+  }
+  resetBtn.onclick = () => { Object.keys(J).forEach(k => delete J[k]); draw(); };
+  draw();
+}
+function kode(el, lines) { el.innerHTML = lines.map((l, i) => `<span data-l="${i}">${l.replace(/&/g, '&amp;').replace(/</g, '&lt;') || ' '}</span>`).join(''); return on => el.querySelectorAll('span').forEach(s => s.classList.toggle('on', (on || []).includes(+s.dataset.l))); }
+/* Permainan memilah: ITEMS = [[teks, kunciBenar, penjelasan]], KEYS = [[kunci, label]] */
+function sortir(box, scoreEl, ITEMS, KEYS) {
+  const J = {};
+  function draw() {
+    box.innerHTML = ITEMS.map(([t, k, ex], n) => {
+      const j = J[n];
+      return `<div class="srt${j === undefined ? '' : j === k ? ' ok' : ' no'}"><div>${t}</div><div class="btns">${KEYS.map(([kk, l]) => `<button class="${j === undefined ? 'alt' : kk === k ? '' : j === kk ? 'warn' : 'alt'}" data-n="${n}" data-k="${kk}" ${j !== undefined ? 'disabled' : ''}>${l}</button>`).join('')}</div>${j !== undefined ? `<div class="fb">${j === k ? '<b>Tepat.</b> ' : '<b>Belum tepat.</b> '}${ex}</div>` : ''}</div>`;
+    }).join('');
+    box.querySelectorAll('button').forEach(b => b.onclick = () => { J[b.dataset.n] = b.dataset.k; draw(); });
+    const benar = Object.entries(J).filter(([n, j]) => ITEMS[n][1] === j).length;
+    if (scoreEl) scoreEl.textContent = `${benar} benar dari ${Object.keys(J).length} dijawab (${ITEMS.length} kartu)`;
+  }
+  draw(); return { reset() { Object.keys(J).forEach(k => delete J[k]); draw(); } };
+}
+/* Batang horizontal sederhana: rows = [[label, nilai, warnaVar?]] */
+function bars(el, rows, max, fmtv = v => fmt(v)) {
+  max = max || Math.max(...rows.map(r => r[1]), 1);
+  el.innerHTML = rows.map(([l, v, c]) => `<div class="hb"><span>${l}</span><div><i style="width:${Math.max(0.5, v / max * 100)}%;background:var(${c || '--palm'})"></i></div><b>${fmtv(v)}</b></div>`).join('');
+}
+
+
+let G;
+function resetG() { G = { c: [{ id: 'a1', b: 'main', p: [], m: 'init proyek', x: 1, y: 0 }], br: { main: 'a1' }, head: 'main', lane: { main: 0 }, conflict: false, file: { main: 'potongan = 2.0' }, log: ['$ git init && git commit -m "init proyek"'] }; }
+const hid = () => Math.random().toString(16).slice(2, 6);
+function commit(msg, ubah) { if (G.conflict) return say('Selesaikan konflik dulu.', 'bad'); const p = G.br[G.head], id = hid(); G.c.push({ id, b: G.head, p: [p], m: msg, x: Math.max(...G.c.map(c => c.x)) + 1, y: G.lane[G.head] }); G.br[G.head] = id; if (ubah) G.file[G.head] = ubah; G.log.push(`$ git commit -am "${msg}"\n[${G.head} ${id}] ${msg}`); say(`Commit ${id} di cabang ${G.head}.`); }
+function say(t, c) { $('#say1').className = 'say ' + (c || ''); $('#say1').textContent = t; draw(); }
+const ACT = {
+  'commit': () => commit(G.head === 'main' ? 'perbaiki laporan' : 'form surat pengantar', null),
+  'ubah potongan & commit': () => commit('potongan plasma ' + (G.head === 'main' ? '2.5' : '3.0'), 'potongan = ' + (G.head === 'main' ? '2.5' : '3.0')),
+  'switch -c fitur-sp': () => { if (G.br['fitur-sp']) return say('Cabang fitur-sp sudah ada; pakai switch fitur-sp.', 'bad'); G.br['fitur-sp'] = G.br[G.head]; G.lane['fitur-sp'] = 1; G.file['fitur-sp'] = G.file[G.head]; G.head = 'fitur-sp'; G.log.push("$ git switch -c fitur-sp\nSwitched to a new branch 'fitur-sp'"); say('Cabang baru dibuat dari commit saat ini dan langsung aktif.'); },
+  'switch main': () => { if (G.conflict) return say('Selesaikan konflik dulu.', 'bad'); G.head = 'main'; G.log.push("$ git switch main"); say('Kembali ke main.'); },
+  'switch fitur-sp': () => { if (!G.br['fitur-sp']) return say('Cabang belum ada.', 'bad'); G.head = 'fitur-sp'; G.log.push('$ git switch fitur-sp'); say('Pindah ke fitur-sp.'); },
+  'merge fitur-sp': () => {
+    if (G.head !== 'main' || !G.br['fitur-sp']) return say('Merge dijalankan dari main, dan cabang fitur-sp harus ada.', 'bad');
+    const a = G.br.main, b = G.br['fitur-sp']; if (a === b) return say('Already up to date.');
+    const ubahMain = G.c.some(c => c.b === 'main' && c.m.startsWith('potongan')), ubahFit = G.c.some(c => c.b === 'fitur-sp' && c.m.startsWith('potongan'));
+    if (ubahMain && ubahFit && G.file.main !== G.file['fitur-sp']) { G.conflict = true; G.log.push(`$ git merge fitur-sp\nAuto-merging config.php\nCONFLICT (content): Merge conflict in config.php\n<<<<<<< HEAD\n${G.file.main}\n=======\n${G.file['fitur-sp']}\n>>>>>>> fitur-sp`); return say('Konflik: kedua cabang mengubah baris yang sama. Pilih isi yang benar, lalu commit.', 'bad'); }
+    gabung();
+  },
+  'selesaikan konflik': () => { if (!G.conflict) return say('Tidak ada konflik.'); G.conflict = false; G.file.main = G.file['fitur-sp']; G.log.push(`# config.php diedit: ${G.file.main}\n$ git add config.php`); gabung(); },
+  'reset': () => { resetG(); say('Repositori baru.'); },
+};
+function gabung() { if (!G.c.some(c => c.b === 'main' && c.m.startsWith('potongan'))) G.file.main = G.file['fitur-sp']; const id = hid(); G.c.push({ id, b: 'main', p: [G.br.main, G.br['fitur-sp']], m: 'merge fitur-sp', x: Math.max(...G.c.map(c => c.x)) + 1, y: 0 }); G.br.main = id; G.log.push(`$ git commit\n[main ${id}] Merge branch 'fitur-sp'`); say('Merge commit punya dua induk: riwayat kedua cabang tersimpan.', 'good'); }
+$('#cm').innerHTML = Object.keys(ACT).map(k => `<button class="alt" data-k="${k}">${k}</button>`).join(''); $$('#cm button').forEach(b => b.onclick = () => ACT[b.dataset.k]());
+function draw() {
+  const X = x => 30 + (x - 1) * 62, Y = y => 60 + y * 80, P = id => G.c.find(c => c.id === id); let g = '';
+  G.c.forEach(c => c.p.forEach(pid => { const p = P(pid); g += `<path d="M${X(p.x)},${Y(p.y)} C${X(p.x) + 30},${Y(p.y)} ${X(c.x) - 30},${Y(c.y)} ${X(c.x)},${Y(c.y)}" fill="none" stroke="var(--muted)" stroke-width="2"/>`; }));
+  G.c.forEach(c => g += `<circle cx="${X(c.x)}" cy="${Y(c.y)}" r="11" fill="${c.y ? 'var(--amber)' : 'var(--palm)'}"/><text x="${X(c.x)}" y="${Y(c.y) + 28}" text-anchor="middle" font-size="10" fill="var(--ink)">${c.id}</text>`);
+  Object.entries(G.br).forEach(([b, id]) => { const c = P(id); g += `<text x="${X(c.x)}" y="${Y(c.y) - 18}" text-anchor="middle" font-size="11" font-weight="700" fill="${b === G.head ? 'var(--fruit)' : 'var(--ink)'}">${b}${b === G.head ? ' (HEAD)' : ''}</text>`; });
+  $('#gg').innerHTML = g; $('#go').textContent = G.log.slice(-4).join('\n');
+}
+resetG(); say('Mulai dengan "switch -c fitur-sp".');
+const S = ['draf', 'dikirim', 'tiba', 'ditimbang', 'selesai'], T = { draf: ['dikirim', 'batal'], dikirim: ['tiba', 'batal'], tiba: ['ditimbang', 'ditolak'], ditimbang: ['selesai'], selesai: [], batal: [], ditolak: [] };
+let cur = 'draf', LOG = [];
+function sp() {
+  $('#ss').innerHTML = S.map(s => `<span class="${s === cur ? 'on' : S.indexOf(s) < S.indexOf(cur) ? 'done' : ''}">${s}</span>`).join('→') + (['batal', 'ditolak'].includes(cur) ? `<span class="x">${cur}</span>` : '');
+  $('#sa').innerHTML = ['dikirim', 'tiba', 'ditimbang', 'selesai', 'batal', 'ditolak'].map(a => `<button class="${T[cur].includes(a) ? '' : 'alt'}" data-a="${a}">→ ${a}</button>`).join('') + '<button class="alt" data-a="reset">ulang</button>';
+  $$('#sa button').forEach(b => b.onclick = () => { const a = b.dataset.a; if (a === 'reset') { cur = 'draf'; LOG = []; $('#say2').className = 'say'; $('#say2').textContent = 'SP baru dibuat (draf).'; return sp(); } if (T[cur].includes(a)) { LOG.push(`$sp->ubahStatus('${a}');  // ${cur} → ${a}  ✓  dicatat di audit_log`); cur = a; $('#say2').className = 'say good'; $('#say2').textContent = `Transisi sah. Status sekarang ${a}.${a === 'selesai' ? ' Tiket cetak diterbitkan; SP terkunci.' : ''}`; } else { LOG.push(`$sp->ubahStatus('${a}');  // DomainException: tidak boleh ${cur} → ${a}`); $('#say2').className = 'say bad'; $('#say2').textContent = `Ditolak: ${cur} tidak boleh langsung menjadi ${a}.`; } sp(); });
+  $('#so').textContent = LOG.length ? LOG.slice(-6).join('\n') : "$sp = SuratPengantar::buat('PMS-007', 'B012');  // status: draf";
+}
+sp(); $('#say2').textContent = 'Klik tombol transisi. Tombol hijau adalah transisi yang sah dari status saat ini.';
+quiz($('#quiz'), $('#qScore'), $('#qReset'), [
+  ['Perintah membuat dan pindah ke cabang baru?', ['git branch -d', 'git switch -c nama', 'git merge nama', 'git init nama'], 1, 'switch -c (atau checkout -b).'],
+  ['Konflik merge terjadi bila …', ['dua cabang mengubah berkas berbeda', 'dua cabang mengubah baris yang sama secara berbeda', 'commit terlalu banyak', 'cabang belum di-push'], 1, 'Git tidak bisa memilih sendiri.'],
+  ['Merge commit memiliki berapa induk?', ['0', '1', '2', '3'], 2, 'Satu dari tiap cabang.'],
+  ['Berkas .env berisi password database sebaiknya …', ['di-commit agar tim punya', 'dimasukkan ke .gitignore', 'diunggah ke issue', 'ditaruh di README'], 1, 'Bagikan contoh .env.example tanpa rahasia.'],
+  ['Transisi status yang tidak sah sebaiknya …', ['diabaikan', 'melempar exception', 'dikoreksi otomatis', 'disimpan saja'], 1, 'Aturan bisnis ditegakkan di kode.'],
+]);
+tabs();
+
+</script>
+
+<script>(function(){
+var d=document;
+function rgb(s){var m=s&&s.match(/rgba?\(([\d.]+),\s*([\d.]+),\s*([\d.]+)(?:,\s*([\d.]+))?/);return m?[+m[1],+m[2],+m[3],m[4]===undefined?1:+m[4]]:null}
+function lum(c){return [0,1,2].reduce(function(s,i,k){var v=c[i]/255;v=v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4);return s+v*[.2126,.7152,.0722][k]},0)}
+function ratio(a,b){var x=lum(a),y=lum(b);return (Math.max(x,y)+.05)/(Math.min(x,y)+.05)}
+function mix(a,b,t){return [0,1,2].map(function(i){return Math.round(a[i]+(b[i]-a[i])*t)})}
+function bgOf(el){var stack=[];for(var n=el;n&&n.nodeType===1;n=n.parentElement){var cs=getComputedStyle(n);if(cs.backgroundImage&&cs.backgroundImage!=='none')return null;var c=rgb(cs.backgroundColor);if(c&&c[3]>0){stack.push(c);if(c[3]>=1)break}}
+ var base=[255,255,255];for(var i=stack.length-1;i>=0;i--){var s=stack[i];base=mix(base,s,s[3])}return base}
+function own(el){for(var i=0;i<el.childNodes.length;i++){var t=el.childNodes[i];if(t.nodeType===3&&t.nodeValue.trim())return true}return false}
+function fix(el){var cs=getComputedStyle(el);if(cs.visibility==='hidden'||cs.display==='none')return;var fg=rgb(cs.color),bg=bgOf(el);if(!fg||!bg)return;
+ var op=1;for(var n=el;n&&n.nodeType===1;n=n.parentElement)op*=+getComputedStyle(n).opacity;if(op<.999){var q2=el;while(q2&&+getComputedStyle(q2).opacity>=.999)q2=q2.parentElement;var ef=mix(bg,fg,fg[3]*op);if(ratio(ef,bg)<4.6&&q2){q2.style.setProperty('opacity','1','important');return fix(el)}}fg=mix(bg,fg,fg[3]);var size=parseFloat(cs.fontSize),bold=+cs.fontWeight>=700,need=(size>=24||(bold&&size>=18.66))?3.1:4.6;
+ if(ratio(fg,bg)>=need)return;
+ var ob0=rgb(cs.backgroundColor);if(ob0&&ob0[3]>=1&&lum(fg)>.5){for(var j=1;j<=20;j++){var bb=mix(ob0,[0,0,0],j/20);if(ratio(fg,bb)>=need){el.style.setProperty('background-color','rgb('+bb.join(',')+')','important');return}}}
+ var best=null;[[0,0,0],[255,255,255]].forEach(function(t){for(var k=1;k<=20;k++){var c=mix(fg,t,k/20);if(ratio(c,bg)>=need){if(!best||k<best.k)best={c:c,k:k};break}}});
+ if(best){el.style.setProperty('color','rgb('+best.c.join(',')+')','important');return}
+ var ob=rgb(cs.backgroundColor);if(ob&&ob[3]>=1){var to=lum(fg)>.5?[0,0,0]:[255,255,255];for(var k=1;k<=20;k++){var b2=mix(ob,to,k/20);if(ratio(fg,b2)>=need){el.style.setProperty('background-color','rgb('+b2.join(',')+')','important');return}}}}
+function name(el){var t=el.getAttribute('placeholder')||el.getAttribute('title')||el.name||el.id||'';if(!t){var p=el.closest('tr,li,div,p,td');if(p){var tx=(p.innerText||'').trim().split('\n')[0];t=tx.slice(0,60)}}return t||'isian'}
+function run(){
+ if(!d.documentElement.lang)d.documentElement.lang='id';
+ if(!d.querySelector('main,[role=main]')){var big=null,ba=0;[].forEach.call(d.body.children,function(c){if(/^(SCRIPT|STYLE|HEADER|NAV|FOOTER|NOSCRIPT)$/.test(c.tagName))return;var a=c.offsetWidth*c.offsetHeight;if(a>ba){ba=a;big=c}});for(var g=0;big&&big.querySelector('header,footer,nav')&&g<4;g++){var nb=null,na=0;[].forEach.call(big.children,function(c){if(/^(SCRIPT|STYLE|HEADER|NAV|FOOTER)$/.test(c.tagName))return;var a=c.offsetWidth*c.offsetHeight;if(a>na){na=a;nb=c}});big=nb}if(big&&!big.getAttribute('role')&&!big.querySelector('header,footer,nav'))big.setAttribute('role','main')}
+ d.querySelectorAll('input:not([type=hidden]),select,textarea').forEach(function(el){if(el.labels&&el.labels.length)return;if(el.getAttribute('aria-label')||el.getAttribute('aria-labelledby'))return;if(/^(button|submit|reset)$/.test(el.type))return;el.setAttribute('aria-label',name(el))});
+ d.querySelectorAll('th').forEach(function(th){if(!(th.textContent||'').trim()&&!th.querySelector('img,svg,input,select')){var td=d.createElement('td');for(var i=0;i<th.attributes.length;i++)td.setAttribute(th.attributes[i].name,th.attributes[i].value);while(th.firstChild)td.appendChild(th.firstChild);th.replaceWith(td)}});
+ d.querySelectorAll('svg[role=img]').forEach(function(s){if(s.getAttribute('aria-label')||s.querySelector('title'))return;var f=s.closest('figure'),c=f&&f.querySelector('figcaption');s.setAttribute('aria-label',c?c.textContent.trim():'diagram')});
+ d.querySelectorAll('body *').forEach(function(el){if(own(el))fix(el)});
+ d.querySelectorAll('body *').forEach(function(el){var cs=getComputedStyle(el);if(/(auto|scroll)/.test(cs.overflowX+cs.overflowY)&&(el.scrollHeight>el.clientHeight||el.scrollWidth>el.clientWidth)&&!el.hasAttribute('tabindex')&&!el.querySelector('a,button,input,select,textarea,[tabindex]'))el.setAttribute('tabindex','0')});
+}
+var q=0;function later(){if(q)return;q=setTimeout(function(){q=0;obs.disconnect();run();obs.observe(d.body,{childList:true,subtree:true,attributes:true,attributeFilter:['class']})},600)}
+var obs=new MutationObserver(later);
+function start(){run();obs.observe(d.body,{childList:true,subtree:true,attributes:true,attributeFilter:['class']})}
+if(d.readyState==='loading')d.addEventListener('DOMContentLoaded',start);else start();
+})();</script>
+</body>
+</html>

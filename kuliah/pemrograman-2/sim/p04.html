@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>P4 · Form Responsif dan Validasi HTML</title>
+<meta name="description" content="Simulasi interaktif Pertemuan 4 mata kuliah Pemrograman II (STIP-4161): Form Responsif dan Validasi HTML. Prodi Sistem dan Teknologi Informasi, Institut Teknologi Sawit Indonesia.">
+<link rel="canonical" href="https://syrvrr.github.io/kuliah/pemrograman-2/sim/p04.html">
+<link rel="icon" href="../../../favicon.svg" type="image/svg+xml">
+</head>
+<body>
+<title>Form Responsif dan Validasi HTML</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Seri latihan ASD: pita tab di atas, satu panggung interaktif per bab, panel rumus di samping (bertumpuk di ponsel). */
+:root{
+  --bg:#F3F6F2; --panel:#FFFFFF; --ink:#1B2A22; --muted:#5B6B62; --line:#D5DED7;
+  --palm:#1F6B45; --palm-soft:#DCEFE3; --fruit:#D2502A; --fruit-soft:#FBE3D9;
+  --amber:#E2A400; --amber-soft:#FFF2C7; --sky:#2B6CB0; --sky-soft:#DCE9F7; --road:#3C4744; --slot:#EEF2EE;
+  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"JetBrains Mono", ui-monospace, Consolas, monospace;
+  --r:10px;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#111915; --panel:#18231D; --ink:#E6EFE9; --muted:#9DB0A5; --line:#2C3B33;
+  --palm:#5CC08A; --palm-soft:#1E3A2B; --fruit:#F07A52; --fruit-soft:#3E2219;
+  --amber:#F2C443; --amber-soft:#3A3115; --sky:#6FA8E8; --sky-soft:#1C2C40; --road:#26302D; --slot:#1F2A24; color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#111915; --panel:#18231D; --ink:#E6EFE9; --muted:#9DB0A5; --line:#2C3B33;
+  --palm:#5CC08A; --palm-soft:#1E3A2B; --fruit:#F07A52; --fruit-soft:#3E2219;
+  --amber:#F2C443; --amber-soft:#3A3115; --sky:#6FA8E8; --sky-soft:#1C2C40; --road:#26302D; --slot:#1F2A24; color-scheme:dark }
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.55;
+  padding-left:max(16px, env(safe-area-inset-left,0px));padding-right:max(16px, env(safe-area-inset-right,0px));padding-block:20px 48px}
+.wrap{max-width:1120px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+h1,h2,h3{font-family:var(--f-display);margin:0;text-wrap:balance;line-height:1.15}
+h1{font-size:clamp(28px,4.4vw,44px);font-weight:800;letter-spacing:-.01em}
+h2{font-size:clamp(21px,3vw,27px);font-weight:800}
+h3{font-size:18px;font-weight:600}
+p{margin:0;max-width:68ch}
+code,.mono{font-family:var(--f-mono);font-size:.92em}
+header.top{display:flex;flex-direction:column;gap:8px}
+.eyebrow{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--palm);font-weight:700}
+.lead{color:var(--muted);font-size:17px}
+nav.tabs{display:flex;gap:6px;flex-wrap:wrap;border-bottom:2px solid var(--line)}
+nav.tabs a{padding:10px 14px;text-decoration:none;color:var(--muted);font-weight:700;border-radius:8px 8px 0 0;border:2px solid transparent;border-bottom:none;margin-bottom:-2px;font-size:15px}
+nav.tabs a .no{font-family:var(--f-mono);font-size:12px;margin-right:6px;opacity:.75}
+nav.tabs a[aria-current="page"]{color:var(--ink);background:var(--panel);border-color:var(--line)}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+section.bab{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:20px;align-items:start}
+@media (max-width:860px){section.bab{grid-template-columns:1fr}}
+.stage{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:18px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.side{display:flex;flex-direction:column;gap:14px;min-width:0}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.card.rumus{border-left:5px solid var(--palm)}
+.btns{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+button{font:inherit;font-weight:700;border-radius:8px;border:2px solid var(--palm);background:var(--palm);color:var(--panel);padding:8px 14px;cursor:pointer;min-height:40px}
+button.alt{background:transparent;color:var(--palm)}
+button.warn{background:var(--fruit);border-color:var(--fruit)}
+button:disabled{opacity:.45;cursor:not-allowed}
+.status{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font-family:var(--f-mono);font-size:13px;background:var(--slot);border:1px solid var(--line);border-radius:999px;padding:4px 10px;font-variant-numeric:tabular-nums}
+.chip b{font-weight:600;color:var(--palm)}
+.say{background:var(--amber-soft);border-radius:8px;padding:10px 12px;min-height:48px}
+.say.bad{background:var(--fruit-soft)}
+.say.good{background:var(--palm-soft)}
+.f{font-family:var(--f-mono);font-size:14.5px;background:var(--slot);border-radius:8px;padding:10px 12px;overflow-x:auto;white-space:pre-wrap;line-height:1.6}
+.f .hl,.hl{background:var(--amber-soft);color:var(--ink);border-radius:4px;padding:0 3px;font-weight:600}
+pre.kode{margin:0;font-family:var(--f-mono);font-size:13px;background:var(--slot);border-radius:8px;padding:10px 12px;overflow-x:auto;line-height:1.5}
+pre.kode span{display:block;padding:0 4px;border-radius:4px;white-space:pre}
+pre.kode span.on{background:var(--amber-soft);font-weight:600}
+ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:4px}
+.small{font-size:14px;color:var(--muted)}
+input[type=number],input[type=text],select,textarea{font:inherit;padding:7px 10px;border-radius:8px;border:2px solid var(--line);background:var(--panel);color:var(--ink);min-width:0}
+input[type=number]{width:96px}
+input[type=range]{accent-color:var(--palm);max-width:100%}
+label.inl{display:inline-flex;align-items:center;gap:6px;font-size:14px;flex-wrap:wrap}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+@media (max-width:520px){.grid2{grid-template-columns:1fr}}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:6px}
+.stats div{background:var(--slot);border-radius:6px;padding:6px 8px;font-size:12px;color:var(--muted)}
+.stats b{display:block;font-family:var(--f-mono);font-size:17px;color:var(--ink);font-variant-numeric:tabular-nums}
+.stats div.alarm b{color:var(--fruit)}
+.scroll{overflow-x:auto;max-width:100%}
+table.t{border-collapse:collapse;font-size:14px;width:100%;font-variant-numeric:tabular-nums}
+table.t th{background:var(--palm);color:var(--panel);text-align:left;padding:6px 8px;font-weight:700}
+table.t td{border-bottom:1px solid var(--line);padding:5px 8px}
+table.t tr.on td{background:var(--amber-soft);font-weight:700}
+.cells{display:flex;gap:4px;flex-wrap:wrap}
+.cell{min-width:44px;border:2px solid var(--line);border-radius:6px;text-align:center;padding:5px 3px;font-family:var(--f-mono);font-weight:600;background:var(--panel);transition:background .25s,border-color .25s,transform .25s}
+.cell small{display:block;font-size:10px;color:var(--muted);font-weight:400}
+.cell.a{background:var(--amber-soft);border-color:var(--amber)}
+.cell.b{background:var(--fruit-soft);border-color:var(--fruit)}
+.cell.g{background:var(--palm-soft);border-color:var(--palm)}
+.cell.s{background:var(--sky-soft);border-color:var(--sky)}
+.cell.dim{opacity:.35}
+.legend{display:flex;flex-wrap:wrap;gap:12px;font-size:13px;color:var(--muted)}
+.legend i{display:inline-block;width:14px;height:14px;border-radius:4px;vertical-align:-2px;margin-right:4px;border:2px solid}
+svg.viz{width:100%;height:auto;display:block;max-width:100%}
+.stepbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.stepbar .ctr{font-family:var(--f-mono);font-size:13px;color:var(--muted)}
+.q{display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--line);padding-top:14px}
+.opts{display:flex;flex-direction:column;gap:6px}
+.opts button{background:var(--panel);color:var(--ink);border:2px solid var(--line);text-align:left;font-weight:400}
+.opts button.ok{border-color:var(--palm);background:var(--palm-soft);font-weight:700}
+.opts button.no{border-color:var(--fruit);background:var(--fruit-soft)}
+.fb{font-size:14px}
+.score{font-family:var(--f-display);font-size:22px;font-weight:800}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+.srt{border:2px solid var(--line);border-radius:8px;padding:10px 12px;display:flex;flex-direction:column;gap:8px}
+.srt.ok{border-color:var(--palm);background:var(--palm-soft)}
+.srt.no{border-color:var(--fruit);background:var(--fruit-soft)}
+.srt .btns button{min-height:34px;padding:4px 10px;font-size:14px}
+.hb{display:grid;grid-template-columns:minmax(90px,170px) 1fr 70px;gap:8px;align-items:center;font-size:14px;margin:4px 0}
+.hb>div{background:var(--slot);border-radius:6px;height:22px;overflow:hidden}
+.hb i{display:block;height:100%;border-radius:6px;transition:width .4s}
+.hb b{font-family:var(--f-mono);font-variant-numeric:tabular-nums;text-align:right}
+@media (max-width:520px){.hb{grid-template-columns:90px 1fr 56px}}
+
+
+.dev{border:2px solid var(--ink);border-radius:14px;padding:10px;margin:8px auto;background:var(--panel);transition:width .2s}
+.fg{display:grid;gap:8px}
+.fg div{background:var(--slot);border-radius:6px;padding:8px;font-size:12px}
+.fg div b{display:block;font-size:11px;color:var(--muted)}
+.bm{position:relative;margin:10px auto;font-size:11px;text-align:center}
+.bm div{border:1px dashed var(--ink);display:flex;align-items:center;justify-content:center;flex-direction:column}
+
+</style>
+<div class="wrap">
+  <header class="top">
+    <div class="eyebrow">Pertemuan 4 · Pemrograman II</div>
+    <h1>Form Responsif dan Validasi HTML</h1>
+    <p class="lead">Geser lebar layar dan lihat media query mana yang aktif serta berapa kolom form timbang yang tampil. Uji atribut validasi HTML5 dengan isian Anda sendiri, lalu hitung ukuran kotak dengan box model.</p>
+  </header>
+  <nav class="tabs" aria-label="Bab latihan"><a href="#resp"><span class="no">1</span>Breakpoint</a><a href="#valid"><span class="no">2</span>Validasi HTML5</a><a href="#box"><span class="no">3</span>Box model</a><a href="#kuis"><span class="no">4</span>Kuis</a></nav>
+<section class="bab" data-view="resp" data-tab="Breakpoint">
+  <div class="stage">
+    <h2>Form timbang di berbagai layar</h2>
+    <label class="inl">Lebar viewport <input type="range" id="vw" min="320" max="1440" step="10" value="390"><b id="vwv"></b></label>
+    <div class="dev" id="dv"><div class="fg" id="fg"></div></div>
+    <pre class="kode" id="kc"></pre>
+    <div class="say" id="say1"></div>
+  </div>
+  <div class="side"><div class="card rumus"><h3>Mobile first</h3><div class="f">.form { grid-template-columns: 1fr; }
+@media (min-width: 640px)  { 2 kolom }
+@media (min-width: 1024px) { 3 kolom }</div><p class="small">Mulai dari layar terkecil, lalu tambah aturan untuk layar lebar. Petugas di loading ramp memakai HP; petugas timbang memakai monitor.</p></div></div>
+</section>
+<section class="bab" data-view="valid" data-tab="Validasi HTML5" hidden>
+  <div class="stage">
+    <h2>Isi field, lihat validity browser</h2>
+    <pre class="kode" id="kv"></pre>
+    <div class="grid2">
+      <label class="inl">no_polisi <input type="text" id="np" value="BK 8123 XY"></label>
+      <label class="inl">bruto <input type="text" id="vb" value="7480"></label>
+      <label class="inl">tara <input type="text" id="vt" value="31200"></label>
+      <label class="inl">email pemasok <input type="text" id="em" value="kud@sawitjaya"></label>
+    </div>
+    <div class="scroll"><table class="t" id="tv"></table></div>
+    <div class="say" id="say2"></div>
+  </div>
+  <div class="side"><div class="card rumus"><h3>Dua lapis validasi</h3><div class="f">browser : cepat, ramah pengguna
+server  : wajib, karena browser bisa dilewati</div><p class="small">Validasi HTML bisa dimatikan dengan devtools atau dilewati dengan curl. PHP tetap harus memeriksa ulang setiap nilai.</p></div></div>
+</section>
+<section class="bab" data-view="box" data-tab="Box model" hidden>
+  <div class="stage">
+    <h2>Lebar sebenarnya sebuah kotak input</h2>
+    <div class="grid2">
+      <label class="inl">width (px) <input type="range" id="bw" min="100" max="400" value="240"><b id="bwv"></b></label>
+      <label class="inl">padding (px) <input type="range" id="bp" min="0" max="40" value="12"><b id="bpv"></b></label>
+      <label class="inl">border (px) <input type="range" id="bb" min="0" max="10" value="2"><b id="bbv"></b></label>
+      <label class="inl">box-sizing <select id="bs"><option>content-box</option><option selected>border-box</option></select></label>
+    </div>
+    <div class="bm" id="bm"></div>
+    <div class="f" id="bf"></div>
+    <div class="say" id="say3"></div>
+  </div>
+  <div class="side"><div class="card rumus"><h3>Rumus</h3><div class="f">content-box: total = width + 2·padding + 2·border
+border-box : total = width</div><p class="small">Kebanyakan CSS modern memakai <code>*, *::before, *::after { box-sizing: border-box; }</code> agar width berarti lebar yang terlihat.</p></div></div>
+</section>
+<section class="bab" data-view="kuis" data-tab="Kuis" hidden>
+  <div class="stage" id="quiz"><h2>Uji pemahaman</h2><p class="small">Pilih satu jawaban. Penjelasan muncul langsung.</p></div>
+  <div class="side"><div class="card"><h3>Skor</h3><div class="score" id="qScore"></div><button id="qReset" class="alt">Ulang kuis</button></div></div>
+</section>
+</div>
+<script>
+/* Bantuan bersama seri latihan ASD */
+const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const sleep = ms => new Promise(r => setTimeout(r, RM ? 0 : ms));
+const fmt = (x, d = 0) => Number(x).toLocaleString('id-ID', { minimumFractionDigits: d, maximumFractionDigits: d });
+const onView = {};
+function tabs() {
+  const views = $$('section.bab').map(s => s.dataset.view);
+  function show() {
+    const v = views.includes(location.hash.slice(1)) ? location.hash.slice(1) : views[0];
+    $$('section.bab').forEach(s => s.hidden = s.dataset.view !== v);
+    $$('nav.tabs a').forEach(a => a.getAttribute('href') === '#' + v ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current'));
+    Object.entries(onView).forEach(([k, f]) => f(k === v));
+  }
+  addEventListener('hashchange', show); show();
+}
+/* Langkah demi langkah: steps = [{...state, say}], draw(step, i) menggambar */
+function Stepper(root, draw, ms = 900) {
+  const el = typeof root === 'string' ? $(root) : root;
+  el.innerHTML = '<button data-a="prev" class="alt">‹ Sebelumnya</button><button data-a="next">Berikutnya ›</button><button data-a="play" class="alt">Putar otomatis</button><span class="ctr"></span>';
+  const S = { steps: [], i: 0, timer: null };
+  const ctr = el.querySelector('.ctr'), bp = el.querySelector('[data-a=play]');
+  function go(i) { S.i = Math.max(0, Math.min(S.steps.length - 1, i)); draw(S.steps[S.i], S.i, S.steps); ctr.textContent = `langkah ${S.i + 1} / ${S.steps.length}`; }
+  function stop() { clearInterval(S.timer); S.timer = null; bp.textContent = 'Putar otomatis'; }
+  el.querySelector('[data-a=prev]').onclick = () => { stop(); go(S.i - 1); };
+  el.querySelector('[data-a=next]').onclick = () => { stop(); go(S.i + 1); };
+  bp.onclick = () => {
+    if (S.timer) return stop();
+    if (S.i >= S.steps.length - 1) go(0);
+    bp.textContent = 'Jeda';
+    S.timer = setInterval(() => { if (S.i >= S.steps.length - 1) return stop(); go(S.i + 1); }, RM ? 400 : ms);
+  };
+  return { load(steps, start = 0) { stop(); S.steps = steps; go(start); }, stop, get i() { return S.i; }, go };
+}
+/* Kuis: QUIZ = [[soal, [pilihan], indeksBenar, penjelasan]] */
+function quiz(box, scoreEl, resetBtn, QUIZ) {
+  const J = {};
+  function draw() {
+    box.querySelectorAll('.q').forEach(e => e.remove());
+    QUIZ.forEach(([t, ops, ok, ex], n) => {
+      const d = document.createElement('div'); d.className = 'q'; const j = J[n];
+      d.innerHTML = `<b>${n + 1}. ${t}</b><div class="opts">${ops.map((o, i) => `<button data-i="${i}" ${j !== undefined ? 'disabled' : ''} class="${j !== undefined && i === ok ? 'ok' : j === i ? 'no' : ''}">${o}</button>`).join('')}</div>` +
+        (j !== undefined ? `<div class="fb">${j === ok ? '<b>Benar.</b> ' : '<b>Belum tepat.</b> '}${ex}</div>` : '');
+      d.querySelectorAll('button').forEach(b => b.onclick = () => { J[n] = +b.dataset.i; draw(); });
+      box.appendChild(d);
+    });
+    scoreEl.textContent = `${Object.entries(J).filter(([n, j]) => QUIZ[n][2] === j).length} / ${QUIZ.length}`;
+  }
+  resetBtn.onclick = () => { Object.keys(J).forEach(k => delete J[k]); draw(); };
+  draw();
+}
+function kode(el, lines) { el.innerHTML = lines.map((l, i) => `<span data-l="${i}">${l.replace(/&/g, '&amp;').replace(/</g, '&lt;') || ' '}</span>`).join(''); return on => el.querySelectorAll('span').forEach(s => s.classList.toggle('on', (on || []).includes(+s.dataset.l))); }
+/* Permainan memilah: ITEMS = [[teks, kunciBenar, penjelasan]], KEYS = [[kunci, label]] */
+function sortir(box, scoreEl, ITEMS, KEYS) {
+  const J = {};
+  function draw() {
+    box.innerHTML = ITEMS.map(([t, k, ex], n) => {
+      const j = J[n];
+      return `<div class="srt${j === undefined ? '' : j === k ? ' ok' : ' no'}"><div>${t}</div><div class="btns">${KEYS.map(([kk, l]) => `<button class="${j === undefined ? 'alt' : kk === k ? '' : j === kk ? 'warn' : 'alt'}" data-n="${n}" data-k="${kk}" ${j !== undefined ? 'disabled' : ''}>${l}</button>`).join('')}</div>${j !== undefined ? `<div class="fb">${j === k ? '<b>Tepat.</b> ' : '<b>Belum tepat.</b> '}${ex}</div>` : ''}</div>`;
+    }).join('');
+    box.querySelectorAll('button').forEach(b => b.onclick = () => { J[b.dataset.n] = b.dataset.k; draw(); });
+    const benar = Object.entries(J).filter(([n, j]) => ITEMS[n][1] === j).length;
+    if (scoreEl) scoreEl.textContent = `${benar} benar dari ${Object.keys(J).length} dijawab (${ITEMS.length} kartu)`;
+  }
+  draw(); return { reset() { Object.keys(J).forEach(k => delete J[k]); draw(); } };
+}
+/* Batang horizontal sederhana: rows = [[label, nilai, warnaVar?]] */
+function bars(el, rows, max, fmtv = v => fmt(v)) {
+  max = max || Math.max(...rows.map(r => r[1]), 1);
+  el.innerHTML = rows.map(([l, v, c]) => `<div class="hb"><span>${l}</span><div><i style="width:${Math.max(0.5, v / max * 100)}%;background:var(${c || '--palm'})"></i></div><b>${fmtv(v)}</b></div>`).join('');
+}
+
+
+const F = ['No. polisi', 'Pemasok', 'Bruto (kg)', 'Tara (kg)', 'Potongan (%)', 'Simpan'];
+const hlc = kode($('#kc'), ['.form { display: grid; gap: 12px; grid-template-columns: 1fr; }', '@media (min-width: 640px) {', '  .form { grid-template-columns: repeat(2, 1fr); }', '}', '@media (min-width: 1024px) {', '  .form { grid-template-columns: repeat(3, 1fr); }', '}']);
+function resp() {
+  const w = +$('#vw').value; $('#vwv').textContent = w + ' px'; const k = w >= 1024 ? 3 : w >= 640 ? 2 : 1;
+  const sc = Math.min(1, (($('#dv').parentElement.clientWidth || 600) - 40) / w);
+  $('#dv').style.width = Math.round(w * sc) + 'px';
+  $('#fg').style.gridTemplateColumns = `repeat(${k},1fr)`; $('#fg').innerHTML = F.map(f => `<div><b>${f}</b>${f === 'Simpan' ? '[ Simpan tiket ]' : '______'}</div>`).join('');
+  hlc(k === 1 ? [0] : k === 2 ? [0, 1, 2, 3] : [0, 1, 2, 3, 4, 5, 6]);
+  $('#say1').textContent = `${w} px: ${k} kolom. ${w < 400 ? 'Ukuran HP; tombol sebaiknya minimal 44×44 px agar mudah disentuh dengan sarung tangan kerja.' : w < 1024 ? 'Tablet atau laptop kecil.' : 'Monitor pos timbang.'}`;
+}
+$('#vw').oninput = resp; resp(); window.addEventListener('resize', resp);
+kode($('#kv'), ['<input name="no_polisi" required pattern="[A-Z]{1,2} \\d{1,4} [A-Z]{1,3}">', '<input name="bruto" type="number" required min="1000" max="40000">', '<input name="tara"  type="number" required min="1000" max="20000">', '<input name="email" type="email">']);
+function valid() {
+  const np = $('#np').value, b = $('#vb').value, t = $('#vt').value, e = $('#em').value, R = [];
+  const num = (v, mn, mx) => v === '' ? 'valueMissing' : !/^-?\d+(\.\d+)?$/.test(v) ? 'badInput' : +v < mn ? 'rangeUnderflow' : +v > mx ? 'rangeOverflow' : null;
+  R.push(['no_polisi', np === '' ? 'valueMissing' : /^[A-Z]{1,2} \d{1,4} [A-Z]{1,3}$/.test(np) ? null : 'patternMismatch']);
+  R.push(['bruto', num(b, 1000, 40000)]); R.push(['tara', num(t, 1000, 20000)]);
+  R.push(['email', e === '' ? null : /^[^@\s]+@[^@\s]+$/.test(e) ? null : 'typeMismatch']);
+  const PS = { valueMissing: 'Isian ini wajib diisi.', patternMismatch: 'Format tidak sesuai pola.', badInput: 'Masukkan angka.', rangeUnderflow: 'Nilai terlalu kecil.', rangeOverflow: 'Nilai terlalu besar.', typeMismatch: 'Bukan alamat email.' };
+  $('#tv').innerHTML = '<tr><th>field</th><th>validity</th><th>pesan browser</th></tr>' + R.map(([f, s]) => `<tr><td>${f}</td><td>${s ? s + ' = true' : 'valid'}</td><td>${s ? PS[s] : '✓'}</td></tr>`).join('');
+  const bad = R.filter(r => r[1]).length, bt = +b > 0 && +t > 0 && +t >= +b;
+  $('#say2').className = 'say ' + (bad || bt ? 'bad' : 'good');
+  $('#say2').textContent = (bad ? `${bad} field tidak valid; browser menolak submit.` : 'Semua lolos validasi browser.') + (bt ? ' Perhatikan: aturan "bruto > tara" tidak bisa ditulis dengan atribut HTML; perlu JavaScript atau validasi PHP.' : '') + (e && /@[^.]+$/.test(e) ? ' Email "kud@sawitjaya" dianggap valid oleh browser walau tanpa domain lengkap; periksa lagi di server.' : '');
+}
+$$('#valid input').forEach(e => e.oninput = valid); valid();
+function box() {
+  const w = +$('#bw').value, p = +$('#bp').value, b = +$('#bb').value, bs = $('#bs').value; ['bw', 'bp', 'bb'].forEach(i => $('#' + i + 'v').textContent = $('#' + i).value + ' px');
+  const tot = bs === 'border-box' ? w : w + 2 * p + 2 * b, cont = bs === 'border-box' ? Math.max(0, w - 2 * p - 2 * b) : w, s = Math.min(1, 460 / tot);
+  $('#bm').style.width = tot * s + 'px';
+  $('#bm').innerHTML = `<div style="background:var(--fruit-soft);padding:${b * s}px;border:none"><div style="background:var(--amber-soft);padding:${Math.max(p * s, 0)}px;border:none;width:100%"><div style="background:var(--sky-soft);height:44px;width:${cont * s}px;border:1px dashed var(--ink)">konten ${cont}px</div></div></div>`;
+  $('#bf').textContent = bs === 'border-box' ? `total = width = ${w} px\nkonten = ${w} − 2×${p} − 2×${b} = ${cont} px` : `total = ${w} + 2×${p} + 2×${b} = ${tot} px\nkonten = width = ${w} px`;
+  $('#say3').textContent = bs === 'content-box' && tot > w ? `Kotak ${tot - w} px lebih lebar dari width yang Anda tulis. Dua input 50% dengan padding akan turun ke baris baru.` : 'border-box: lebar yang terlihat sama dengan width.';
+}
+$$('#box input, #box select').forEach(e => e.oninput = box); box();
+quiz($('#quiz'), $('#qScore'), $('#qReset'), [
+  ['Pendekatan mobile first berarti …', ['mendesain untuk desktop lalu mengecilkan', 'CSS dasar untuk layar kecil, media query min-width untuk layar besar', 'membuat aplikasi Android', 'tanpa media query'], 1, 'Mulai dari layar terkecil.'],
+  ['Atribut HTML untuk field wajib?', ['must', 'required', 'needed', 'validate'], 1, 'required.'],
+  ['Validasi browser sudah ada; validasi PHP …', ['tidak perlu', 'tetap wajib', 'opsional untuk GET', 'hanya untuk email'], 1, 'Browser bisa dilewati.'],
+  ['width 240, padding 12, border 2, content-box. Lebar total?', ['240', '268', '254', '226'], 1, '240 + 24 + 4.'],
+  ['Elemen yang tepat untuk tombol kirim form?', ['<div onclick>', '<button type="submit">', '<a href="#">', '<span>'], 1, 'Bisa diakses keyboard dan pembaca layar.'],
+]);
+tabs();
+
+</script>
+
+<script>(function(){
+var d=document;
+function rgb(s){var m=s&&s.match(/rgba?\(([\d.]+),\s*([\d.]+),\s*([\d.]+)(?:,\s*([\d.]+))?/);return m?[+m[1],+m[2],+m[3],m[4]===undefined?1:+m[4]]:null}
+function lum(c){return [0,1,2].reduce(function(s,i,k){var v=c[i]/255;v=v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4);return s+v*[.2126,.7152,.0722][k]},0)}
+function ratio(a,b){var x=lum(a),y=lum(b);return (Math.max(x,y)+.05)/(Math.min(x,y)+.05)}
+function mix(a,b,t){return [0,1,2].map(function(i){return Math.round(a[i]+(b[i]-a[i])*t)})}
+function bgOf(el){var stack=[];for(var n=el;n&&n.nodeType===1;n=n.parentElement){var cs=getComputedStyle(n);if(cs.backgroundImage&&cs.backgroundImage!=='none')return null;var c=rgb(cs.backgroundColor);if(c&&c[3]>0){stack.push(c);if(c[3]>=1)break}}
+ var base=[255,255,255];for(var i=stack.length-1;i>=0;i--){var s=stack[i];base=mix(base,s,s[3])}return base}
+function own(el){for(var i=0;i<el.childNodes.length;i++){var t=el.childNodes[i];if(t.nodeType===3&&t.nodeValue.trim())return true}return false}
+function fix(el){var cs=getComputedStyle(el);if(cs.visibility==='hidden'||cs.display==='none')return;var fg=rgb(cs.color),bg=bgOf(el);if(!fg||!bg)return;
+ var op=1;for(var n=el;n&&n.nodeType===1;n=n.parentElement)op*=+getComputedStyle(n).opacity;if(op<.999){var q2=el;while(q2&&+getComputedStyle(q2).opacity>=.999)q2=q2.parentElement;var ef=mix(bg,fg,fg[3]*op);if(ratio(ef,bg)<4.6&&q2){q2.style.setProperty('opacity','1','important');return fix(el)}}fg=mix(bg,fg,fg[3]);var size=parseFloat(cs.fontSize),bold=+cs.fontWeight>=700,need=(size>=24||(bold&&size>=18.66))?3.1:4.6;
+ if(ratio(fg,bg)>=need)return;
+ var ob0=rgb(cs.backgroundColor);if(ob0&&ob0[3]>=1&&lum(fg)>.5){for(var j=1;j<=20;j++){var bb=mix(ob0,[0,0,0],j/20);if(ratio(fg,bb)>=need){el.style.setProperty('background-color','rgb('+bb.join(',')+')','important');return}}}
+ var best=null;[[0,0,0],[255,255,255]].forEach(function(t){for(var k=1;k<=20;k++){var c=mix(fg,t,k/20);if(ratio(c,bg)>=need){if(!best||k<best.k)best={c:c,k:k};break}}});
+ if(best){el.style.setProperty('color','rgb('+best.c.join(',')+')','important');return}
+ var ob=rgb(cs.backgroundColor);if(ob&&ob[3]>=1){var to=lum(fg)>.5?[0,0,0]:[255,255,255];for(var k=1;k<=20;k++){var b2=mix(ob,to,k/20);if(ratio(fg,b2)>=need){el.style.setProperty('background-color','rgb('+b2.join(',')+')','important');return}}}}
+function name(el){var t=el.getAttribute('placeholder')||el.getAttribute('title')||el.name||el.id||'';if(!t){var p=el.closest('tr,li,div,p,td');if(p){var tx=(p.innerText||'').trim().split('\n')[0];t=tx.slice(0,60)}}return t||'isian'}
+function run(){
+ if(!d.documentElement.lang)d.documentElement.lang='id';
+ if(!d.querySelector('main,[role=main]')){var big=null,ba=0;[].forEach.call(d.body.children,function(c){if(/^(SCRIPT|STYLE|HEADER|NAV|FOOTER|NOSCRIPT)$/.test(c.tagName))return;var a=c.offsetWidth*c.offsetHeight;if(a>ba){ba=a;big=c}});for(var g=0;big&&big.querySelector('header,footer,nav')&&g<4;g++){var nb=null,na=0;[].forEach.call(big.children,function(c){if(/^(SCRIPT|STYLE|HEADER|NAV|FOOTER)$/.test(c.tagName))return;var a=c.offsetWidth*c.offsetHeight;if(a>na){na=a;nb=c}});big=nb}if(big&&!big.getAttribute('role')&&!big.querySelector('header,footer,nav'))big.setAttribute('role','main')}
+ d.querySelectorAll('input:not([type=hidden]),select,textarea').forEach(function(el){if(el.labels&&el.labels.length)return;if(el.getAttribute('aria-label')||el.getAttribute('aria-labelledby'))return;if(/^(button|submit|reset)$/.test(el.type))return;el.setAttribute('aria-label',name(el))});
+ d.querySelectorAll('th').forEach(function(th){if(!(th.textContent||'').trim()&&!th.querySelector('img,svg,input,select')){var td=d.createElement('td');for(var i=0;i<th.attributes.length;i++)td.setAttribute(th.attributes[i].name,th.attributes[i].value);while(th.firstChild)td.appendChild(th.firstChild);th.replaceWith(td)}});
+ d.querySelectorAll('svg[role=img]').forEach(function(s){if(s.getAttribute('aria-label')||s.querySelector('title'))return;var f=s.closest('figure'),c=f&&f.querySelector('figcaption');s.setAttribute('aria-label',c?c.textContent.trim():'diagram')});
+ d.querySelectorAll('body *').forEach(function(el){if(own(el))fix(el)});
+ d.querySelectorAll('body *').forEach(function(el){var cs=getComputedStyle(el);if(/(auto|scroll)/.test(cs.overflowX+cs.overflowY)&&(el.scrollHeight>el.clientHeight||el.scrollWidth>el.clientWidth)&&!el.hasAttribute('tabindex')&&!el.querySelector('a,button,input,select,textarea,[tabindex]'))el.setAttribute('tabindex','0')});
+}
+var q=0;function later(){if(q)return;q=setTimeout(function(){q=0;obs.disconnect();run();obs.observe(d.body,{childList:true,subtree:true,attributes:true,attributeFilter:['class']})},600)}
+var obs=new MutationObserver(later);
+function start(){run();obs.observe(d.body,{childList:true,subtree:true,attributes:true,attributeFilter:['class']})}
+if(d.readyState==='loading')d.addEventListener('DOMContentLoaded',start);else start();
+})();</script>
+</body>
+</html>
