@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>P3 · Larik Produksi Blok</title>
+<meta name="description" content="Simulasi interaktif Pertemuan 3 mata kuliah Algoritma dan Struktur Data (STIP-1103): Larik Produksi Blok. Prodi Sistem dan Teknologi Informasi, Institut Teknologi Sawit Indonesia.">
+<link rel="canonical" href="https://syrvrr.github.io/kuliah/algoritma-struktur-data/sim/p03.html">
+<link rel="icon" href="../../../favicon.svg" type="image/svg+xml">
+</head>
+<body>
+<title>Larik Produksi Blok</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Seri latihan ASD: pita tab di atas, satu panggung interaktif per bab, panel rumus di samping (bertumpuk di ponsel). */
+:root{
+  --bg:#F3F6F2; --panel:#FFFFFF; --ink:#1B2A22; --muted:#5B6B62; --line:#D5DED7;
+  --palm:#1F6B45; --palm-soft:#DCEFE3; --fruit:#D2502A; --fruit-soft:#FBE3D9;
+  --amber:#E2A400; --amber-soft:#FFF2C7; --sky:#2B6CB0; --sky-soft:#DCE9F7; --road:#3C4744; --slot:#EEF2EE;
+  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"JetBrains Mono", ui-monospace, Consolas, monospace;
+  --r:10px;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#111915; --panel:#18231D; --ink:#E6EFE9; --muted:#9DB0A5; --line:#2C3B33;
+  --palm:#5CC08A; --palm-soft:#1E3A2B; --fruit:#F07A52; --fruit-soft:#3E2219;
+  --amber:#F2C443; --amber-soft:#3A3115; --sky:#6FA8E8; --sky-soft:#1C2C40; --road:#26302D; --slot:#1F2A24; color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#111915; --panel:#18231D; --ink:#E6EFE9; --muted:#9DB0A5; --line:#2C3B33;
+  --palm:#5CC08A; --palm-soft:#1E3A2B; --fruit:#F07A52; --fruit-soft:#3E2219;
+  --amber:#F2C443; --amber-soft:#3A3115; --sky:#6FA8E8; --sky-soft:#1C2C40; --road:#26302D; --slot:#1F2A24; color-scheme:dark }
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.55;
+  padding-left:max(16px, env(safe-area-inset-left,0px));padding-right:max(16px, env(safe-area-inset-right,0px));padding-block:20px 48px}
+.wrap{max-width:1120px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+h1,h2,h3{font-family:var(--f-display);margin:0;text-wrap:balance;line-height:1.15}
+h1{font-size:clamp(28px,4.4vw,44px);font-weight:800;letter-spacing:-.01em}
+h2{font-size:clamp(21px,3vw,27px);font-weight:800}
+h3{font-size:18px;font-weight:600}
+p{margin:0;max-width:68ch}
+code,.mono{font-family:var(--f-mono);font-size:.92em}
+header.top{display:flex;flex-direction:column;gap:8px}
+.eyebrow{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--palm);font-weight:700}
+.lead{color:var(--muted);font-size:17px}
+nav.tabs{display:flex;gap:6px;flex-wrap:wrap;border-bottom:2px solid var(--line)}
+nav.tabs a{padding:10px 14px;text-decoration:none;color:var(--muted);font-weight:700;border-radius:8px 8px 0 0;border:2px solid transparent;border-bottom:none;margin-bottom:-2px;font-size:15px}
+nav.tabs a .no{font-family:var(--f-mono);font-size:12px;margin-right:6px;opacity:.75}
+nav.tabs a[aria-current="page"]{color:var(--ink);background:var(--panel);border-color:var(--line)}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+section.bab{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:20px;align-items:start}
+@media (max-width:860px){section.bab{grid-template-columns:1fr}}
+.stage{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:18px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.side{display:flex;flex-direction:column;gap:14px;min-width:0}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.card.rumus{border-left:5px solid var(--palm)}
+.btns{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+button{font:inherit;font-weight:700;border-radius:8px;border:2px solid var(--palm);background:var(--palm);color:var(--panel);padding:8px 14px;cursor:pointer;min-height:40px}
+button.alt{background:transparent;color:var(--palm)}
+button.warn{background:var(--fruit);border-color:var(--fruit)}
+button:disabled{opacity:.45;cursor:not-allowed}
+.status{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font-family:var(--f-mono);font-size:13px;background:var(--slot);border:1px solid var(--line);border-radius:999px;padding:4px 10px;font-variant-numeric:tabular-nums}
+.chip b{font-weight:600;color:var(--palm)}
+.say{background:var(--amber-soft);border-radius:8px;padding:10px 12px;min-height:48px}
+.say.bad{background:var(--fruit-soft)}
+.say.good{background:var(--palm-soft)}
+.f{font-family:var(--f-mono);font-size:14.5px;background:var(--slot);border-radius:8px;padding:10px 12px;overflow-x:auto;white-space:pre-wrap;line-height:1.6}
+.f .hl,.hl{background:var(--amber-soft);color:var(--ink);border-radius:4px;padding:0 3px;font-weight:600}
+pre.kode{margin:0;font-family:var(--f-mono);font-size:13px;background:var(--slot);border-radius:8px;padding:10px 12px;overflow-x:auto;line-height:1.5}
+pre.kode span{display:block;padding:0 4px;border-radius:4px;white-space:pre}
+pre.kode span.on{background:var(--amber-soft);font-weight:600}
+ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:4px}
+.small{font-size:14px;color:var(--muted)}
+input[type=number],input[type=text],select,textarea{font:inherit;padding:7px 10px;border-radius:8px;border:2px solid var(--line);background:var(--panel);color:var(--ink);min-width:0}
+input[type=number]{width:96px}
+input[type=range]{accent-color:var(--palm);max-width:100%}
+label.inl{display:inline-flex;align-items:center;gap:6px;font-size:14px;flex-wrap:wrap}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+@media (max-width:520px){.grid2{grid-template-columns:1fr}}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:6px}
+.stats div{background:var(--slot);border-radius:6px;padding:6px 8px;font-size:12px;color:var(--muted)}
+.stats b{display:block;font-family:var(--f-mono);font-size:17px;color:var(--ink);font-variant-numeric:tabular-nums}
+.stats div.alarm b{color:var(--fruit)}
+.scroll{overflow-x:auto;max-width:100%}
+table.t{border-collapse:collapse;font-size:14px;width:100%;font-variant-numeric:tabular-nums}
+table.t th{background:var(--palm);color:var(--panel);text-align:left;padding:6px 8px;font-weight:700}
+table.t td{border-bottom:1px solid var(--line);padding:5px 8px}
+table.t tr.on td{background:var(--amber-soft);font-weight:700}
+.cells{display:flex;gap:4px;flex-wrap:wrap}
+.cell{min-width:44px;border:2px solid var(--line);border-radius:6px;text-align:center;padding:5px 3px;font-family:var(--f-mono);font-weight:600;background:var(--panel);transition:background .25s,border-color .25s,transform .25s}
+.cell small{display:block;font-size:10px;color:var(--muted);font-weight:400}
+.cell.a{background:var(--amber-soft);border-color:var(--amber)}
+.cell.b{background:var(--fruit-soft);border-color:var(--fruit)}
+.cell.g{background:var(--palm-soft);border-color:var(--palm)}
+.cell.s{background:var(--sky-soft);border-color:var(--sky)}
+.cell.dim{opacity:.35}
+.legend{display:flex;flex-wrap:wrap;gap:12px;font-size:13px;color:var(--muted)}
+.legend i{display:inline-block;width:14px;height:14px;border-radius:4px;vertical-align:-2px;margin-right:4px;border:2px solid}
+svg.viz{width:100%;height:auto;display:block;max-width:100%}
+.stepbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.stepbar .ctr{font-family:var(--f-mono);font-size:13px;color:var(--muted)}
+.q{display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--line);padding-top:14px}
+.opts{display:flex;flex-direction:column;gap:6px}
+.opts button{background:var(--panel);color:var(--ink);border:2px solid var(--line);text-align:left;font-weight:400}
+.opts button.ok{border-color:var(--palm);background:var(--palm-soft);font-weight:700}
+.opts button.no{border-color:var(--fruit);background:var(--fruit-soft)}
+.fb{font-size:14px}
+.score{font-family:var(--f-display);font-size:22px;font-weight:800}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+
+
+.tbl{display:grid;gap:4px}
+.tbl .cell{cursor:pointer;min-width:0}
+.mem{display:flex;gap:3px;overflow-x:auto;padding-bottom:6px}
+.mem .cell{min-width:46px;flex:none}
+#bM{flex-wrap:wrap}
+.hdr{font-size:12px;color:var(--muted);font-family:var(--f-mono);text-align:center;align-self:center}
+
+</style>
+<div class="wrap">
+  <header class="top">
+    <div class="eyebrow">Pertemuan 3 · Algoritma dan Struktur Data</div>
+    <h1>Larik Produksi Blok</h1>
+    <p class="lead">Larik dua dimensi menyimpan tabel, misalnya produksi blok kebun per minggu. Di memori, tabel itu sebenarnya satu baris panjang. Klik sel untuk melihat alamatnya dihitung, geser kolom untuk melihat biaya sisip, dan coba indeks di luar batas.</p>
+  </header>
+  <nav class="tabs" aria-label="Bab latihan"><a href="#alamat"><span class="no">1</span>Alamat sel</a><a href="#sisip"><span class="no">2</span>Sisip kolom</a><a href="#batas"><span class="no">3</span>Batas indeks</a><a href="#kuis"><span class="no">4</span>Kuis</a></nav>
+<section class="bab" data-view="alamat" data-tab="Alamat sel">
+  <div class="stage">
+    <h2>Klik satu sel, lihat alamatnya dihitung</h2>
+    <div class="btns">
+      <label class="inl" for="rb">baris <input type="number" id="rb" min="2" max="5" value="3"></label>
+      <label class="inl" for="rk">kolom <input type="number" id="rk" min="2" max="6" value="4"></label>
+      <label class="inl" for="basis">basis <input type="number" id="basis" value="1000"></label>
+      <label class="inl" for="uk">ukuran (byte) <input type="number" id="uk" value="8"></label>
+    </div>
+    <div id="tbl" class="tbl"></div>
+    <h3>Memori row-major (baris demi baris)</h3><div class="mem" id="memR"></div>
+    <h3>Memori column-major (kolom demi kolom)</h3><div class="mem" id="memC"></div>
+    <div class="f" id="aF"></div>
+  </div>
+  <div class="side">
+    <div class="card rumus"><h3>Rumus alamat</h3>
+      <div class="f">row-major   : basis + (i × kolom + j) × ukuran
+column-major: basis + (j × baris + i) × ukuran</div>
+      <p class="small"><b>Bukti</b>: sel [i][j] didahului i baris penuh (i × kolom sel) ditambah j sel di barisnya. Itu sebabnya offsetnya i × kolom + j.</p>
+      <p class="small">Satu perkalian dan satu penjumlahan, berapa pun ukuran larik: akses <b>O(1)</b>.</p>
+    </div>
+    <div class="card"><h3>Contoh BSL</h3><p class="small">Baris = blok kebun, kolom = minggu. Nilai sel = ton TBS. Python dan C memakai row-major; Fortran dan MATLAB column-major.</p></div>
+  </div>
+</section>
+<section class="bab" data-view="sisip" data-tab="Sisip kolom" hidden>
+  <div class="stage">
+    <h2>Menyisipkan minggu baru: siapa yang harus pindah?</h2>
+    <label class="inl" for="sj">Sisip kolom baru di posisi j = <b id="sjv">1</b> <input type="range" id="sj" min="0" max="4" value="1"></label>
+    <div id="sT" class="tbl"></div>
+    <div class="btns"><button id="sGo">Jalankan sisip</button><button id="sReset" class="alt">Ulang</button></div>
+    <div class="f" id="sF"></div>
+  </div>
+  <div class="side">
+    <div class="card rumus"><h3>Rumus biaya</h3>
+      <div class="f">pemindahan = baris × (kolom − j)
+rata-rata (j acak) ≈ baris × kolom / 2
+→ O(baris × kolom)</div>
+      <p class="small">Elemen larik berdampingan di memori, jadi setiap elemen di kanan posisi j harus bergeser satu tempat.</p>
+    </div>
+    <div class="card"><h3>Kode</h3><pre class="kode">def sisip_kolom(self, j, nilai=0):
+    for i in range(self.baris):
+        self.data[i].insert(j, nilai)
+    self.kolom += 1</pre></div>
+  </div>
+</section>
+<section class="bab" data-view="batas" data-tab="Batas indeks" hidden>
+  <div class="stage">
+    <h2>Membaca kolom yang tidak ada</h2>
+    <p class="small">Juli 2024: sebuah program keamanan membaca kolom ke-21 dari data yang hanya punya 20 kolom. 8,5 juta komputer berhenti. Coba sendiri di larik 20 kolom ini.</p>
+    <div class="mem" id="bM"></div>
+    <div class="btns"><label class="inl" for="bi">baca indeks <input type="number" id="bi" value="20"></label>
+      <label class="inl"><input type="checkbox" id="bc" checked> pakai pemeriksaan batas</label></div>
+    <div class="say" id="bSay"></div>
+  </div>
+  <div class="side">
+    <div class="card rumus"><h3>Syarat indeks sah</h3><div class="f">0 ≤ i &lt; baris   dan   0 ≤ j &lt; kolom</div><p class="small">Larik 20 kolom punya indeks 0 sampai 19. Indeks 20 sudah di luar.</p></div>
+    <div class="card"><h3>Pemeriksaan di Larik2D</h3><pre class="kode">def ambil(self, i, j):
+    if not (0 &lt;= i &lt; self.baris and 0 &lt;= j &lt; self.kolom):
+        raise IndexError(f"[{i}][{j}] di luar batas")
+    return self.data[i][j]</pre></div>
+  </div>
+</section>
+<section class="bab" data-view="kuis" data-tab="Kuis" hidden>
+  <div class="stage" id="quiz"><h2>Uji pemahaman</h2><p class="small">Pilih satu jawaban. Penjelasan muncul langsung.</p></div>
+  <div class="side"><div class="card"><h3>Skor</h3><div class="score" id="qScore"></div><button id="qReset" class="alt">Ulang kuis</button></div>
+    <div class="card rumus"><h3>Ringkasan</h3><ul class="plain"><li>N = baris × kolom.</li><li>Row-major: basis + (i·kolom + j)·ukuran.</li><li>Akses O(1); sisip kolom O(baris × kolom).</li><li>Indeks sah: 0 ≤ j &lt; kolom.</li></ul></div></div>
+</section>
+</div>
+<script>
+/* Bantuan bersama seri latihan ASD */
+const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const sleep = ms => new Promise(r => setTimeout(r, RM ? 0 : ms));
+const fmt = (x, d = 0) => Number(x).toLocaleString('id-ID', { minimumFractionDigits: d, maximumFractionDigits: d });
+const onView = {};
+function tabs() {
+  const views = $$('section.bab').map(s => s.dataset.view);
+  function show() {
+    const v = views.includes(location.hash.slice(1)) ? location.hash.slice(1) : views[0];
+    $$('section.bab').forEach(s => s.hidden = s.dataset.view !== v);
+    $$('nav.tabs a').forEach(a => a.getAttribute('href') === '#' + v ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current'));
+    Object.entries(onView).forEach(([k, f]) => f(k === v));
+  }
+  addEventListener('hashchange', show); show();
+}
+/* Langkah demi langkah: steps = [{...state, say}], draw(step, i) menggambar */
+function Stepper(root, draw, ms = 900) {
+  const el = typeof root === 'string' ? $(root) : root;
+  el.innerHTML = '<button data-a="prev" class="alt">‹ Sebelumnya</button><button data-a="next">Berikutnya ›</button><button data-a="play" class="alt">Putar otomatis</button><span class="ctr"></span>';
+  const S = { steps: [], i: 0, timer: null };
+  const ctr = el.querySelector('.ctr'), bp = el.querySelector('[data-a=play]');
+  function go(i) { S.i = Math.max(0, Math.min(S.steps.length - 1, i)); draw(S.steps[S.i], S.i, S.steps); ctr.textContent = `langkah ${S.i + 1} / ${S.steps.length}`; }
+  function stop() { clearInterval(S.timer); S.timer = null; bp.textContent = 'Putar otomatis'; }
+  el.querySelector('[data-a=prev]').onclick = () => { stop(); go(S.i - 1); };
+  el.querySelector('[data-a=next]').onclick = () => { stop(); go(S.i + 1); };
+  bp.onclick = () => {
+    if (S.timer) return stop();
+    if (S.i >= S.steps.length - 1) go(0);
+    bp.textContent = 'Jeda';
+    S.timer = setInterval(() => { if (S.i >= S.steps.length - 1) return stop(); go(S.i + 1); }, RM ? 400 : ms);
+  };
+  return { load(steps, start = 0) { stop(); S.steps = steps; go(start); }, stop, get i() { return S.i; }, go };
+}
+/* Kuis: QUIZ = [[soal, [pilihan], indeksBenar, penjelasan]] */
+function quiz(box, scoreEl, resetBtn, QUIZ) {
+  const J = {};
+  function draw() {
+    box.querySelectorAll('.q').forEach(e => e.remove());
+    QUIZ.forEach(([t, ops, ok, ex], n) => {
+      const d = document.createElement('div'); d.className = 'q'; const j = J[n];
+      d.innerHTML = `<b>${n + 1}. ${t}</b><div class="opts">${ops.map((o, i) => `<button data-i="${i}" ${j !== undefined ? 'disabled' : ''} class="${j !== undefined && i === ok ? 'ok' : j === i ? 'no' : ''}">${o}</button>`).join('')}</div>` +
+        (j !== undefined ? `<div class="fb">${j === ok ? '<b>Benar.</b> ' : '<b>Belum tepat.</b> '}${ex}</div>` : '');
+      d.querySelectorAll('button').forEach(b => b.onclick = () => { J[n] = +b.dataset.i; draw(); });
+      box.appendChild(d);
+    });
+    scoreEl.textContent = `${Object.entries(J).filter(([n, j]) => QUIZ[n][2] === j).length} / ${QUIZ.length}`;
+  }
+  resetBtn.onclick = () => { Object.keys(J).forEach(k => delete J[k]); draw(); };
+  draw();
+}
+function kode(el, lines) { el.innerHTML = lines.map((l, i) => `<span data-l="${i}">${l.replace(/&/g, '&amp;').replace(/</g, '&lt;') || ' '}</span>`).join(''); return on => el.querySelectorAll('span').forEach(s => s.classList.toggle('on', (on || []).includes(+s.dataset.l))); }
+
+
+const DATA = [[12, 15, 11, 14, 13, 10], [20, 18, 22, 19, 21, 17], [9, 10, 8, 11, 12, 9], [16, 14, 15, 17, 13, 18], [7, 8, 9, 6, 10, 8]];
+const A = { i: 2, j: 1 };
+function drawA() {
+  const R = Math.max(2, Math.min(5, +$('#rb').value || 3)), K = Math.max(2, Math.min(6, +$('#rk').value || 4)), B = +$('#basis').value, U = +$('#uk').value;
+  A.i = Math.min(A.i, R - 1); A.j = Math.min(A.j, K - 1);
+  let h = `<div></div>` + Array.from({ length: K }, (_, j) => `<div class="hdr">M${j + 1} [j=${j}]</div>`).join('');
+  for (let i = 0; i < R; i++) { h += `<div class="hdr">Blok ${i + 1} [i=${i}]</div>`; for (let j = 0; j < K; j++) h += `<button class="cell ${i === A.i && j === A.j ? 'a' : i === A.i ? 'g' : ''}" data-i="${i}" data-j="${j}" style="color:var(--ink)">${DATA[i][j]} t<small>[${i}][${j}]</small></button>`; }
+  $('#tbl').style.gridTemplateColumns = `90px repeat(${K}, minmax(0,1fr))`; $('#tbl').innerHTML = h;
+  $$('#tbl button').forEach(b => b.onclick = () => { A.i = +b.dataset.i; A.j = +b.dataset.j; drawA(); });
+  const offR = A.i * K + A.j, offC = A.j * R + A.i;
+  $('#memR').innerHTML = Array.from({ length: R * K }, (_, x) => { const i = Math.floor(x / K), j = x % K; return `<div class="cell ${x === offR ? 'a' : x < offR ? 'g' : ''}">${DATA[i][j]}<small>${B + x * U}</small></div>`; }).join('');
+  $('#memC').innerHTML = Array.from({ length: R * K }, (_, x) => { const j = Math.floor(x / R), i = x % R; return `<div class="cell ${x === offC ? 'a' : x < offC ? 's' : ''}">${DATA[i][j]}<small>${B + x * U}</small></div>`; }).join('');
+  $('#aF').innerHTML = `sel [${A.i}][${A.j}] (Blok ${A.i + 1}, M${A.j + 1})
+row-major   : ${B} + (${A.i} × ${K} + ${A.j}) × ${U} = ${B} + ${offR} × ${U} = <span class="hl">${B + offR * U}</span>   (${offR} sel hijau mendahuluinya)
+column-major: ${B} + (${A.j} × ${R} + ${A.i}) × ${U} = ${B} + ${offC} × ${U} = <span class="hl">${B + offC * U}</span>   (${offC} sel biru mendahuluinya)`;
+}
+['#rb', '#rk', '#basis', '#uk'].forEach(s => $(s).oninput = drawA);
+
+const S = { busy: false };
+function drawS(geser = -1, baru = false) {
+  const j = +$('#sj').value; $('#sjv').textContent = j; const K = 4 + (baru ? 1 : 0);
+  let h = `<div></div>` + Array.from({ length: K }, (_, c) => `<div class="hdr">[${c}]</div>`).join('');
+  for (let i = 0; i < 3; i++) {
+    h += `<div class="hdr">Blok ${i + 1}</div>`;
+    const row = baru ? [...DATA[i].slice(0, j), 0, ...DATA[i].slice(j, 4)] : DATA[i].slice(0, 4);
+    row.forEach((v, c) => { const cl = baru ? (c === j ? 'a' : c > j ? 'b' : '') : (c >= j && geser >= 0 ? 'b' : ''); h += `<div class="cell ${cl}">${baru && c === j ? 'baru' : v}</div>`; });
+  }
+  $('#sT').style.gridTemplateColumns = `70px repeat(${K}, minmax(0,1fr))`; $('#sT').innerHTML = h;
+}
+function infoS(sel) { const j = +$('#sj').value; $('#sF').innerHTML = `pemindahan = baris × (kolom − j) = 3 × (4 − ${j}) = <span class="hl">${3 * (4 - j)}</span>` + (sel ? `\nSel merah sudah bergeser satu kolom ke kanan; kolom kuning adalah minggu baru.` : `\nSel merah harus digeser. Tekan "Jalankan sisip".`); }
+$('#sj').oninput = () => { drawS(0); infoS(false); };
+$('#sGo').onclick = async () => { drawS(0); await sleep(500); drawS(0, true); infoS(true); };
+$('#sReset').onclick = () => { drawS(0); infoS(false); };
+
+const NILAI = [41, 7, 33, 12, 9, 50, 28, 3, 61, 17, 22, 8, 45, 30, 11, 6, 19, 38, 26, 14];
+function drawB() {
+  const i = Math.trunc(+$('#bi').value), cek = $('#bc').checked;
+  $('#bM').innerHTML = NILAI.map((v, x) => `<div class="cell ${x === i ? 'g' : ''}">${v}<small>[${x}]</small></div>`).join('') + (i >= 20 ? `<div class="cell b">???<small>[${i}]</small></div>` : '');
+  if (i >= 0 && i < 20) { $('#bSay').className = 'say good'; $('#bSay').textContent = `Indeks ${i} sah (0 ≤ ${i} < 20). Nilai = ${NILAI[i]}.`; return; }
+  $('#bSay').className = 'say bad';
+  $('#bSay').innerHTML = cek ? `<b>IndexError: [${i}] di luar batas.</b> Syarat 0 ≤ ${i} &lt; 20 salah, jadi program berhenti dengan pesan jelas dan bisa diperbaiki.`
+    : `Tanpa pemeriksaan, bahasa seperti C tetap membaca alamat basis + ${i} × ukuran. Isinya milik data lain (???). Program bisa memakai sampah itu atau jatuh. Inilah yang terjadi pada insiden Juli 2024.`;
+}
+$('#bi').oninput = drawB; $('#bc').onchange = drawB;
+drawA(); drawS(0); infoS(false); drawB();
+quiz($('#quiz'), $('#qScore'), $('#qReset'), [
+  ['Larik 4 baris × 5 kolom, basis 1000, 8 byte, row-major. Alamat [2][3]?', ['1104', '1096', '1112', '1088'], 0, '1000 + (2 × 5 + 3) × 8 = 1000 + 104 = 1104.'],
+  ['Larik yang sama tetapi column-major. Alamat [2][3]?', ['1104', '1112', '1136', '1120'], 1, '1000 + (3 × 4 + 2) × 8 = 1000 + 112 = 1112.'],
+  ['Larik 3 × 4, sisip kolom di j = 0. Berapa pemindahan?', ['3', '4', '12', '9'], 2, '3 × (4 − 0) = 12: semua elemen bergeser.'],
+  ['Mengapa akses larik[i][j] disebut O(1)?', ['Karena larik selalu kecil', 'Alamat dihitung dengan rumus tetap tanpa menelusuri elemen lain', 'Karena Python cepat', 'Karena terurut'], 1, 'Rumus basis + (i·kolom + j)·ukuran selalu butuh jumlah operasi yang sama.'],
+  ['Larik berisi 20 kolom. Indeks kolom terbesar yang sah?', ['20', '19', '21', '0'], 1, 'Indeks mulai 0, jadi 0 … 19.'],
+]);
+tabs();
+
+</script>
+
+<script>(function(){
+var d=document;
+function rgb(s){var m=s&&s.match(/rgba?\(([\d.]+),\s*([\d.]+),\s*([\d.]+)(?:,\s*([\d.]+))?/);return m?[+m[1],+m[2],+m[3],m[4]===undefined?1:+m[4]]:null}
+function lum(c){return [0,1,2].reduce(function(s,i,k){var v=c[i]/255;v=v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4);return s+v*[.2126,.7152,.0722][k]},0)}
+function ratio(a,b){var x=lum(a),y=lum(b);return (Math.max(x,y)+.05)/(Math.min(x,y)+.05)}
+function mix(a,b,t){return [0,1,2].map(function(i){return Math.round(a[i]+(b[i]-a[i])*t)})}
+function bgOf(el){var stack=[];for(var n=el;n&&n.nodeType===1;n=n.parentElement){var cs=getComputedStyle(n);if(cs.backgroundImage&&cs.backgroundImage!=='none')return null;var c=rgb(cs.backgroundColor);if(c&&c[3]>0){stack.push(c);if(c[3]>=1)break}}
+ var base=[255,255,255];for(var i=stack.length-1;i>=0;i--){var s=stack[i];base=mix(base,s,s[3])}return base}
+function own(el){for(var i=0;i<el.childNodes.length;i++){var t=el.childNodes[i];if(t.nodeType===3&&t.nodeValue.trim())return true}return false}
+function fix(el){var cs=getComputedStyle(el);if(cs.visibility==='hidden'||cs.display==='none')return;var fg=rgb(cs.color),bg=bgOf(el);if(!fg||!bg)return;
+ var op=1;for(var n=el;n&&n.nodeType===1;n=n.parentElement)op*=+getComputedStyle(n).opacity;if(op<.999){var q2=el;while(q2&&+getComputedStyle(q2).opacity>=.999)q2=q2.parentElement;var ef=mix(bg,fg,fg[3]*op);if(ratio(ef,bg)<4.6&&q2){q2.style.setProperty('opacity','1','important');return fix(el)}}fg=mix(bg,fg,fg[3]);var size=parseFloat(cs.fontSize),bold=+cs.fontWeight>=700,need=(size>=24||(bold&&size>=18.66))?3.1:4.6;
+ if(ratio(fg,bg)>=need)return;
+ var ob0=rgb(cs.backgroundColor);if(ob0&&ob0[3]>=1&&lum(fg)>.5){for(var j=1;j<=20;j++){var bb=mix(ob0,[0,0,0],j/20);if(ratio(fg,bb)>=need){el.style.setProperty('background-color','rgb('+bb.join(',')+')','important');return}}}
+ var best=null;[[0,0,0],[255,255,255]].forEach(function(t){for(var k=1;k<=20;k++){var c=mix(fg,t,k/20);if(ratio(c,bg)>=need){if(!best||k<best.k)best={c:c,k:k};break}}});
+ if(best){el.style.setProperty('color','rgb('+best.c.join(',')+')','important');return}
+ var ob=rgb(cs.backgroundColor);if(ob&&ob[3]>=1){var to=lum(fg)>.5?[0,0,0]:[255,255,255];for(var k=1;k<=20;k++){var b2=mix(ob,to,k/20);if(ratio(fg,b2)>=need){el.style.setProperty('background-color','rgb('+b2.join(',')+')','important');return}}}}
+function name(el){var t=el.getAttribute('placeholder')||el.getAttribute('title')||el.name||el.id||'';if(!t){var p=el.closest('tr,li,div,p,td');if(p){var tx=(p.innerText||'').trim().split('\n')[0];t=tx.slice(0,60)}}return t||'isian'}
+function run(){
+ if(!d.documentElement.lang)d.documentElement.lang='id';
+ if(!d.querySelector('main,[role=main]')){var big=null,ba=0;[].forEach.call(d.body.children,function(c){if(/^(SCRIPT|STYLE|HEADER|NAV|FOOTER|NOSCRIPT)$/.test(c.tagName))return;var a=c.offsetWidth*c.offsetHeight;if(a>ba){ba=a;big=c}});for(var g=0;big&&big.querySelector('header,footer,nav')&&g<4;g++){var nb=null,na=0;[].forEach.call(big.children,function(c){if(/^(SCRIPT|STYLE|HEADER|NAV|FOOTER)$/.test(c.tagName))return;var a=c.offsetWidth*c.offsetHeight;if(a>na){na=a;nb=c}});big=nb}if(big&&!big.getAttribute('role')&&!big.querySelector('header,footer,nav'))big.setAttribute('role','main')}
+ d.querySelectorAll('input:not([type=hidden]),select,textarea').forEach(function(el){if(el.labels&&el.labels.length)return;if(el.getAttribute('aria-label')||el.getAttribute('aria-labelledby'))return;if(/^(button|submit|reset)$/.test(el.type))return;el.setAttribute('aria-label',name(el))});
+ d.querySelectorAll('th').forEach(function(th){if(!(th.textContent||'').trim()&&!th.querySelector('img,svg,input,select')){var td=d.createElement('td');for(var i=0;i<th.attributes.length;i++)td.setAttribute(th.attributes[i].name,th.attributes[i].value);while(th.firstChild)td.appendChild(th.firstChild);th.replaceWith(td)}});
+ d.querySelectorAll('svg[role=img]').forEach(function(s){if(s.getAttribute('aria-label')||s.querySelector('title'))return;var f=s.closest('figure'),c=f&&f.querySelector('figcaption');s.setAttribute('aria-label',c?c.textContent.trim():'diagram')});
+ d.querySelectorAll('body *').forEach(function(el){if(own(el))fix(el)});
+ d.querySelectorAll('body *').forEach(function(el){var cs=getComputedStyle(el);if(/(auto|scroll)/.test(cs.overflowX+cs.overflowY)&&(el.scrollHeight>el.clientHeight||el.scrollWidth>el.clientWidth)&&!el.hasAttribute('tabindex')&&!el.querySelector('a,button,input,select,textarea,[tabindex]'))el.setAttribute('tabindex','0')});
+}
+var q=0;function later(){if(q)return;q=setTimeout(function(){q=0;obs.disconnect();run();obs.observe(d.body,{childList:true,subtree:true,attributes:true,attributeFilter:['class']})},600)}
+var obs=new MutationObserver(later);
+function start(){run();obs.observe(d.body,{childList:true,subtree:true,attributes:true,attributeFilter:['class']})}
+if(d.readyState==='loading')d.addEventListener('DOMContentLoaded',start);else start();
+})();</script>
+</body>
+</html>

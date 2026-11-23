@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>P6 · Rantai Dua Arah dan Rotasi Panen</title>
+<meta name="description" content="Simulasi interaktif Pertemuan 6 mata kuliah Algoritma dan Struktur Data (STIP-1103): Rantai Dua Arah dan Rotasi Panen. Prodi Sistem dan Teknologi Informasi, Institut Teknologi Sawit Indonesia.">
+<link rel="canonical" href="https://syrvrr.github.io/kuliah/algoritma-struktur-data/sim/p06.html">
+<link rel="icon" href="../../../favicon.svg" type="image/svg+xml">
+</head>
+<body>
+<title>Rantai Dua Arah dan Rotasi Panen</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Seri latihan ASD: pita tab di atas, satu panggung interaktif per bab, panel rumus di samping (bertumpuk di ponsel). */
+:root{
+  --bg:#F3F6F2; --panel:#FFFFFF; --ink:#1B2A22; --muted:#5B6B62; --line:#D5DED7;
+  --palm:#1F6B45; --palm-soft:#DCEFE3; --fruit:#D2502A; --fruit-soft:#FBE3D9;
+  --amber:#E2A400; --amber-soft:#FFF2C7; --sky:#2B6CB0; --sky-soft:#DCE9F7; --road:#3C4744; --slot:#EEF2EE;
+  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"JetBrains Mono", ui-monospace, Consolas, monospace;
+  --r:10px;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#111915; --panel:#18231D; --ink:#E6EFE9; --muted:#9DB0A5; --line:#2C3B33;
+  --palm:#5CC08A; --palm-soft:#1E3A2B; --fruit:#F07A52; --fruit-soft:#3E2219;
+  --amber:#F2C443; --amber-soft:#3A3115; --sky:#6FA8E8; --sky-soft:#1C2C40; --road:#26302D; --slot:#1F2A24; color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#111915; --panel:#18231D; --ink:#E6EFE9; --muted:#9DB0A5; --line:#2C3B33;
+  --palm:#5CC08A; --palm-soft:#1E3A2B; --fruit:#F07A52; --fruit-soft:#3E2219;
+  --amber:#F2C443; --amber-soft:#3A3115; --sky:#6FA8E8; --sky-soft:#1C2C40; --road:#26302D; --slot:#1F2A24; color-scheme:dark }
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.55;
+  padding-left:max(16px, env(safe-area-inset-left,0px));padding-right:max(16px, env(safe-area-inset-right,0px));padding-block:20px 48px}
+.wrap{max-width:1120px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+h1,h2,h3{font-family:var(--f-display);margin:0;text-wrap:balance;line-height:1.15}
+h1{font-size:clamp(28px,4.4vw,44px);font-weight:800;letter-spacing:-.01em}
+h2{font-size:clamp(21px,3vw,27px);font-weight:800}
+h3{font-size:18px;font-weight:600}
+p{margin:0;max-width:68ch}
+code,.mono{font-family:var(--f-mono);font-size:.92em}
+header.top{display:flex;flex-direction:column;gap:8px}
+.eyebrow{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--palm);font-weight:700}
+.lead{color:var(--muted);font-size:17px}
+nav.tabs{display:flex;gap:6px;flex-wrap:wrap;border-bottom:2px solid var(--line)}
+nav.tabs a{padding:10px 14px;text-decoration:none;color:var(--muted);font-weight:700;border-radius:8px 8px 0 0;border:2px solid transparent;border-bottom:none;margin-bottom:-2px;font-size:15px}
+nav.tabs a .no{font-family:var(--f-mono);font-size:12px;margin-right:6px;opacity:.75}
+nav.tabs a[aria-current="page"]{color:var(--ink);background:var(--panel);border-color:var(--line)}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+section.bab{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:20px;align-items:start}
+@media (max-width:860px){section.bab{grid-template-columns:1fr}}
+.stage{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:18px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.side{display:flex;flex-direction:column;gap:14px;min-width:0}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.card.rumus{border-left:5px solid var(--palm)}
+.btns{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+button{font:inherit;font-weight:700;border-radius:8px;border:2px solid var(--palm);background:var(--palm);color:var(--panel);padding:8px 14px;cursor:pointer;min-height:40px}
+button.alt{background:transparent;color:var(--palm)}
+button.warn{background:var(--fruit);border-color:var(--fruit)}
+button:disabled{opacity:.45;cursor:not-allowed}
+.status{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font-family:var(--f-mono);font-size:13px;background:var(--slot);border:1px solid var(--line);border-radius:999px;padding:4px 10px;font-variant-numeric:tabular-nums}
+.chip b{font-weight:600;color:var(--palm)}
+.say{background:var(--amber-soft);border-radius:8px;padding:10px 12px;min-height:48px}
+.say.bad{background:var(--fruit-soft)}
+.say.good{background:var(--palm-soft)}
+.f{font-family:var(--f-mono);font-size:14.5px;background:var(--slot);border-radius:8px;padding:10px 12px;overflow-x:auto;white-space:pre-wrap;line-height:1.6}
+.f .hl,.hl{background:var(--amber-soft);color:var(--ink);border-radius:4px;padding:0 3px;font-weight:600}
+pre.kode{margin:0;font-family:var(--f-mono);font-size:13px;background:var(--slot);border-radius:8px;padding:10px 12px;overflow-x:auto;line-height:1.5}
+pre.kode span{display:block;padding:0 4px;border-radius:4px;white-space:pre}
+pre.kode span.on{background:var(--amber-soft);font-weight:600}
+ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:4px}
+.small{font-size:14px;color:var(--muted)}
+input[type=number],input[type=text],select,textarea{font:inherit;padding:7px 10px;border-radius:8px;border:2px solid var(--line);background:var(--panel);color:var(--ink);min-width:0}
+input[type=number]{width:96px}
+input[type=range]{accent-color:var(--palm);max-width:100%}
+label.inl{display:inline-flex;align-items:center;gap:6px;font-size:14px;flex-wrap:wrap}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+@media (max-width:520px){.grid2{grid-template-columns:1fr}}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:6px}
+.stats div{background:var(--slot);border-radius:6px;padding:6px 8px;font-size:12px;color:var(--muted)}
+.stats b{display:block;font-family:var(--f-mono);font-size:17px;color:var(--ink);font-variant-numeric:tabular-nums}
+.stats div.alarm b{color:var(--fruit)}
+.scroll{overflow-x:auto;max-width:100%}
+table.t{border-collapse:collapse;font-size:14px;width:100%;font-variant-numeric:tabular-nums}
+table.t th{background:var(--palm);color:var(--panel);text-align:left;padding:6px 8px;font-weight:700}
+table.t td{border-bottom:1px solid var(--line);padding:5px 8px}
+table.t tr.on td{background:var(--amber-soft);font-weight:700}
+.cells{display:flex;gap:4px;flex-wrap:wrap}
+.cell{min-width:44px;border:2px solid var(--line);border-radius:6px;text-align:center;padding:5px 3px;font-family:var(--f-mono);font-weight:600;background:var(--panel);transition:background .25s,border-color .25s,transform .25s}
+.cell small{display:block;font-size:10px;color:var(--muted);font-weight:400}
+.cell.a{background:var(--amber-soft);border-color:var(--amber)}
+.cell.b{background:var(--fruit-soft);border-color:var(--fruit)}
+.cell.g{background:var(--palm-soft);border-color:var(--palm)}
+.cell.s{background:var(--sky-soft);border-color:var(--sky)}
+.cell.dim{opacity:.35}
+.legend{display:flex;flex-wrap:wrap;gap:12px;font-size:13px;color:var(--muted)}
+.legend i{display:inline-block;width:14px;height:14px;border-radius:4px;vertical-align:-2px;margin-right:4px;border:2px solid}
+svg.viz{width:100%;height:auto;display:block;max-width:100%}
+.stepbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.stepbar .ctr{font-family:var(--f-mono);font-size:13px;color:var(--muted)}
+.q{display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--line);padding-top:14px}
+.opts{display:flex;flex-direction:column;gap:6px}
+.opts button{background:var(--panel);color:var(--ink);border:2px solid var(--line);text-align:left;font-weight:400}
+.opts button.ok{border-color:var(--palm);background:var(--palm-soft);font-weight:700}
+.opts button.no{border-color:var(--fruit);background:var(--fruit-soft)}
+.fb{font-size:14px}
+.score{font-family:var(--f-display);font-size:22px;font-weight:800}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+
+
+#gSvg text{font-family:var(--f-mono)}
+.rot{position:relative;width:min(100%,320px);aspect-ratio:1;margin:0 auto}
+.rot .b{position:absolute;width:19%;aspect-ratio:1;border-radius:50%;transform:translate(-50%,-50%);border:3px solid var(--line);background:var(--panel);display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:700;transition:background .3s,border-color .3s}
+.rot .b small{font-family:var(--f-mono);font-size:10px;color:var(--muted);font-weight:400}
+.rot .b.on{background:var(--palm);border-color:var(--palm);color:var(--panel)} .rot .b.on small{color:var(--panel)}
+.rot .b.aw{border-color:var(--amber)}
+.rot .c{position:absolute;inset:30%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:var(--muted);font-size:13px}
+.rot .c b{font-family:var(--f-display);font-size:30px;color:var(--ink)}
+
+</style>
+<div class="wrap">
+  <header class="top">
+    <div class="eyebrow">Pertemuan 6 · Algoritma dan Struktur Data</div>
+    <h1>Rantai Dua Arah dan Rotasi Panen</h1>
+    <p class="lead">Senarai ganda menyimpan dua penunjuk per simpul, jadi simpul bisa dilepas tanpa mencari pendahulunya. Senarai melingkar tidak punya ujung, cocok untuk jadwal yang berulang seperti rotasi panen blok kebun.</p>
+  </header>
+  <nav class="tabs" aria-label="Bab latihan"><a href="#ganda"><span class="no">1</span>Lepas simpul</a><a href="#rotasi"><span class="no">2</span>Rotasi panen</a><a href="#kuis"><span class="no">3</span>Kuis</a></nav>
+<section class="bab" data-view="ganda" data-tab="Lepas simpul">
+  <div class="stage">
+    <h2>Melepas simpul cukup dua penugasan</h2>
+    <svg class="viz" id="gSvg" viewBox="0 -20 720 230" role="img" aria-label="Senarai ganda"></svg>
+    <div class="btns"><label class="inl" for="gx">lepas simpul <select id="gx"><option>B1</option><option>B2</option><option selected>B3</option><option>B4</option></select></label><button id="gGo">Siapkan langkah</button><button id="gBack" class="alt">Telusuri mundur</button></div>
+    <div class="stepbar" id="gSt"></div>
+    <div class="say" id="gSay"></div>
+  </div>
+  <div class="side">
+    <div class="card"><h3>Kode</h3><pre class="kode" id="gK"></pre></div>
+    <div class="card rumus"><h3>Rumus biaya</h3>
+      <div class="f">ganda : lepas(X) = 2 penugasan → O(1)
+tunggal: cari pendahulu ≈ (n + 1)/2 langkah → O(n)
+memori tambahan ganda: n rujukan sebelum</div>
+      <p class="small">Panah hijau di atas = <code>berikut</code>, panah biru di bawah = <code>sebelum</code>.</p>
+    </div>
+  </div>
+</section>
+<section class="bab" data-view="rotasi" data-tab="Rotasi panen" hidden>
+  <div class="stage">
+    <h2>Blok mana yang dipanen hari ini?</h2>
+    <div class="ringwrap grid2" style="align-items:center">
+      <div class="rot" id="rot"></div>
+      <div style="display:flex;flex-direction:column;gap:10px;min-width:0">
+        <label class="inl" for="nb">jumlah blok n = <b id="nbv">7</b> <input type="range" id="nb" min="3" max="10" value="7"></label>
+        <label class="inl" for="aw">blok awal (hari 0) <select id="aw"></select></label>
+        <label class="inl" for="d">hari ke-d = <b id="dv">9</b> <input type="range" id="d" min="0" max="60" value="9"></label>
+        <div class="btns"><button id="rPlay">Jalankan hari</button><button id="rAdd" class="alt">Tambah blok setelah ekor</button></div>
+      </div>
+    </div>
+    <div class="f" id="rF"></div>
+    <div class="scroll"><table class="t" id="rT"></table></div>
+  </div>
+  <div class="side">
+    <div class="card rumus"><h3>Rumus rotasi</h3>
+      <div class="f">blok(d) = urutan[(awal + d) mod n]</div>
+      <p class="small"><b>Bukti berulang</b>: (awal + d + n) mod n = (awal + d) mod n. Menambah n tidak mengubah sisa bagi n, jadi jadwal berulang setiap n hari.</p>
+      <div class="f">tambah setelah ekor:
+baru.berikut = ekor.berikut   # kepala
+ekor.berikut = baru
+ekor = baru        → O(1)</div>
+    </div>
+    <div class="card"><h3>Konteks kebun</h3><p class="small">Rotasi panen 6/7: setiap blok dipanen sekali dalam 7 hari. Senarai melingkar tidak punya None di ujung; setelah blok terakhir, giliran kembali ke blok pertama.</p></div>
+  </div>
+</section>
+<section class="bab" data-view="kuis" data-tab="Kuis" hidden>
+  <div class="stage" id="quiz"><h2>Uji pemahaman</h2><p class="small">Pilih satu jawaban. Penjelasan muncul langsung.</p></div>
+  <div class="side"><div class="card"><h3>Skor</h3><div class="score" id="qScore"></div><button id="qReset" class="alt">Ulang kuis</button></div>
+    <div class="card rumus"><h3>Ringkasan</h3><ul class="plain"><li>Ganda: lepas O(1).</li><li>Melingkar: ekor.berikut = kepala.</li><li>blok(d) = (awal + d) mod n.</li></ul></div></div>
+</section>
+</div>
+<script>
+/* Bantuan bersama seri latihan ASD */
+const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const sleep = ms => new Promise(r => setTimeout(r, RM ? 0 : ms));
+const fmt = (x, d = 0) => Number(x).toLocaleString('id-ID', { minimumFractionDigits: d, maximumFractionDigits: d });
+const onView = {};
+function tabs() {
+  const views = $$('section.bab').map(s => s.dataset.view);
+  function show() {
+    const v = views.includes(location.hash.slice(1)) ? location.hash.slice(1) : views[0];
+    $$('section.bab').forEach(s => s.hidden = s.dataset.view !== v);
+    $$('nav.tabs a').forEach(a => a.getAttribute('href') === '#' + v ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current'));
+    Object.entries(onView).forEach(([k, f]) => f(k === v));
+  }
+  addEventListener('hashchange', show); show();
+}
+/* Langkah demi langkah: steps = [{...state, say}], draw(step, i) menggambar */
+function Stepper(root, draw, ms = 900) {
+  const el = typeof root === 'string' ? $(root) : root;
+  el.innerHTML = '<button data-a="prev" class="alt">‹ Sebelumnya</button><button data-a="next">Berikutnya ›</button><button data-a="play" class="alt">Putar otomatis</button><span class="ctr"></span>';
+  const S = { steps: [], i: 0, timer: null };
+  const ctr = el.querySelector('.ctr'), bp = el.querySelector('[data-a=play]');
+  function go(i) { S.i = Math.max(0, Math.min(S.steps.length - 1, i)); draw(S.steps[S.i], S.i, S.steps); ctr.textContent = `langkah ${S.i + 1} / ${S.steps.length}`; }
+  function stop() { clearInterval(S.timer); S.timer = null; bp.textContent = 'Putar otomatis'; }
+  el.querySelector('[data-a=prev]').onclick = () => { stop(); go(S.i - 1); };
+  el.querySelector('[data-a=next]').onclick = () => { stop(); go(S.i + 1); };
+  bp.onclick = () => {
+    if (S.timer) return stop();
+    if (S.i >= S.steps.length - 1) go(0);
+    bp.textContent = 'Jeda';
+    S.timer = setInterval(() => { if (S.i >= S.steps.length - 1) return stop(); go(S.i + 1); }, RM ? 400 : ms);
+  };
+  return { load(steps, start = 0) { stop(); S.steps = steps; go(start); }, stop, get i() { return S.i; }, go };
+}
+/* Kuis: QUIZ = [[soal, [pilihan], indeksBenar, penjelasan]] */
+function quiz(box, scoreEl, resetBtn, QUIZ) {
+  const J = {};
+  function draw() {
+    box.querySelectorAll('.q').forEach(e => e.remove());
+    QUIZ.forEach(([t, ops, ok, ex], n) => {
+      const d = document.createElement('div'); d.className = 'q'; const j = J[n];
+      d.innerHTML = `<b>${n + 1}. ${t}</b><div class="opts">${ops.map((o, i) => `<button data-i="${i}" ${j !== undefined ? 'disabled' : ''} class="${j !== undefined && i === ok ? 'ok' : j === i ? 'no' : ''}">${o}</button>`).join('')}</div>` +
+        (j !== undefined ? `<div class="fb">${j === ok ? '<b>Benar.</b> ' : '<b>Belum tepat.</b> '}${ex}</div>` : '');
+      d.querySelectorAll('button').forEach(b => b.onclick = () => { J[n] = +b.dataset.i; draw(); });
+      box.appendChild(d);
+    });
+    scoreEl.textContent = `${Object.entries(J).filter(([n, j]) => QUIZ[n][2] === j).length} / ${QUIZ.length}`;
+  }
+  resetBtn.onclick = () => { Object.keys(J).forEach(k => delete J[k]); draw(); };
+  draw();
+}
+function kode(el, lines) { el.innerHTML = lines.map((l, i) => `<span data-l="${i}">${l.replace(/&/g, '&amp;').replace(/</g, '&lt;') || ' '}</span>`).join(''); return on => el.querySelectorAll('span').forEach(s => s.classList.toggle('on', (on || []).includes(+s.dataset.l))); }
+
+
+const gk = kode($('#gK'), ['def lepas(self, x):', '    if x.sebelum: x.sebelum.berikut = x.berikut   # (1)', '    else: self.kepala = x.berikut', '    if x.berikut: x.berikut.sebelum = x.sebelum   # (2)', '    else: self.ekor = x.sebelum', '    x.sebelum = x.berikut = None']);
+const NODES = ['B1', 'B2', 'B3', 'B4'];
+function drawG(s) {
+  gk(s.line);
+  const xs = [40, 210, 380, 550], y = 80;
+  let h = '<defs><marker id="m1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="var(--palm)"/></marker><marker id="m2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="var(--sky)"/></marker><marker id="m3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="var(--amber)"/></marker></defs>';
+  NODES.forEach((n, i) => {
+    const x = xs[i], cur = n === s.x, gone = s.gone && cur, hi = s.hl === i;
+    h += `<g opacity="${gone ? .25 : 1}"><rect x="${x}" y="${y - 25}" width="120" height="50" rx="8" fill="${cur ? 'var(--fruit-soft)' : hi ? 'var(--amber-soft)' : 'var(--palm-soft)'}" stroke="${cur ? 'var(--fruit)' : hi ? 'var(--amber)' : 'var(--palm)'}" stroke-width="2.5"/><text x="${x + 60}" y="${y + 7}" text-anchor="middle" font-size="18" font-weight="600" fill="var(--ink)">${n}</text>` +
+      (i === 0 ? `<text x="${x + 60}" y="${y - 34}" text-anchor="middle" font-size="12" fill="var(--palm)">kepala</text>` : '') + (i === 3 ? `<text x="${x + 60}" y="${y - 34}" text-anchor="middle" font-size="12" fill="var(--palm)">ekor</text>` : '') + '</g>';
+  });
+  const xi = NODES.indexOf(s.x);
+  for (let i = 0; i < 3; i++) {
+    const putusN = s.s1 && (i === xi - 1 || i === xi), putusP = s.s2 && (i === xi - 1 || i === xi);
+    if (!(s.s1 && i === xi)) h += `<path d="M${xs[i] + 120} ${y - 10} L${xs[i + 1] - 2} ${y - 10}" stroke="var(--palm)" stroke-width="2.5" marker-end="url(#m1)" opacity="${putusN ? .2 : 1}"/>`;
+    if (!(s.s2 && i === xi - 1)) h += `<path d="M${xs[i + 1]} ${y + 10} L${xs[i] + 122} ${y + 10}" stroke="var(--sky)" stroke-width="2.5" marker-end="url(#m2)" opacity="${putusP ? .2 : 1}"/>`;
+  }
+  if (s.s1 && xi > 0 && xi < 3) h += `<path d="M${xs[xi - 1] + 100} ${y - 25} C ${xs[xi - 1] + 140} ${y - 90}, ${xs[xi + 1] - 20} ${y - 90}, ${xs[xi + 1] + 20} ${y - 27}" fill="none" stroke="var(--amber)" stroke-width="3" marker-end="url(#m3)"/><text x="${xs[xi] + 60}" y="${y - 70}" text-anchor="middle" font-size="12" fill="var(--ink)">(1) ${NODES[xi - 1]}.berikut = ${NODES[xi + 1]}</text>`;
+  if (s.s2 && xi > 0 && xi < 3) h += `<path d="M${xs[xi + 1] + 20} ${y + 25} C ${xs[xi + 1] - 20} ${y + 90}, ${xs[xi - 1] + 140} ${y + 90}, ${xs[xi - 1] + 100} ${y + 27}" fill="none" stroke="var(--amber)" stroke-width="3" marker-end="url(#m3)"/><text x="${xs[xi] + 60}" y="${y + 95}" text-anchor="middle" font-size="12" fill="var(--ink)">(2) ${NODES[xi + 1]}.sebelum = ${NODES[xi - 1]}</text>`;
+  $('#gSvg').innerHTML = h; $('#gSay').textContent = s.say;
+}
+const GS = Stepper('#gSt', drawG, 1600);
+function siap() {
+  const x = $('#gx').value, i = NODES.indexOf(x), sb = NODES[i - 1], sd = NODES[i + 1];
+  GS.load([
+    { x, line: [0], say: `Kita memegang simpul ${x}. Tidak perlu mencari dari kepala karena ${x} tahu sebelum (${sb ?? 'None'}) dan berikut (${sd ?? 'None'}).` },
+    { x, s1: true, line: sb ? [1] : [2], say: sb ? `(1) ${sb}.berikut = ${sd ?? 'None'}. Penelusuran maju sekarang melompati ${x}.` : `${x} adalah kepala, jadi kepala = ${sd}.` },
+    { x, s1: true, s2: true, line: sd ? [3] : [4], say: sd ? `(2) ${sd}.sebelum = ${sb ?? 'None'}. Penelusuran mundur juga melompati ${x}.` : `${x} adalah ekor, jadi ekor = ${sb}.` },
+    { x, s1: true, s2: true, gone: true, line: [5], say: `${x} lepas dengan 2 penugasan, berapa pun panjang senarai: O(1). Senarai tunggal harus berjalan dulu mencari ${sb ?? 'pendahulu'}.` },
+  ]);
+}
+$('#gGo').onclick = siap;
+$('#gBack').onclick = () => GS.load(NODES.slice().reverse().map((n, k) => ({ x: null, hl: 3 - k, line: [], say: k === 0 ? 'Mulai dari ekor (B4) lalu ikuti panah biru sebelum.' : `p = p.sebelum → ${n}.` + (k === 3 ? ' Sampai kepala. Senarai tunggal tidak bisa melakukan ini.' : '') })));
+
+/* rotasi */
+const R = { blok: ['B1', 'B2', 'B3', 'B4', 'B5', 'B6', 'B7'], timer: null };
+function drawR() {
+  const n = R.blok.length, aw = Math.min(+$('#aw').value || 0, n - 1), d = +$('#d').value, k = (aw + d) % n;
+  $('#nbv').textContent = n; $('#dv').textContent = d;
+  $('#rot').innerHTML = R.blok.map((b, i) => { const a = -Math.PI / 2 + i * 2 * Math.PI / n; return `<div class="b ${i === k ? 'on' : ''} ${i === aw ? 'aw' : ''}" style="left:${50 + 39 * Math.cos(a)}%;top:${50 + 39 * Math.sin(a)}%">${b}<small>[${i}]</small></div>`; }).join('') + `<div class="c">hari ${d}<b>${R.blok[k]}</b>dipanen</div>`;
+  $('#rF').innerHTML = `blok(${d}) = urutan[(${aw} + ${d}) mod ${n}] = urutan[${aw + d} mod ${n}] = urutan[<span class="hl">${k}</span>] = <span class="hl">${R.blok[k]}</span>
+hari ${d + n}: (${aw} + ${d + n}) mod ${n} = ${k} → ${R.blok[k]} lagi (berulang tiap ${n} hari)`;
+  $('#rT').innerHTML = '<tr><th>Hari</th>' + Array.from({ length: 14 }, (_, x) => `<th>${d + x}</th>`).join('') + '</tr><tr><td>Blok</td>' + Array.from({ length: 14 }, (_, x) => `<td>${R.blok[(aw + d + x) % n]}</td>`).join('') + '</tr>';
+}
+function opsiAw() { const v = $('#aw').value; $('#aw').innerHTML = R.blok.map((b, i) => `<option value="${i}">${b}</option>`).join(''); $('#aw').value = v && +v < R.blok.length ? v : 0; }
+$('#nb').oninput = () => { const n = +$('#nb').value; R.blok = Array.from({ length: n }, (_, i) => 'B' + (i + 1)); opsiAw(); drawR(); };
+$('#aw').onchange = drawR; $('#d').oninput = drawR;
+$('#rAdd').onclick = () => { if (R.blok.length >= 10) return; R.blok.push('B' + (R.blok.length + 1)); $('#nb').value = R.blok.length; opsiAw(); drawR(); };
+$('#rPlay').onclick = () => { if (R.timer) { clearInterval(R.timer); R.timer = null; $('#rPlay').textContent = 'Jalankan hari'; return; } $('#rPlay').textContent = 'Jeda'; R.timer = setInterval(() => { const d = (+$('#d').value + 1) % 61; $('#d').value = d; drawR(); }, RM ? 300 : 800); };
+onView.rotasi = v => { if (!v && R.timer) $('#rPlay').click(); };
+siap(); GS.go(2); opsiAw(); drawR();
+quiz($('#quiz'), $('#qScore'), $('#qReset'), [
+  ['Senarai ganda A ⇄ B ⇄ C. Setelah lepas(B), A.berikut = ?', ['B', 'C', 'None', 'A'], 1, 'Langkah (1): B.sebelum.berikut = B.berikut, yaitu A.berikut = C.'],
+  ['Mengapa lepas(X) pada senarai ganda O(1)?', ['Karena senarai pendek', 'Karena X menyimpan rujukan ke pendahulunya, jadi tidak perlu mencari', 'Karena memakai larik', 'Karena terurut'], 1, 'Penunjuk sebelum menghilangkan pencarian pendahulu.'],
+  ['Rotasi 7 blok, awal B1 (indeks 0). Blok pada hari ke-30?', ['B2', 'B3', 'B7', 'B1'], 1, '(0 + 30) mod 7 = 2 → urutan[2] = B3.'],
+  ['Rotasi 6 blok, awal indeks 4. Blok pada hari ke-5?', ['indeks 3', 'indeks 9', 'indeks 5', 'indeks 1'], 0, '(4 + 5) mod 6 = 9 mod 6 = 3.'],
+  ['Ciri senarai melingkar adalah …', ['kepala = None', 'ekor.berikut = kepala', 'setiap simpul punya 3 rujukan', 'tidak punya ekor'], 1, 'Ujung dihubungkan kembali ke awal, sehingga tidak ada None.'],
+]);
+tabs();
+
+</script>
+
+<script>(function(){
+var d=document;
+function rgb(s){var m=s&&s.match(/rgba?\(([\d.]+),\s*([\d.]+),\s*([\d.]+)(?:,\s*([\d.]+))?/);return m?[+m[1],+m[2],+m[3],m[4]===undefined?1:+m[4]]:null}
+function lum(c){return [0,1,2].reduce(function(s,i,k){var v=c[i]/255;v=v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4);return s+v*[.2126,.7152,.0722][k]},0)}
+function ratio(a,b){var x=lum(a),y=lum(b);return (Math.max(x,y)+.05)/(Math.min(x,y)+.05)}
+function mix(a,b,t){return [0,1,2].map(function(i){return Math.round(a[i]+(b[i]-a[i])*t)})}
+function bgOf(el){var stack=[];for(var n=el;n&&n.nodeType===1;n=n.parentElement){var cs=getComputedStyle(n);if(cs.backgroundImage&&cs.backgroundImage!=='none')return null;var c=rgb(cs.backgroundColor);if(c&&c[3]>0){stack.push(c);if(c[3]>=1)break}}
+ var base=[255,255,255];for(var i=stack.length-1;i>=0;i--){var s=stack[i];base=mix(base,s,s[3])}return base}
+function own(el){for(var i=0;i<el.childNodes.length;i++){var t=el.childNodes[i];if(t.nodeType===3&&t.nodeValue.trim())return true}return false}
+function fix(el){var cs=getComputedStyle(el);if(cs.visibility==='hidden'||cs.display==='none')return;var fg=rgb(cs.color),bg=bgOf(el);if(!fg||!bg)return;
+ var op=1;for(var n=el;n&&n.nodeType===1;n=n.parentElement)op*=+getComputedStyle(n).opacity;if(op<.999){var q2=el;while(q2&&+getComputedStyle(q2).opacity>=.999)q2=q2.parentElement;var ef=mix(bg,fg,fg[3]*op);if(ratio(ef,bg)<4.6&&q2){q2.style.setProperty('opacity','1','important');return fix(el)}}fg=mix(bg,fg,fg[3]);var size=parseFloat(cs.fontSize),bold=+cs.fontWeight>=700,need=(size>=24||(bold&&size>=18.66))?3.1:4.6;
+ if(ratio(fg,bg)>=need)return;
+ var ob0=rgb(cs.backgroundColor);if(ob0&&ob0[3]>=1&&lum(fg)>.5){for(var j=1;j<=20;j++){var bb=mix(ob0,[0,0,0],j/20);if(ratio(fg,bb)>=need){el.style.setProperty('background-color','rgb('+bb.join(',')+')','important');return}}}
+ var best=null;[[0,0,0],[255,255,255]].forEach(function(t){for(var k=1;k<=20;k++){var c=mix(fg,t,k/20);if(ratio(c,bg)>=need){if(!best||k<best.k)best={c:c,k:k};break}}});
+ if(best){el.style.setProperty('color','rgb('+best.c.join(',')+')','important');return}
+ var ob=rgb(cs.backgroundColor);if(ob&&ob[3]>=1){var to=lum(fg)>.5?[0,0,0]:[255,255,255];for(var k=1;k<=20;k++){var b2=mix(ob,to,k/20);if(ratio(fg,b2)>=need){el.style.setProperty('background-color','rgb('+b2.join(',')+')','important');return}}}}
+function name(el){var t=el.getAttribute('placeholder')||el.getAttribute('title')||el.name||el.id||'';if(!t){var p=el.closest('tr,li,div,p,td');if(p){var tx=(p.innerText||'').trim().split('\n')[0];t=tx.slice(0,60)}}return t||'isian'}
+function run(){
+ if(!d.documentElement.lang)d.documentElement.lang='id';
+ if(!d.querySelector('main,[role=main]')){var big=null,ba=0;[].forEach.call(d.body.children,function(c){if(/^(SCRIPT|STYLE|HEADER|NAV|FOOTER|NOSCRIPT)$/.test(c.tagName))return;var a=c.offsetWidth*c.offsetHeight;if(a>ba){ba=a;big=c}});for(var g=0;big&&big.querySelector('header,footer,nav')&&g<4;g++){var nb=null,na=0;[].forEach.call(big.children,function(c){if(/^(SCRIPT|STYLE|HEADER|NAV|FOOTER)$/.test(c.tagName))return;var a=c.offsetWidth*c.offsetHeight;if(a>na){na=a;nb=c}});big=nb}if(big&&!big.getAttribute('role')&&!big.querySelector('header,footer,nav'))big.setAttribute('role','main')}
+ d.querySelectorAll('input:not([type=hidden]),select,textarea').forEach(function(el){if(el.labels&&el.labels.length)return;if(el.getAttribute('aria-label')||el.getAttribute('aria-labelledby'))return;if(/^(button|submit|reset)$/.test(el.type))return;el.setAttribute('aria-label',name(el))});
+ d.querySelectorAll('th').forEach(function(th){if(!(th.textContent||'').trim()&&!th.querySelector('img,svg,input,select')){var td=d.createElement('td');for(var i=0;i<th.attributes.length;i++)td.setAttribute(th.attributes[i].name,th.attributes[i].value);while(th.firstChild)td.appendChild(th.firstChild);th.replaceWith(td)}});
+ d.querySelectorAll('svg[role=img]').forEach(function(s){if(s.getAttribute('aria-label')||s.querySelector('title'))return;var f=s.closest('figure'),c=f&&f.querySelector('figcaption');s.setAttribute('aria-label',c?c.textContent.trim():'diagram')});
+ d.querySelectorAll('body *').forEach(function(el){if(own(el))fix(el)});
+ d.querySelectorAll('body *').forEach(function(el){var cs=getComputedStyle(el);if(/(auto|scroll)/.test(cs.overflowX+cs.overflowY)&&(el.scrollHeight>el.clientHeight||el.scrollWidth>el.clientWidth)&&!el.hasAttribute('tabindex')&&!el.querySelector('a,button,input,select,textarea,[tabindex]'))el.setAttribute('tabindex','0')});
+}
+var q=0;function later(){if(q)return;q=setTimeout(function(){q=0;obs.disconnect();run();obs.observe(d.body,{childList:true,subtree:true,attributes:true,attributeFilter:['class']})},600)}
+var obs=new MutationObserver(later);
+function start(){run();obs.observe(d.body,{childList:true,subtree:true,attributes:true,attributeFilter:['class']})}
+if(d.readyState==='loading')d.addEventListener('DOMContentLoaded',start);else start();
+})();</script>
+</body>
+</html>

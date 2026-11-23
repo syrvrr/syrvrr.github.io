@@ -1,0 +1,411 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>P12 · Simulator Kampanye Iklan dan Uji A/B</title>
+<meta name="description" content="Simulasi interaktif Pertemuan 12 mata kuliah Digital Creative dan Technopreneur (STIP-2111): Simulator Kampanye Iklan dan Uji A/B. Prodi Sistem dan Teknologi Informasi, Institut Teknologi Sawit Indonesia.">
+<link rel="canonical" href="https://syrvrr.github.io/kuliah/technopreneur/sim/p12.html">
+<link rel="icon" href="../../../favicon.svg" type="image/svg+xml">
+</head>
+<body>
+<title>Simulator Kampanye Iklan dan Uji A/B</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Seri latihan ASD: pita tab di atas, satu panggung interaktif per bab, panel rumus di samping (bertumpuk di ponsel). */
+:root{
+  --bg:#F3F6F2; --panel:#FFFFFF; --ink:#1B2A22; --muted:#5B6B62; --line:#D5DED7;
+  --palm:#1F6B45; --palm-soft:#DCEFE3; --fruit:#D2502A; --fruit-soft:#FBE3D9;
+  --amber:#E2A400; --amber-soft:#FFF2C7; --sky:#2B6CB0; --sky-soft:#DCE9F7; --road:#3C4744; --slot:#EEF2EE;
+  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"JetBrains Mono", ui-monospace, Consolas, monospace;
+  --r:10px;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#111915; --panel:#18231D; --ink:#E6EFE9; --muted:#9DB0A5; --line:#2C3B33;
+  --palm:#5CC08A; --palm-soft:#1E3A2B; --fruit:#F07A52; --fruit-soft:#3E2219;
+  --amber:#F2C443; --amber-soft:#3A3115; --sky:#6FA8E8; --sky-soft:#1C2C40; --road:#26302D; --slot:#1F2A24; color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#111915; --panel:#18231D; --ink:#E6EFE9; --muted:#9DB0A5; --line:#2C3B33;
+  --palm:#5CC08A; --palm-soft:#1E3A2B; --fruit:#F07A52; --fruit-soft:#3E2219;
+  --amber:#F2C443; --amber-soft:#3A3115; --sky:#6FA8E8; --sky-soft:#1C2C40; --road:#26302D; --slot:#1F2A24; color-scheme:dark }
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.55;
+  padding-left:max(16px, env(safe-area-inset-left,0px));padding-right:max(16px, env(safe-area-inset-right,0px));padding-block:20px 48px}
+.wrap{max-width:1120px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+h1,h2,h3{font-family:var(--f-display);margin:0;text-wrap:balance;line-height:1.15}
+h1{font-size:clamp(28px,4.4vw,44px);font-weight:800;letter-spacing:-.01em}
+h2{font-size:clamp(21px,3vw,27px);font-weight:800}
+h3{font-size:18px;font-weight:600}
+p{margin:0;max-width:68ch}
+code,.mono{font-family:var(--f-mono);font-size:.92em}
+header.top{display:flex;flex-direction:column;gap:8px}
+.eyebrow{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--palm);font-weight:700}
+.lead{color:var(--muted);font-size:17px}
+nav.tabs{display:flex;gap:6px;flex-wrap:wrap;border-bottom:2px solid var(--line)}
+nav.tabs a{padding:10px 14px;text-decoration:none;color:var(--muted);font-weight:700;border-radius:8px 8px 0 0;border:2px solid transparent;border-bottom:none;margin-bottom:-2px;font-size:15px}
+nav.tabs a .no{font-family:var(--f-mono);font-size:12px;margin-right:6px;opacity:.75}
+nav.tabs a[aria-current="page"]{color:var(--ink);background:var(--panel);border-color:var(--line)}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+section.bab{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:20px;align-items:start}
+@media (max-width:860px){section.bab{grid-template-columns:1fr}}
+.stage{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:18px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.side{display:flex;flex-direction:column;gap:14px;min-width:0}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.card.rumus{border-left:5px solid var(--palm)}
+.btns{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+button{font:inherit;font-weight:700;border-radius:8px;border:2px solid var(--palm);background:var(--palm);color:var(--panel);padding:8px 14px;cursor:pointer;min-height:40px}
+button.alt{background:transparent;color:var(--palm)}
+button.warn{background:var(--fruit);border-color:var(--fruit)}
+button:disabled{opacity:.45;cursor:not-allowed}
+.status{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font-family:var(--f-mono);font-size:13px;background:var(--slot);border:1px solid var(--line);border-radius:999px;padding:4px 10px;font-variant-numeric:tabular-nums}
+.chip b{font-weight:600;color:var(--palm)}
+.say{background:var(--amber-soft);border-radius:8px;padding:10px 12px;min-height:48px}
+.say.bad{background:var(--fruit-soft)}
+.say.good{background:var(--palm-soft)}
+.f{font-family:var(--f-mono);font-size:14.5px;background:var(--slot);border-radius:8px;padding:10px 12px;overflow-x:auto;white-space:pre-wrap;line-height:1.6}
+.f .hl,.hl{background:var(--amber-soft);color:var(--ink);border-radius:4px;padding:0 3px;font-weight:600}
+pre.kode{margin:0;font-family:var(--f-mono);font-size:13px;background:var(--slot);border-radius:8px;padding:10px 12px;overflow-x:auto;line-height:1.5}
+pre.kode span{display:block;padding:0 4px;border-radius:4px;white-space:pre}
+pre.kode span.on{background:var(--amber-soft);font-weight:600}
+ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:4px}
+.small{font-size:14px;color:var(--muted)}
+input[type=number],input[type=text],select,textarea{font:inherit;padding:7px 10px;border-radius:8px;border:2px solid var(--line);background:var(--panel);color:var(--ink);min-width:0}
+input[type=number]{width:96px}
+input[type=range]{accent-color:var(--palm);max-width:100%}
+label.inl{display:inline-flex;align-items:center;gap:6px;font-size:14px;flex-wrap:wrap}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+@media (max-width:520px){.grid2{grid-template-columns:1fr}}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:6px}
+.stats div{background:var(--slot);border-radius:6px;padding:6px 8px;font-size:12px;color:var(--muted)}
+.stats b{display:block;font-family:var(--f-mono);font-size:17px;color:var(--ink);font-variant-numeric:tabular-nums}
+.stats div.alarm b{color:var(--fruit)}
+.scroll{overflow-x:auto;max-width:100%}
+table.t{border-collapse:collapse;font-size:14px;width:100%;font-variant-numeric:tabular-nums}
+table.t th{background:var(--palm);color:var(--panel);text-align:left;padding:6px 8px;font-weight:700}
+table.t td{border-bottom:1px solid var(--line);padding:5px 8px}
+table.t tr.on td{background:var(--amber-soft);font-weight:700}
+.cells{display:flex;gap:4px;flex-wrap:wrap}
+.cell{min-width:44px;border:2px solid var(--line);border-radius:6px;text-align:center;padding:5px 3px;font-family:var(--f-mono);font-weight:600;background:var(--panel);transition:background .25s,border-color .25s,transform .25s}
+.cell small{display:block;font-size:10px;color:var(--muted);font-weight:400}
+.cell.a{background:var(--amber-soft);border-color:var(--amber)}
+.cell.b{background:var(--fruit-soft);border-color:var(--fruit)}
+.cell.g{background:var(--palm-soft);border-color:var(--palm)}
+.cell.s{background:var(--sky-soft);border-color:var(--sky)}
+.cell.dim{opacity:.35}
+.legend{display:flex;flex-wrap:wrap;gap:12px;font-size:13px;color:var(--muted)}
+.legend i{display:inline-block;width:14px;height:14px;border-radius:4px;vertical-align:-2px;margin-right:4px;border:2px solid}
+svg.viz{width:100%;height:auto;display:block;max-width:100%}
+.stepbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.stepbar .ctr{font-family:var(--f-mono);font-size:13px;color:var(--muted)}
+.q{display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--line);padding-top:14px}
+.opts{display:flex;flex-direction:column;gap:6px}
+.opts button{background:var(--panel);color:var(--ink);border:2px solid var(--line);text-align:left;font-weight:400}
+.opts button.ok{border-color:var(--palm);background:var(--palm-soft);font-weight:700}
+.opts button.no{border-color:var(--fruit);background:var(--fruit-soft)}
+.fb{font-size:14px}
+.score{font-family:var(--f-display);font-size:22px;font-weight:800}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+.srt{border:2px solid var(--line);border-radius:8px;padding:10px 12px;display:flex;flex-direction:column;gap:8px}
+.srt.ok{border-color:var(--palm);background:var(--palm-soft)}
+.srt.no{border-color:var(--fruit);background:var(--fruit-soft)}
+.srt .btns button{min-height:34px;padding:4px 10px;font-size:14px}
+.hb{display:grid;grid-template-columns:minmax(90px,170px) 1fr 70px;gap:8px;align-items:center;font-size:14px;margin:4px 0}
+.hb>div{background:var(--slot);border-radius:6px;height:22px;overflow:hidden}
+.hb i{display:block;height:100%;border-radius:6px;transition:width .4s}
+.hb b{font-family:var(--f-mono);font-variant-numeric:tabular-nums;text-align:right}
+@media (max-width:520px){.hb{grid-template-columns:90px 1fr 56px}}
+/* Sistem Digital */
+.bitrow{display:flex;gap:6px;flex-wrap:wrap;align-items:flex-end}
+.bit{min-width:46px;min-height:52px;padding:4px 6px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-family:var(--f-mono);font-size:20px;background:var(--slot);color:var(--ink);border:2px solid var(--line)}
+.bit small{font-size:10px;font-weight:400;color:var(--muted);font-family:var(--f-body)}
+.bit.on{background:var(--palm);border-color:var(--palm);color:var(--panel)}
+.bit.on small{color:var(--panel)}
+.bit.x{background:var(--amber-soft);border-color:var(--amber)}
+.led{display:inline-flex;align-items:center;gap:8px;font-weight:700;font-size:14px}
+.led i{width:22px;height:22px;border-radius:50%;background:var(--slot);border:2px solid var(--line);transition:background .2s,box-shadow .2s}
+.led.on i{background:var(--c,var(--palm));border-color:var(--c,var(--palm));box-shadow:0 0 0 4px color-mix(in srgb,var(--c,var(--palm)) 25%,transparent)}
+.leds{display:flex;flex-wrap:wrap;gap:16px}
+svg.wave{width:100%;height:auto;display:block}
+svg.wave text{font-family:var(--f-mono);font-size:12px;fill:var(--ink)}
+.kmap td{width:52px;height:46px;text-align:center;font-family:var(--f-mono);font-size:18px;cursor:pointer;border:1px solid var(--line);user-select:none}
+.kmap th{font-family:var(--f-mono);font-size:12px;color:var(--muted);font-weight:600;padding:4px}
+.kmap td small{display:block;font-size:9px;color:var(--muted)}
+
+
+</style>
+<div class="wrap">
+  <header class="top">
+    <div class="eyebrow">Pertemuan 12 · Digital Creative dan Technopreneur</div>
+    <h1>Simulator Kampanye Iklan dan Uji A/B</h1>
+    <p class="lead">Rancang kampanye iklan bibit dengan anggaran nyata, lalu ikuti rantai angkanya: tayangan, klik, chat, pembeli, sampai ROAS dan laba. Diagnosis otomatis menunjukkan mata rantai yang putus. Di tab kedua, uji apakah selisih dua versi iklan benar-benar berarti.</p>
+  </header>
+  <nav class="tabs" aria-label="Bab latihan"><a href="#kampanye"><span class="no">1</span>Rantai angka</a><a href="#ab"><span class="no">2</span>Uji A/B</a><a href="#kuis"><span class="no">3</span>Kuis</a></nav>
+<section class="bab" data-view="kampanye" data-tab="Rantai angka">
+  <div class="stage">
+    <h2>Kampanye 7 hari</h2>
+    <div class="grid2">
+      <label class="inl">Anggaran total (Rp rb) <input type="number" id="ag" value="700" min="0"></label>
+      <label class="inl">CPM: biaya per 1.000 tayang (Rp rb) <input type="number" id="cpm" value="25" min="1" step="0.5"></label>
+      <label class="inl">CTR % <input type="number" id="ctr" value="1.5" min="0" step="0.1"></label>
+      <label class="inl">Konversi klik → chat % <input type="number" id="kv" value="8" min="0" step="0.5"></label>
+      <label class="inl">Chat → pembeli % <input type="number" id="cl" value="20" min="0"></label>
+      <label class="inl">Nilai pesanan rata-rata (Rp rb) <input type="number" id="np" value="2000" min="0"></label>
+      <label class="inl">Margin kotor % <input type="number" id="mg" value="25" min="0" max="100"></label>
+    </div>
+    <div class="stats" id="st"></div>
+    <div id="br"></div>
+    <div class="say" id="v"></div>
+  </div>
+  <div class="side"><div class="card rumus"><h3>Rantai</h3><div class="f">tayang  = anggaran ÷ CPM × 1.000
+klik    = tayang × CTR
+CPC     = anggaran ÷ klik
+chat    = klik × konversi
+pembeli = chat × closing
+ROAS    = pendapatan ÷ anggaran
+laba    = pendapatan × margin − anggaran</div><p class="small">ROAS di atas 1 belum tentu untung: yang menentukan adalah margin. Titik impas ROAS = 1 ÷ margin.</p></div></div>
+</section>
+<section class="bab" data-view="ab" data-tab="Uji A/B" hidden>
+  <div class="stage">
+    <h2>Dua judul iklan, siapa pemenangnya?</h2>
+    <div class="grid2">
+      <label class="inl">A: tayang <input type="number" id="na" value="5000" min="1"></label>
+      <label class="inl">A: klik <input type="number" id="ka" value="60" min="0"></label>
+      <label class="inl">B: tayang <input type="number" id="nb" value="5000" min="1"></label>
+      <label class="inl">B: klik <input type="number" id="kb" value="80" min="0"></label>
+    </div>
+    <div class="btns"><button class="alt" id="kecil">Data kecil (10 vs 14 klik)</button><button class="alt" id="besar">Data besar (300 vs 400 klik)</button></div>
+    <div id="br2"></div>
+    <div class="stats" id="st2"></div>
+    <div class="say" id="v2"></div>
+  </div>
+  <div class="side"><div class="card rumus"><h3>Uji dua proporsi</h3><div class="f">p = (kA + kB) ÷ (nA + nB)
+z = (pB − pA) ÷ √(p(1−p)(1/nA + 1/nB))
+|z| ≥ 1,96 → beda nyata (95%)</div><p class="small">Ubah satu variabel saja per uji. Tanpa data cukup, "pemenang" bisa sekadar kebetulan.</p></div></div>
+</section>
+<section class="bab" data-view="kuis" data-tab="Kuis" hidden>
+  <div class="stage" id="quiz"><h2>Uji pemahaman</h2><p class="small">Pilih satu jawaban. Penjelasan muncul langsung.</p></div>
+  <div class="side"><div class="card"><h3>Skor</h3><div class="score" id="qScore"></div><button id="qReset" class="alt">Ulang kuis</button></div></div>
+</section>
+</div>
+<script>
+/* Bantuan bersama seri latihan ASD */
+const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const sleep = ms => new Promise(r => setTimeout(r, RM ? 0 : ms));
+const fmt = (x, d = 0) => Number(x).toLocaleString('id-ID', { minimumFractionDigits: d, maximumFractionDigits: d });
+const onView = {};
+function tabs() {
+  const views = $$('section.bab').map(s => s.dataset.view);
+  function show() {
+    const v = views.includes(location.hash.slice(1)) ? location.hash.slice(1) : views[0];
+    $$('section.bab').forEach(s => s.hidden = s.dataset.view !== v);
+    $$('nav.tabs a').forEach(a => a.getAttribute('href') === '#' + v ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current'));
+    Object.entries(onView).forEach(([k, f]) => f(k === v));
+  }
+  addEventListener('hashchange', show); show();
+}
+/* Langkah demi langkah: steps = [{...state, say}], draw(step, i) menggambar */
+function Stepper(root, draw, ms = 900) {
+  const el = typeof root === 'string' ? $(root) : root;
+  el.innerHTML = '<button data-a="prev" class="alt">‹ Sebelumnya</button><button data-a="next">Berikutnya ›</button><button data-a="play" class="alt">Putar otomatis</button><span class="ctr"></span>';
+  const S = { steps: [], i: 0, timer: null };
+  const ctr = el.querySelector('.ctr'), bp = el.querySelector('[data-a=play]');
+  function go(i) { S.i = Math.max(0, Math.min(S.steps.length - 1, i)); draw(S.steps[S.i], S.i, S.steps); ctr.textContent = `langkah ${S.i + 1} / ${S.steps.length}`; }
+  function stop() { clearInterval(S.timer); S.timer = null; bp.textContent = 'Putar otomatis'; }
+  el.querySelector('[data-a=prev]').onclick = () => { stop(); go(S.i - 1); };
+  el.querySelector('[data-a=next]').onclick = () => { stop(); go(S.i + 1); };
+  bp.onclick = () => {
+    if (S.timer) return stop();
+    if (S.i >= S.steps.length - 1) go(0);
+    bp.textContent = 'Jeda';
+    S.timer = setInterval(() => { if (S.i >= S.steps.length - 1) return stop(); go(S.i + 1); }, RM ? 400 : ms);
+  };
+  return { load(steps, start = 0) { stop(); S.steps = steps; go(start); }, stop, get i() { return S.i; }, go };
+}
+/* Kuis: QUIZ = [[soal, [pilihan], indeksBenar, penjelasan]] */
+/* Acak urutan pilihan secara deterministik (benih = teks soal) agar kunci tidak menumpuk di satu huruf */
+function acakQuiz(Q) { return Q.map(([t, o, k, e]) => { let h = 0; for (const ch of t) h = (h * 31 + ch.charCodeAt(0)) >>> 0; const ix = o.map((_, i) => i); const rnd = () => { h = (h + 0x6D2B79F5) >>> 0; let x = Math.imul(h ^ (h >>> 15), 1 | h); x = (x + Math.imul(x ^ (x >>> 7), 61 | x)) ^ x; return ((x ^ (x >>> 14)) >>> 0) / 4294967296; }; for (let i = ix.length - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [ix[i], ix[j]] = [ix[j], ix[i]]; } return [t, ix.map(i => o[i]), ix.indexOf(k), e]; }); }
+function quiz(box, scoreEl, resetBtn, QUIZ) {
+  QUIZ = acakQuiz(QUIZ);
+  const J = {};
+  function draw() {
+    box.querySelectorAll('.q').forEach(e => e.remove());
+    QUIZ.forEach(([t, ops, ok, ex], n) => {
+      const d = document.createElement('div'); d.className = 'q'; const j = J[n];
+      d.innerHTML = `<b>${n + 1}. ${t}</b><div class="opts">${ops.map((o, i) => `<button data-i="${i}" ${j !== undefined ? 'disabled' : ''} class="${j !== undefined && i === ok ? 'ok' : j === i ? 'no' : ''}">${o}</button>`).join('')}</div>` +
+        (j !== undefined ? `<div class="fb">${j === ok ? '<b>Benar.</b> ' : '<b>Belum tepat.</b> '}${ex}</div>` : '');
+      d.querySelectorAll('button').forEach(b => b.onclick = () => { J[n] = +b.dataset.i; draw(); });
+      box.appendChild(d);
+    });
+    scoreEl.textContent = `${Object.entries(J).filter(([n, j]) => QUIZ[n][2] === j).length} / ${QUIZ.length}`;
+  }
+  resetBtn.onclick = () => { Object.keys(J).forEach(k => delete J[k]); draw(); };
+  draw();
+}
+function kode(el, lines) { el.innerHTML = lines.map((l, i) => `<span data-l="${i}">${l.replace(/&/g, '&amp;').replace(/</g, '&lt;') || ' '}</span>`).join(''); return on => el.querySelectorAll('span').forEach(s => s.classList.toggle('on', (on || []).includes(+s.dataset.l))); }
+/* Permainan memilah: ITEMS = [[teks, kunciBenar, penjelasan]], KEYS = [[kunci, label]] */
+function sortir(box, scoreEl, ITEMS, KEYS) {
+  const J = {};
+  function draw() {
+    box.innerHTML = ITEMS.map(([t, k, ex], n) => {
+      const j = J[n];
+      return `<div class="srt${j === undefined ? '' : j === k ? ' ok' : ' no'}"><div>${t}</div><div class="btns">${KEYS.map(([kk, l]) => `<button class="${j === undefined ? 'alt' : kk === k ? '' : j === kk ? 'warn' : 'alt'}" data-n="${n}" data-k="${kk}" ${j !== undefined ? 'disabled' : ''}>${l}</button>`).join('')}</div>${j !== undefined ? `<div class="fb">${j === k ? '<b>Tepat.</b> ' : '<b>Belum tepat.</b> '}${ex}</div>` : ''}</div>`;
+    }).join('');
+    box.querySelectorAll('button').forEach(b => b.onclick = () => { J[b.dataset.n] = b.dataset.k; draw(); });
+    const benar = Object.entries(J).filter(([n, j]) => ITEMS[n][1] === j).length;
+    if (scoreEl) scoreEl.textContent = `${benar} benar dari ${Object.keys(J).length} dijawab (${ITEMS.length} kartu)`;
+  }
+  draw(); return { reset() { Object.keys(J).forEach(k => delete J[k]); draw(); } };
+}
+/* Batang horizontal sederhana: rows = [[label, nilai, warnaVar?]] */
+function bars(el, rows, max, fmtv = v => fmt(v)) {
+  max = max || Math.max(...rows.map(r => r[1]), 1);
+  el.innerHTML = rows.map(([l, v, c]) => `<div class="hb"><span>${l}</span><div><i style="width:${Math.max(0.5, v / max * 100)}%;background:var(${c || '--palm'})"></i></div><b>${fmtv(v)}</b></div>`).join('');
+}
+/* ---- Sistem Digital ---- */
+/* Tombol bit: el, label[], nilai awal[], onchange(vals). Klik membalik 0/1 */
+function bitsUI(el, labels, init, onchange, opt = {}) {
+  const v = init.slice();
+  function draw() {
+    el.innerHTML = labels.map((l, i) => `<button class="bit${v[i] ? ' on' : ''}" data-i="${i}" aria-pressed="${!!v[i]}" aria-label="${l} = ${v[i]}">${v[i]}<small>${l}</small></button>`).join('');
+    el.querySelectorAll('button').forEach(b => b.onclick = () => { if (opt.lock) return; v[+b.dataset.i] ^= 1; draw(); onchange(v.slice()); });
+  }
+  draw();
+  return { get: () => v.slice(), set(a) { a.forEach((x, i) => v[i] = x); draw(); } };
+}
+/* Lampu: el, [[label, menyala?, warnaVar]] */
+function leds(el, rows) { el.innerHTML = rows.map(([l, on, c]) => `<span class="led${on ? ' on' : ''}" style="--c:var(${c || '--palm'})"><i></i>${l}</span>`).join(''); }
+/* Diagram waktu: svg, rows=[[nama, nilai[], warnaVar]], opt {marks:[idx], cur:idx, edges:true} */
+function wave(svg, rows, opt = {}) {
+  const n = Math.max(...rows.map(r => r[1].length), 1), W = 600, lw = 58, h = 34, gap = 12, cw = (W - lw - 10) / n;
+  const H = rows.length * (h + gap) + 6;
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  let s = '';
+  if (opt.cur != null) s += `<rect x="${lw + opt.cur * cw}" y="0" width="${cw}" height="${H}" fill="var(--amber-soft)"/>`;
+  (opt.marks || []).forEach(i => s += `<line x1="${lw + i * cw}" x2="${lw + i * cw}" y1="0" y2="${H}" stroke="var(--line)" stroke-dasharray="3 3"/>`);
+  rows.forEach(([nm, a, c], r) => {
+    const y0 = r * (h + gap) + 6, hi = y0 + 4, lo = y0 + h - 4;
+    s += `<text x="4" y="${y0 + h / 2 + 4}">${nm}</text>`;
+    let d = '';
+    a.forEach((v, i) => {
+      const y = v === null || v === undefined ? (hi + lo) / 2 : v ? hi : lo, x = lw + i * cw;
+      d += (i ? `L${x},${y}` : `M${x},${y}`) + `L${x + cw},${y}`;
+    });
+    s += `<path d="${d}" fill="none" stroke="var(${c || '--palm'})" stroke-width="2.5"/>`;
+  });
+  svg.innerHTML = s;
+}
+const bin = (v, n) => (v >>> 0).toString(2).padStart(n, '0').slice(-n);
+/* Quine-McCluskey kecil: kembalikan {terms:[{mask,val}], str} minimal untuk n<=4 */
+function qm(n, mins, dcs, names) {
+  if (!mins.length) return { terms: [], str: '0' };
+  const all = [...new Set([...mins, ...dcs])];
+  if (all.length === 1 << n) return { terms: [{ mask: 0, val: 0 }], str: '1', cov: () => true };
+  let cur = all.map(m => ({ mask: (1 << n) - 1, val: m })), primes = [];
+  while (cur.length) {
+    const next = [], used = new Set();
+    for (let i = 0; i < cur.length; i++) for (let j = i + 1; j < cur.length; j++) {
+      const a = cur[i], b = cur[j];
+      if (a.mask !== b.mask) continue;
+      const d = (a.val ^ b.val) & a.mask;
+      if (d && !(d & (d - 1))) { used.add(i); used.add(j); const t = { mask: a.mask & ~d, val: a.val & ~d }; if (!next.some(x => x.mask === t.mask && x.val === t.val)) next.push(t); }
+    }
+    cur.forEach((t, i) => { if (!used.has(i)) primes.push(t); });
+    cur = next;
+  }
+  const cov = (t, m) => (m & t.mask) === (t.val & t.mask);
+  let best = null;
+  const P = primes.filter(p => mins.some(m => cov(p, m)));
+  const lit = t => { let c = 0; for (let k = 0; k < n; k++) if (t.mask >> k & 1) c++; return c; };
+  for (let k = 1; k <= P.length && !best; k++) {
+    const combo = (start, pick) => {
+      if (pick.length === k) {
+        if (mins.every(m => pick.some(p => cov(p, m)))) { const c = pick.reduce((s, p) => s + lit(p), 0); if (!best || c < best.c) best = { c, t: pick.slice() }; }
+        return;
+      }
+      for (let i = start; i < P.length; i++) { pick.push(P[i]); combo(i + 1, pick); pick.pop(); }
+    };
+    combo(0, []);
+  }
+  const str = best.t.map(t => { let s = []; for (let k = n - 1; k >= 0; k--) if (t.mask >> k & 1) s.push(names[n - 1 - k] + (t.val >> k & 1 ? '' : "'")); return s.join('·') || '1'; }).join(' + ');
+  return { terms: best.t, str, cov };
+}
+
+
+function k() {
+  const g = id => +$('#' + id).value, ag = g('ag');
+  const tay = ag / g('cpm') * 1000, klik = tay * g('ctr') / 100, chat = klik * g('kv') / 100, bel = chat * g('cl') / 100, pend = bel * g('np'), laba = pend * g('mg') / 100 - ag;
+  const cpc = klik ? ag / klik : 0, cpk = chat ? ag / chat : 0, roas = ag ? pend / ag : 0, imp = g('mg') ? 100 / g('mg') : Infinity;
+  $('#st').innerHTML = `<div>tayang<b>${fmt(tay)}</b></div><div>klik<b>${fmt(klik)}</b></div><div>CPC<b>Rp${fmt(cpc * 1000)}</b></div><div>chat<b>${fmt(chat, 1)}</b></div><div>biaya/chat<b>Rp${fmt(cpk * 1000)}</b></div><div>pembeli<b>${fmt(bel, 1)}</b></div><div>ROAS<b>${fmt(roas, 2)}×</b></div><div class="${laba < 0 ? 'alarm' : ''}">laba kotor<b>Rp${fmt(laba)} rb</b></div>`;
+  bars($('#br'), [['Anggaran', ag, '--fruit'], ['Pendapatan', pend, '--sky'], ['Laba kotor', Math.max(0, laba), '--palm']], null, v => 'Rp' + fmt(v) + ' rb');
+  const d = [];
+  if (g('ctr') < 1) d.push('CTR di bawah 1%: materi iklan (gambar/judul) kurang menghentikan jempol, atau audiens salah sasaran.');
+  else if (g('kv') < 5) d.push('CTR sehat tetapi konversi klik → chat rendah: landing page atau penawaran yang bermasalah (P5).');
+  else if (g('cl') < 15) d.push('Chat banyak tetapi sedikit yang membeli: cara membalas, harga, atau stok perlu dibenahi.');
+  if (laba < 0 && roas >= 1) d.push(`ROAS ${fmt(roas, 2)}× terlihat positif, tetapi masih rugi karena margin ${g('mg')}% (ROAS impas = ${fmt(imp, 1)}×).`);
+  $('#v').className = 'say ' + (laba >= 0 ? 'good' : 'bad');
+  $('#v').textContent = (laba >= 0 ? `Kampanye untung kotor Rp${fmt(laba)} ribu. ` : 'Kampanye rugi. ') + (d.join(' ') || 'Semua mata rantai sehat; naikkan anggaran bertahap sambil memantau biaya per chat.');
+}
+$$('[data-view=kampanye] input').forEach(e => e.oninput = k); k();
+function ab() {
+  const na = +$('#na').value, ka = +$('#ka').value, nb = +$('#nb').value, kb = +$('#kb').value;
+  const pa = ka / na, pb = kb / nb, p = (ka + kb) / (na + nb), se = Math.sqrt(p * (1 - p) * (1 / na + 1 / nb)), z = se ? (pb - pa) / se : 0;
+  bars($('#br2'), [['Versi A', pa * 100, '--sky'], ['Versi B', pb * 100, '--amber']], null, v => fmt(v, 2) + '%');
+  $('#st2').innerHTML = `<div>CTR A<b>${fmt(pa * 100, 2)}%</b></div><div>CTR B<b>${fmt(pb * 100, 2)}%</b></div><div>selisih relatif<b>${pa ? fmt((pb / pa - 1) * 100) : '–'}%</b></div><div>z<b>${fmt(z, 2)}</b></div>`;
+  const nyata = Math.abs(z) >= 1.96, win = pb > pa ? 'B' : 'A';
+  $('#v2').className = 'say ' + (nyata ? 'good' : '');
+  $('#v2').textContent = nyata ? `Versi ${win} unggul secara meyakinkan (|z| = ${fmt(Math.abs(z), 2)} ≥ 1,96). Jadikan baku, lalu buat penantang baru.` : `Belum bisa disimpulkan (|z| = ${fmt(Math.abs(z), 2)} < 1,96). Selisih ini bisa kebetulan; jalankan lebih lama sampai klik terkumpul ratusan.`;
+}
+$$('[data-view=ab] input').forEach(e => e.oninput = ab);
+$('#kecil').onclick = () => { $('#na').value = 800; $('#ka').value = 10; $('#nb').value = 800; $('#kb').value = 14; ab(); };
+$('#besar').onclick = () => { $('#na').value = 20000; $('#ka').value = 300; $('#nb').value = 20000; $('#kb').value = 400; ab(); };
+ab();
+quiz($('#quiz'), $('#qScore'), $('#qReset'), [
+  ['Iklan yang menjawab niat orang yang sedang mencari adalah …', ['iklan sosial', 'iklan pencarian (Google Ads)', 'spanduk', 'brosur'], 1, 'Search menjawab niat; sosial menciptakan niat.'],
+  ['CTR tinggi tetapi chat sangat sedikit menandakan masalah di …', ['materi iklan', 'landing page atau penawaran', 'anggaran', 'CPM'], 1, 'Pengunjung datang tetapi tidak yakin.'],
+  ['Margin 25%. ROAS impasnya adalah …', ['1×', '2×', '4×', '25×'], 2, '1 ÷ 0,25 = 4. Di bawah 4×, kampanye rugi.'],
+  ['Uji A/B yang jujur …', ['mengubah judul dan gambar sekaligus', 'mengubah satu variabel dengan anggaran sama', 'menyimpulkan dari 10 klik', 'hanya menjalankan satu versi'], 1, 'Satu variabel, data cukup.'],
+  ['Mengapa iklan dibahas setelah identitas, konten, halaman, dan SEO?', ['karena paling mudah', 'iklan memperbesar yang sudah ada; halaman buruk diiklankan = membayar orang untuk kecewa', 'karena paling murah', 'karena wajib'], 1, 'Siapkan fondasi dulu.'],
+]);
+tabs();
+
+</script>
+
+<script>(function(){
+var d=document;
+function rgb(s){var m=s&&s.match(/rgba?\(([\d.]+),\s*([\d.]+),\s*([\d.]+)(?:,\s*([\d.]+))?/);return m?[+m[1],+m[2],+m[3],m[4]===undefined?1:+m[4]]:null}
+function lum(c){return [0,1,2].reduce(function(s,i,k){var v=c[i]/255;v=v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4);return s+v*[.2126,.7152,.0722][k]},0)}
+function ratio(a,b){var x=lum(a),y=lum(b);return (Math.max(x,y)+.05)/(Math.min(x,y)+.05)}
+function mix(a,b,t){return [0,1,2].map(function(i){return Math.round(a[i]+(b[i]-a[i])*t)})}
+function bgOf(el){var stack=[];for(var n=el;n&&n.nodeType===1;n=n.parentElement){var cs=getComputedStyle(n);if(cs.backgroundImage&&cs.backgroundImage!=='none')return null;var c=rgb(cs.backgroundColor);if(c&&c[3]>0){stack.push(c);if(c[3]>=1)break}}
+ var base=[255,255,255];for(var i=stack.length-1;i>=0;i--){var s=stack[i];base=mix(base,s,s[3])}return base}
+function own(el){for(var i=0;i<el.childNodes.length;i++){var t=el.childNodes[i];if(t.nodeType===3&&t.nodeValue.trim())return true}return false}
+function fix(el){var cs=getComputedStyle(el);if(cs.visibility==='hidden'||cs.display==='none')return;var fg=rgb(cs.color),bg=bgOf(el);if(!fg||!bg)return;
+ var op=1;for(var n=el;n&&n.nodeType===1;n=n.parentElement)op*=+getComputedStyle(n).opacity;if(op<.999){var q2=el;while(q2&&+getComputedStyle(q2).opacity>=.999)q2=q2.parentElement;var ef=mix(bg,fg,fg[3]*op);if(ratio(ef,bg)<4.6&&q2){q2.style.setProperty('opacity','1','important');return fix(el)}}fg=mix(bg,fg,fg[3]);var size=parseFloat(cs.fontSize),bold=+cs.fontWeight>=700,need=(size>=24||(bold&&size>=18.66))?3.1:4.6;
+ if(ratio(fg,bg)>=need)return;
+ var ob0=rgb(cs.backgroundColor);if(ob0&&ob0[3]>=1&&lum(fg)>.5){for(var j=1;j<=20;j++){var bb=mix(ob0,[0,0,0],j/20);if(ratio(fg,bb)>=need){el.style.setProperty('background-color','rgb('+bb.join(',')+')','important');return}}}
+ var best=null;[[0,0,0],[255,255,255]].forEach(function(t){for(var k=1;k<=20;k++){var c=mix(fg,t,k/20);if(ratio(c,bg)>=need){if(!best||k<best.k)best={c:c,k:k};break}}});
+ if(best){el.style.setProperty('color','rgb('+best.c.join(',')+')','important');return}
+ var ob=rgb(cs.backgroundColor);if(ob&&ob[3]>=1){var to=lum(fg)>.5?[0,0,0]:[255,255,255];for(var k=1;k<=20;k++){var b2=mix(ob,to,k/20);if(ratio(fg,b2)>=need){el.style.setProperty('background-color','rgb('+b2.join(',')+')','important');return}}}}
+function name(el){var t=el.getAttribute('placeholder')||el.getAttribute('title')||el.name||el.id||'';if(!t){var p=el.closest('tr,li,div,p,td');if(p){var tx=(p.innerText||'').trim().split('\n')[0];t=tx.slice(0,60)}}return t||'isian'}
+function run(){
+ if(!d.documentElement.lang)d.documentElement.lang='id';
+ if(!d.querySelector('main,[role=main]')){var big=null,ba=0;[].forEach.call(d.body.children,function(c){if(/^(SCRIPT|STYLE|HEADER|NAV|FOOTER|NOSCRIPT)$/.test(c.tagName))return;var a=c.offsetWidth*c.offsetHeight;if(a>ba){ba=a;big=c}});for(var g=0;big&&big.querySelector('header,footer,nav')&&g<4;g++){var nb=null,na=0;[].forEach.call(big.children,function(c){if(/^(SCRIPT|STYLE|HEADER|NAV|FOOTER)$/.test(c.tagName))return;var a=c.offsetWidth*c.offsetHeight;if(a>na){na=a;nb=c}});big=nb}if(big&&!big.getAttribute('role')&&!big.querySelector('header,footer,nav'))big.setAttribute('role','main')}
+ d.querySelectorAll('input:not([type=hidden]),select,textarea').forEach(function(el){if(el.labels&&el.labels.length)return;if(el.getAttribute('aria-label')||el.getAttribute('aria-labelledby'))return;if(/^(button|submit|reset)$/.test(el.type))return;el.setAttribute('aria-label',name(el))});
+ d.querySelectorAll('th').forEach(function(th){if(!(th.textContent||'').trim()&&!th.querySelector('img,svg,input,select')){var td=d.createElement('td');for(var i=0;i<th.attributes.length;i++)td.setAttribute(th.attributes[i].name,th.attributes[i].value);while(th.firstChild)td.appendChild(th.firstChild);th.replaceWith(td)}});
+ d.querySelectorAll('svg[role=img]').forEach(function(s){if(s.getAttribute('aria-label')||s.querySelector('title'))return;var f=s.closest('figure'),c=f&&f.querySelector('figcaption');s.setAttribute('aria-label',c?c.textContent.trim():'diagram')});
+ d.querySelectorAll('body *').forEach(function(el){if(own(el))fix(el)});
+ d.querySelectorAll('body *').forEach(function(el){var cs=getComputedStyle(el);if(/(auto|scroll)/.test(cs.overflowX+cs.overflowY)&&(el.scrollHeight>el.clientHeight||el.scrollWidth>el.clientWidth)&&!el.hasAttribute('tabindex')&&!el.querySelector('a,button,input,select,textarea,[tabindex]'))el.setAttribute('tabindex','0')});
+}
+var q=0;function later(){if(q)return;q=setTimeout(function(){q=0;obs.disconnect();run();obs.observe(d.body,{childList:true,subtree:true,attributes:true,attributeFilter:['class']})},600)}
+var obs=new MutationObserver(later);
+function start(){run();obs.observe(d.body,{childList:true,subtree:true,attributes:true,attributeFilter:['class']})}
+if(d.readyState==='loading')d.addEventListener('DOMContentLoaded',start);else start();
+})();</script>
+</body>
+</html>
