@@ -1,0 +1,407 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>P13 · Pohon Kebun dan Indeks Pemasok</title>
+<meta name="description" content="Simulasi interaktif Pertemuan 13 mata kuliah Algoritma dan Struktur Data (STIP-1103): Pohon Kebun dan Indeks Pemasok. Prodi Sistem dan Teknologi Informasi, Institut Teknologi Sawit Indonesia.">
+<link rel="canonical" href="https://syrvrr.github.io/kuliah/algoritma-struktur-data/sim/p13.html">
+<link rel="icon" href="../../../favicon.svg" type="image/svg+xml">
+</head>
+<body>
+<title>Pohon Kebun dan Indeks Pemasok</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Seri latihan ASD: pita tab di atas, satu panggung interaktif per bab, panel rumus di samping (bertumpuk di ponsel). */
+:root{
+  --bg:#F3F6F2; --panel:#FFFFFF; --ink:#1B2A22; --muted:#5B6B62; --line:#D5DED7;
+  --palm:#1F6B45; --palm-soft:#DCEFE3; --fruit:#D2502A; --fruit-soft:#FBE3D9;
+  --amber:#E2A400; --amber-soft:#FFF2C7; --sky:#2B6CB0; --sky-soft:#DCE9F7; --road:#3C4744; --slot:#EEF2EE;
+  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"JetBrains Mono", ui-monospace, Consolas, monospace;
+  --r:10px;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#111915; --panel:#18231D; --ink:#E6EFE9; --muted:#9DB0A5; --line:#2C3B33;
+  --palm:#5CC08A; --palm-soft:#1E3A2B; --fruit:#F07A52; --fruit-soft:#3E2219;
+  --amber:#F2C443; --amber-soft:#3A3115; --sky:#6FA8E8; --sky-soft:#1C2C40; --road:#26302D; --slot:#1F2A24; color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#111915; --panel:#18231D; --ink:#E6EFE9; --muted:#9DB0A5; --line:#2C3B33;
+  --palm:#5CC08A; --palm-soft:#1E3A2B; --fruit:#F07A52; --fruit-soft:#3E2219;
+  --amber:#F2C443; --amber-soft:#3A3115; --sky:#6FA8E8; --sky-soft:#1C2C40; --road:#26302D; --slot:#1F2A24; color-scheme:dark }
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.55;
+  padding-left:max(16px, env(safe-area-inset-left,0px));padding-right:max(16px, env(safe-area-inset-right,0px));padding-block:20px 48px}
+.wrap{max-width:1120px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+h1,h2,h3{font-family:var(--f-display);margin:0;text-wrap:balance;line-height:1.15}
+h1{font-size:clamp(28px,4.4vw,44px);font-weight:800;letter-spacing:-.01em}
+h2{font-size:clamp(21px,3vw,27px);font-weight:800}
+h3{font-size:18px;font-weight:600}
+p{margin:0;max-width:68ch}
+code,.mono{font-family:var(--f-mono);font-size:.92em}
+header.top{display:flex;flex-direction:column;gap:8px}
+.eyebrow{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--palm);font-weight:700}
+.lead{color:var(--muted);font-size:17px}
+nav.tabs{display:flex;gap:6px;flex-wrap:wrap;border-bottom:2px solid var(--line)}
+nav.tabs a{padding:10px 14px;text-decoration:none;color:var(--muted);font-weight:700;border-radius:8px 8px 0 0;border:2px solid transparent;border-bottom:none;margin-bottom:-2px;font-size:15px}
+nav.tabs a .no{font-family:var(--f-mono);font-size:12px;margin-right:6px;opacity:.75}
+nav.tabs a[aria-current="page"]{color:var(--ink);background:var(--panel);border-color:var(--line)}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+section.bab{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:20px;align-items:start}
+@media (max-width:860px){section.bab{grid-template-columns:1fr}}
+.stage{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:18px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.side{display:flex;flex-direction:column;gap:14px;min-width:0}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.card.rumus{border-left:5px solid var(--palm)}
+.btns{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+button{font:inherit;font-weight:700;border-radius:8px;border:2px solid var(--palm);background:var(--palm);color:var(--panel);padding:8px 14px;cursor:pointer;min-height:40px}
+button.alt{background:transparent;color:var(--palm)}
+button.warn{background:var(--fruit);border-color:var(--fruit)}
+button:disabled{opacity:.45;cursor:not-allowed}
+.status{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font-family:var(--f-mono);font-size:13px;background:var(--slot);border:1px solid var(--line);border-radius:999px;padding:4px 10px;font-variant-numeric:tabular-nums}
+.chip b{font-weight:600;color:var(--palm)}
+.say{background:var(--amber-soft);border-radius:8px;padding:10px 12px;min-height:48px}
+.say.bad{background:var(--fruit-soft)}
+.say.good{background:var(--palm-soft)}
+.f{font-family:var(--f-mono);font-size:14.5px;background:var(--slot);border-radius:8px;padding:10px 12px;overflow-x:auto;white-space:pre-wrap;line-height:1.6}
+.f .hl,.hl{background:var(--amber-soft);color:var(--ink);border-radius:4px;padding:0 3px;font-weight:600}
+pre.kode{margin:0;font-family:var(--f-mono);font-size:13px;background:var(--slot);border-radius:8px;padding:10px 12px;overflow-x:auto;line-height:1.5}
+pre.kode span{display:block;padding:0 4px;border-radius:4px;white-space:pre}
+pre.kode span.on{background:var(--amber-soft);font-weight:600}
+ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:4px}
+.small{font-size:14px;color:var(--muted)}
+input[type=number],input[type=text],select,textarea{font:inherit;padding:7px 10px;border-radius:8px;border:2px solid var(--line);background:var(--panel);color:var(--ink);min-width:0}
+input[type=number]{width:96px}
+input[type=range]{accent-color:var(--palm);max-width:100%}
+label.inl{display:inline-flex;align-items:center;gap:6px;font-size:14px;flex-wrap:wrap}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+@media (max-width:520px){.grid2{grid-template-columns:1fr}}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:6px}
+.stats div{background:var(--slot);border-radius:6px;padding:6px 8px;font-size:12px;color:var(--muted)}
+.stats b{display:block;font-family:var(--f-mono);font-size:17px;color:var(--ink);font-variant-numeric:tabular-nums}
+.stats div.alarm b{color:var(--fruit)}
+.scroll{overflow-x:auto;max-width:100%}
+table.t{border-collapse:collapse;font-size:14px;width:100%;font-variant-numeric:tabular-nums}
+table.t th{background:var(--palm);color:var(--panel);text-align:left;padding:6px 8px;font-weight:700}
+table.t td{border-bottom:1px solid var(--line);padding:5px 8px}
+table.t tr.on td{background:var(--amber-soft);font-weight:700}
+.cells{display:flex;gap:4px;flex-wrap:wrap}
+.cell{min-width:44px;border:2px solid var(--line);border-radius:6px;text-align:center;padding:5px 3px;font-family:var(--f-mono);font-weight:600;background:var(--panel);transition:background .25s,border-color .25s,transform .25s}
+.cell small{display:block;font-size:10px;color:var(--muted);font-weight:400}
+.cell.a{background:var(--amber-soft);border-color:var(--amber)}
+.cell.b{background:var(--fruit-soft);border-color:var(--fruit)}
+.cell.g{background:var(--palm-soft);border-color:var(--palm)}
+.cell.s{background:var(--sky-soft);border-color:var(--sky)}
+.cell.dim{opacity:.35}
+.legend{display:flex;flex-wrap:wrap;gap:12px;font-size:13px;color:var(--muted)}
+.legend i{display:inline-block;width:14px;height:14px;border-radius:4px;vertical-align:-2px;margin-right:4px;border:2px solid}
+svg.viz{width:100%;height:auto;display:block;max-width:100%}
+.stepbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.stepbar .ctr{font-family:var(--f-mono);font-size:13px;color:var(--muted)}
+.q{display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--line);padding-top:14px}
+.opts{display:flex;flex-direction:column;gap:6px}
+.opts button{background:var(--panel);color:var(--ink);border:2px solid var(--line);text-align:left;font-weight:400}
+.opts button.ok{border-color:var(--palm);background:var(--palm-soft);font-weight:700}
+.opts button.no{border-color:var(--fruit);background:var(--fruit-soft)}
+.fb{font-size:14px}
+.score{font-family:var(--f-display);font-size:22px;font-weight:800}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+
+
+#bSvg text{font-family:var(--f-display)}
+.trav{display:flex;flex-wrap:wrap;gap:4px;min-height:34px}
+.tree{display:flex;flex-direction:column;gap:3px;font-size:14px}
+.tree .nd{display:flex;align-items:center;gap:8px;padding:4px 8px;border-radius:6px;border:2px solid var(--line);background:var(--panel);cursor:pointer;text-align:left;font-weight:400;color:var(--ink);min-height:auto}
+.tree .nd b{font-family:var(--f-mono);margin-left:auto}
+.tree .nd.on{background:var(--amber-soft);border-color:var(--amber)}
+.tree .nd.done b{color:var(--palm)}
+
+</style>
+<div class="wrap">
+  <header class="top">
+    <div class="eyebrow">Pertemuan 13 · Algoritma dan Struktur Data</div>
+    <h1>Pohon Kebun dan Indeks Pemasok</h1>
+    <p class="lead">Pohon menyimpan hierarki (perusahaan, kebun, afdeling, blok) dan indeks pencarian (binary search tree). Tambahkan dan hapus kunci di BST, jalankan empat cara penelusuran, lalu hitung total produksi kebun secara rekursif.</p>
+  </header>
+  <nav class="tabs" aria-label="Bab latihan"><a href="#bst"><span class="no">1</span>Binary search tree</a><a href="#kebun"><span class="no">2</span>Total produksi kebun</a><a href="#ml"><span class="no">3</span>Kaitan ML sawit</a><a href="#kuis"><span class="no">4</span>Kuis</a></nav>
+<section class="bab" data-view="bst" data-tab="Binary search tree">
+  <div class="stage">
+    <h2>Kiri lebih kecil, kanan lebih besar</h2>
+    <div class="btns">
+      <label class="inl" for="k">kunci <input type="number" id="k" value="65"></label>
+      <button id="ins">Sisip</button><button id="find" class="alt">Cari</button><button id="del" class="alt">Hapus</button>
+    </div>
+    <svg class="viz" id="bSvg" viewBox="0 0 680 300" role="img" aria-label="Pohon BST"></svg>
+    <div class="btns">
+      <button class="alt" data-t="in">Inorder</button><button class="alt" data-t="pre">Preorder</button><button class="alt" data-t="post">Postorder</button><button class="alt" data-t="lvl">Per tingkat</button>
+      <button class="alt" id="acak">Isi 8 kunci acak</button><button class="alt" id="urut">Isi 8 kunci terurut</button>
+    </div>
+    <div class="trav" id="tv"></div>
+    <div class="stats" id="bS"></div>
+    <div class="say" id="bSay"></div>
+  </div>
+  <div class="side">
+    <div class="card rumus"><h3>Rumus pohon biner</h3><div class="f">simpul di tingkat k ≤ 2ᵏ
+simpul pohon setinggi h ≤ 2ʰ⁺¹ − 1
+tinggi minimum = ⌈log₂(n + 1)⌉ − 1
+cari, sisip, hapus = O(h)</div><p class="small"><b>Bukti</b>: 1 + 2 + 4 + … + 2ʰ = 2ʰ⁺¹ − 1 (deret geometri). Klik "Isi 8 kunci terurut" untuk melihat h = n − 1: pohon menjadi rantai.</p></div>
+    <div class="card"><h3>Hapus: tiga kasus</h3><ul class="plain"><li>Daun: lepas saja.</li><li>Satu anak: anak menggantikan posisinya.</li><li>Dua anak: ganti dengan penerus inorder (terkecil di subpohon kanan), lalu hapus penerus itu.</li></ul></div>
+  </div>
+</section>
+<section class="bab" data-view="kebun" data-tab="Total produksi kebun" hidden>
+  <div class="stage">
+    <h2>Satu fungsi rekursif untuk semua tingkat</h2>
+    <p class="small">PT Bumi Sawit Lestari: perusahaan → kebun → afdeling → blok. Nilai blok = ton TBS Oktober 2026 (data SiTBS). Klik nama untuk membuka cabang.</p>
+    <div class="btns"><button id="kGo">Hitung total secara rekursif</button><button id="kAll" class="alt">Buka semua kebun</button></div>
+    <div class="tree" id="kt"></div>
+    <div class="f" id="kF"></div>
+  </div>
+  <div class="side">
+    <div class="card rumus"><h3>Rumus rekursif</h3><div class="f">total(s) = nilai(s)              bila s daun
+total(s) = Σ total(a), a anak s   selain itu
+tinggi(s) = 0 bila daun; 1 + max tinggi(a)</div><p class="small">Setiap simpul dikunjungi sekali: O(n). Anak dihitung dulu, baru induknya (postorder).</p></div>
+    <div class="card"><h3>Kode</h3><pre class="kode">def total(s):
+    if not s.anak:
+        return s.nilai
+    return sum(total(a) for a in s.anak)</pre></div>
+  </div>
+</section>
+<section class="bab" data-view="ml" data-tab="Kaitan ML sawit" hidden>
+  <div class="stage">
+    <div class="ml-intro"><div><strong class="h">Apa itu machine learning?</strong>Komputer belajar dari banyak contoh yang sudah diberi jawaban (misalnya foto tandan yang sudah dinilai krani), lalu menebak jawaban untuk data baru.</div><div><strong class="h">Tugasnya di kasus sawit</strong><b>Klasifikasi</b> dengan pohon keputusan: kematangan tandan ditebak dengan menjawab beberapa pertanyaan tentang fiturnya. Pola yang sama dipakai untuk deteksi dini Ganoderma per pokok.</div><div><strong class="h">Peran struktur data minggu ini</strong>Pohon keputusan adalah <b>pohon biner</b>. Seperti BST, menebak berarti menelusuri satu jalur dari akar ke daun: O(tinggi). Bedanya, setiap simpul membandingkan fitur yang berbeda.</div></div>
+<h2>Telusuri pohon keputusan kematangan</h2>
+<div class="ml-sl"><label for="mlK">kemerahan</label><input type="range" id="mlK" min="0" max="1" step="0.01" value="0.55"><output id="mlKo"></output>
+<label for="mlB">brondolan</label><input type="range" id="mlB" min="0" max="12" step="1" value="3"><output id="mlBo"></output></div>
+<svg id="mlTree" viewBox="0 0 520 250" style="width:100%;max-width:620px" role="img" aria-label="Pohon keputusan dengan jalur yang disorot"></svg>
+<div class="ml-say" id="mlSay"></div>
+<h3>Bagaimana pohon dibuat? Ukur "campur" sebuah simpul</h3>
+<div class="ml-sl"><label for="mlS">pokok sehat</label><input type="range" id="mlS" min="0" max="20" value="6"><output id="mlSo"></output><label for="mlT">pokok terinfeksi</label><input type="range" id="mlT" min="0" max="20" value="4"><output id="mlTo"></output></div>
+<div class="ml-f" id="mlG"></div>
+  </div>
+  <div class="side"><div class="card rumus"><h3>BST dan pohon keputusan</h3><div class="f">BST:    kunci &lt; simpul.kunci ? kiri : kanan
+Pohon:  fitur ≤ ambang ? kiri : kanan</div><p class="small">Komputer membangun pohon dari data latih: di setiap simpul dipilih pertanyaan yang paling menurunkan indeks Gini.</p></div><div class="card"><h3>Kasus kebun</h3><p class="small">BRIN mencatat mortalitas akibat Ganoderma hingga 60% di beberapa wilayah Sumatera Utara (InfoSAWIT, 20 Agustus 2026). Pohon keputusan memberi aturan yang bisa dibaca mandor.</p></div></div>
+</section>
+<section class="bab" data-view="kuis" data-tab="Kuis" hidden>
+  <div class="stage" id="quiz"><h2>Uji pemahaman</h2><p class="small">Pilih satu jawaban. Penjelasan muncul langsung.</p></div>
+  <div class="side"><div class="card"><h3>Skor</h3><div class="score" id="qScore"></div><button id="qReset" class="alt">Ulang kuis</button></div>
+    <div class="card rumus"><h3>Ringkasan</h3><ul class="plain"><li>BST: kiri &lt; akar &lt; kanan.</li><li>Inorder BST = terurut.</li><li>O(h); h_min = ⌈log₂(n+1)⌉ − 1.</li><li>total rekursif O(n).</li></ul></div></div>
+</section>
+</div>
+<script>
+/* Bantuan bersama seri latihan ASD */
+const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const sleep = ms => new Promise(r => setTimeout(r, RM ? 0 : ms));
+const fmt = (x, d = 0) => Number(x).toLocaleString('id-ID', { minimumFractionDigits: d, maximumFractionDigits: d });
+const onView = {};
+function tabs() {
+  const views = $$('section.bab').map(s => s.dataset.view);
+  function show() {
+    const v = views.includes(location.hash.slice(1)) ? location.hash.slice(1) : views[0];
+    $$('section.bab').forEach(s => s.hidden = s.dataset.view !== v);
+    $$('nav.tabs a').forEach(a => a.getAttribute('href') === '#' + v ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current'));
+    Object.entries(onView).forEach(([k, f]) => f(k === v));
+  }
+  addEventListener('hashchange', show); show();
+}
+/* Langkah demi langkah: steps = [{...state, say}], draw(step, i) menggambar */
+function Stepper(root, draw, ms = 900) {
+  const el = typeof root === 'string' ? $(root) : root;
+  el.innerHTML = '<button data-a="prev" class="alt">‹ Sebelumnya</button><button data-a="next">Berikutnya ›</button><button data-a="play" class="alt">Putar otomatis</button><span class="ctr"></span>';
+  const S = { steps: [], i: 0, timer: null };
+  const ctr = el.querySelector('.ctr'), bp = el.querySelector('[data-a=play]');
+  function go(i) { S.i = Math.max(0, Math.min(S.steps.length - 1, i)); draw(S.steps[S.i], S.i, S.steps); ctr.textContent = `langkah ${S.i + 1} / ${S.steps.length}`; }
+  function stop() { clearInterval(S.timer); S.timer = null; bp.textContent = 'Putar otomatis'; }
+  el.querySelector('[data-a=prev]').onclick = () => { stop(); go(S.i - 1); };
+  el.querySelector('[data-a=next]').onclick = () => { stop(); go(S.i + 1); };
+  bp.onclick = () => {
+    if (S.timer) return stop();
+    if (S.i >= S.steps.length - 1) go(0);
+    bp.textContent = 'Jeda';
+    S.timer = setInterval(() => { if (S.i >= S.steps.length - 1) return stop(); go(S.i + 1); }, RM ? 400 : ms);
+  };
+  return { load(steps, start = 0) { stop(); S.steps = steps; go(start); }, stop, get i() { return S.i; }, go };
+}
+/* Kuis: QUIZ = [[soal, [pilihan], indeksBenar, penjelasan]] */
+function quiz(box, scoreEl, resetBtn, QUIZ) {
+  const J = {};
+  function draw() {
+    box.querySelectorAll('.q').forEach(e => e.remove());
+    QUIZ.forEach(([t, ops, ok, ex], n) => {
+      const d = document.createElement('div'); d.className = 'q'; const j = J[n];
+      d.innerHTML = `<b>${n + 1}. ${t}</b><div class="opts">${ops.map((o, i) => `<button data-i="${i}" ${j !== undefined ? 'disabled' : ''} class="${j !== undefined && i === ok ? 'ok' : j === i ? 'no' : ''}">${o}</button>`).join('')}</div>` +
+        (j !== undefined ? `<div class="fb">${j === ok ? '<b>Benar.</b> ' : '<b>Belum tepat.</b> '}${ex}</div>` : '');
+      d.querySelectorAll('button').forEach(b => b.onclick = () => { J[n] = +b.dataset.i; draw(); });
+      box.appendChild(d);
+    });
+    scoreEl.textContent = `${Object.entries(J).filter(([n, j]) => QUIZ[n][2] === j).length} / ${QUIZ.length}`;
+  }
+  resetBtn.onclick = () => { Object.keys(J).forEach(k => delete J[k]); draw(); };
+  draw();
+}
+function kode(el, lines) { el.innerHTML = lines.map((l, i) => `<span data-l="${i}">${l.replace(/&/g, '&amp;').replace(/</g, '&lt;') || ' '}</span>`).join(''); return on => el.querySelectorAll('span').forEach(s => s.classList.toggle('on', (on || []).includes(+s.dataset.l))); }
+
+
+const KEBUN = [["Kebun Sungai Mandau", [["SM-Afd I", 458.0, [["SM1-B01", 48.1], ["SM1-B02", 45.4], ["SM1-B03", 48.4], ["SM1-B04", 36.6], ["SM1-B05", 57.7], ["SM1-B06", 40.3], ["SM1-B07", 30.7], ["SM1-B08", 34.3], ["SM1-B09", 71.2], ["SM1-B10", 45.3]]], ["SM-Afd II", 647.7, [["SM2-B01", 53.9], ["SM2-B02", 46.1], ["SM2-B03", 46.2], ["SM2-B04", 66.9], ["SM2-B05", 54.1], ["SM2-B06", 55.8], ["SM2-B07", 53.7], ["SM2-B08", 38.8], ["SM2-B09", 55.9], ["SM2-B10", 58.6], ["SM2-B11", 49.9], ["SM2-B12", 67.8]]], ["SM-Afd III", 499.1, [["SM3-B01", 62.7], ["SM3-B02", 51.6], ["SM3-B03", 34.5], ["SM3-B04", 56.9], ["SM3-B05", 57.5], ["SM3-B06", 59.2], ["SM3-B07", 54.9], ["SM3-B08", 58.2], ["SM3-B09", 63.6]]], ["SM-Afd IV", 482.8, [["SM4-B01", 42.3], ["SM4-B02", 58.7], ["SM4-B03", 41.1], ["SM4-B04", 34.8], ["SM4-B05", 59.2], ["SM4-B06", 40.4], ["SM4-B07", 63.3], ["SM4-B08", 54.7], ["SM4-B09", 41.2], ["SM4-B10", 47.1]]]]], ["Kebun Kandis", [["KD-Afd I", 539.6, [["KD1-B01", 51.5], ["KD1-B02", 50.4], ["KD1-B03", 54.8], ["KD1-B04", 31.8], ["KD1-B05", 49.4], ["KD1-B06", 38.2], ["KD1-B07", 54.5], ["KD1-B08", 65.0], ["KD1-B09", 57.6], ["KD1-B10", 45.7], ["KD1-B11", 40.7]]], ["KD-Afd II", 496.2, [["KD2-B01", 50.7], ["KD2-B02", 50.2], ["KD2-B03", 58.6], ["KD2-B04", 44.2], ["KD2-B05", 51.2], ["KD2-B06", 34.4], ["KD2-B07", 43.6], ["KD2-B08", 58.1], ["KD2-B09", 40.6], ["KD2-B10", 64.6]]], ["KD-Afd III", 548.8, [["KD3-B01", 62.1], ["KD3-B02", 60.5], ["KD3-B03", 38.9], ["KD3-B04", 45.2], ["KD3-B05", 47.2], ["KD3-B06", 41.0], ["KD3-B07", 46.6], ["KD3-B08", 45.7], ["KD3-B09", 33.9], ["KD3-B10", 42.4], ["KD3-B11", 44.1], ["KD3-B12", 41.2]]], ["KD-Afd IV", 556.3, [["KD4-B01", 53.9], ["KD4-B02", 41.0], ["KD4-B03", 63.0], ["KD4-B04", 55.2], ["KD4-B05", 38.2], ["KD4-B06", 39.1], ["KD4-B07", 38.6], ["KD4-B08", 56.5], ["KD4-B09", 36.2], ["KD4-B10", 47.8], ["KD4-B11", 44.8], ["KD4-B12", 42.0]]]]]];
+let ROOT = null;
+const N = (k) => ({ k, l: null, r: null });
+function ins(t, k) { if (!t) return N(k); let p = t; while (true) { if (k === p.k) return t; const d = k < p.k ? 'l' : 'r'; if (!p[d]) { p[d] = N(k); return t; } p = p[d]; } }
+function h(t) { return t ? 1 + Math.max(h(t.l), h(t.r)) : -1; }
+function cnt(t) { return t ? 1 + cnt(t.l) + cnt(t.r) : 0; }
+function lay(t) { const P = new Map(); let x = 0; (function go(n, d) { if (!n) return; go(n.l, d + 1); P.set(n, [x++, d]); go(n.r, d + 1); })(t, 0); return P; }
+function draw(hl = [], ok = null) {
+  const P = lay(ROOT), n = Math.max(1, P.size), H = h(ROOT), W = 680, X = i => 30 + (W - 60) * (n === 1 ? .5 : i / (n - 1)), Y = d => 30 + d * Math.min(60, 250 / Math.max(1, H));
+  let s = '';
+  P.forEach(([i, d], nd) => [nd.l, nd.r].forEach(c => { if (c) { const [ci, cd] = P.get(c); s += `<line x1="${X(i)}" y1="${Y(d)}" x2="${X(ci)}" y2="${Y(cd)}" stroke="var(--muted)" stroke-width="2"/>`; } }));
+  P.forEach(([i, d], nd) => { const A = hl.includes(nd.k), G = ok === nd.k; s += `<circle cx="${X(i)}" cy="${Y(d)}" r="18" fill="${G ? 'var(--palm)' : A ? 'var(--amber-soft)' : 'var(--palm-soft)'}" stroke="${A ? 'var(--amber)' : 'var(--palm)'}" stroke-width="3"/><text x="${X(i)}" y="${Y(d) + 5}" text-anchor="middle" font-size="14" font-weight="800" fill="${G ? 'var(--panel)' : 'var(--ink)'}">${nd.k}</text>`; });
+  $('#bSvg').setAttribute('viewBox', `0 0 680 ${Math.max(120, Y(Math.max(H, 0)) + 30)}`);
+  $('#bSvg').innerHTML = s || '<text x="340" y="150" text-anchor="middle" fill="var(--muted)">Pohon kosong</text>';
+  const c = cnt(ROOT); $('#bS').innerHTML = `<div>n<b>${c}</b></div><div>tinggi h<b>${Math.max(0, H)}</b></div><div>h minimum<b>${c ? Math.ceil(Math.log2(c + 1)) - 1 : 0}</b></div><div>maks simpul 2ʰ⁺¹ − 1<b>${2 ** (Math.max(0, H) + 1) - 1}</b></div>`;
+}
+const say = t => $('#bSay').textContent = t;
+async function jalur(k) { const path = []; let p = ROOT; while (p) { path.push(p.k); draw(path); await sleep(450); if (k === p.k) return [path, true]; p = k < p.k ? p.l : p.r; } return [path, false]; }
+$('#ins').onclick = async () => { const k = Math.trunc(+$('#k').value); const [path, ada] = await jalur(k); if (ada) { draw(path, k); return say(`${k} sudah ada.`); } ROOT = ins(ROOT, k); draw(path, k); say(`Jalur: ${path.join(' → ')}. Di setiap simpul: ${k} lebih kecil ke kiri, lebih besar ke kanan. ${k} menjadi daun baru setelah ${path.length} perbandingan.`); $('#k').value = 1 + Math.floor(Math.random() * 99); };
+$('#find').onclick = async () => { const k = Math.trunc(+$('#k').value); const [path, ada] = await jalur(k); draw(path, ada ? k : null); say(ada ? `Ketemu ${k} setelah ${path.length} perbandingan (≤ h + 1 = ${h(ROOT) + 1}).` : `${k} tidak ada: sampai None setelah ${path.length} perbandingan.`); };
+$('#del').onclick = async () => {
+  const k = Math.trunc(+$('#k').value); const [path, ada] = await jalur(k); if (!ada) return say(`${k} tidak ada di pohon.`);
+  let par = null, p = ROOT; while (p.k !== k) { par = p; p = k < p.k ? p.l : p.r; }
+  let msg;
+  if (p.l && p.r) { let sp = p, s = p.r; while (s.l) { sp = s; s = s.l; } draw([k, s.k]); await sleep(700); msg = `Dua anak: penerus inorder ${s.k} (terkecil di subpohon kanan) menggantikan ${k}.`; p.k = s.k; if (sp === p) sp.r = s.r; else sp.l = s.r; }
+  else { const c = p.l || p.r; msg = c ? `Satu anak: ${c.k} naik menggantikan ${k}.` : `${k} adalah daun: cukup dilepas.`; if (!par) ROOT = c; else if (par.l === p) par.l = c; else par.r = c; }
+  draw(); say(msg);
+};
+function urutan(t, cara) { const o = []; if (cara === 'lvl') { const q = t ? [t] : []; while (q.length) { const x = q.shift(); o.push(x.k); x.l && q.push(x.l); x.r && q.push(x.r); } return o; } (function go(n) { if (!n) return; if (cara === 'pre') o.push(n.k); go(n.l); if (cara === 'in') o.push(n.k); go(n.r); if (cara === 'post') o.push(n.k); })(t); return o; }
+const NAMA = { in: 'Inorder (kiri, akar, kanan)', pre: 'Preorder (akar, kiri, kanan)', post: 'Postorder (kiri, kanan, akar)', lvl: 'Per tingkat (antrean, BFS)' };
+$$('[data-t]').forEach(b => b.onclick = async () => { const o = urutan(ROOT, b.dataset.t); $('#tv').innerHTML = ''; for (let i = 0; i < o.length; i++) { draw(o.slice(0, i + 1)); $('#tv').innerHTML += `<div class="cell a">${o[i]}</div>`; await sleep(380); } draw(); say(`${NAMA[b.dataset.t]}: ${o.join(', ')}.` + (b.dataset.t === 'in' ? ' Inorder pada BST selalu terurut naik.' : '')); });
+function isi(arr) { ROOT = null; arr.forEach(k => ROOT = ins(ROOT, k)); draw(); }
+$('#acak').onclick = () => { const s = new Set(); while (s.size < 8) s.add(1 + Math.floor(Math.random() * 99)); const a = [...s]; isi(a); say(`Sisip ${a.join(', ')}: tinggi ${h(ROOT)}, minimum yang mungkin ${Math.ceil(Math.log2(9)) - 1}.`); };
+$('#urut').onclick = () => { const a = [10, 20, 30, 40, 50, 60, 70, 80]; isi(a); say('Data terurut: setiap kunci baru selalu ke kanan. Tinggi = n − 1 = 7, sama lambatnya dengan senarai. Inilah alasan BST pemasok (urut kode) bertinggi 300.'); };
+
+/* kebun */
+const K = { open: new Set(['Kebun Kandis']), tot: {}, on: null };
+function tKebun(kb) { return kb[1].reduce((a, af) => a + af[1], 0); }
+function drawK() {
+  let h = `<div class="nd ${K.on === 'BSL' ? 'on' : ''} ${K.tot.BSL !== undefined ? 'done' : ''}" style="margin-left:0">PT Bumi Sawit Lestari<b>${K.tot.BSL !== undefined ? fmt(K.tot.BSL, 1) + ' t' : '?'}</b></div>`;
+  KEBUN.forEach(([kn, afs]) => {
+    h += `<button class="nd ${K.on === kn ? 'on' : ''} ${K.tot[kn] !== undefined ? 'done' : ''}" data-o="${kn}" style="margin-left:20px">${K.open.has(kn) ? '▾' : '▸'} ${kn}<b>${K.tot[kn] !== undefined ? fmt(K.tot[kn], 1) + ' t' : '?'}</b></button>`;
+    if (K.open.has(kn)) afs.forEach(([an, at, bl]) => {
+      h += `<button class="nd ${K.on === an ? 'on' : ''} ${K.tot[an] !== undefined ? 'done' : ''}" data-o="${an}" style="margin-left:44px">${K.open.has(an) ? '▾' : '▸'} ${an} <span class="small">(${bl.length} blok)</span><b>${K.tot[an] !== undefined ? fmt(K.tot[an], 1) + ' t' : '?'}</b></button>`;
+      if (K.open.has(an)) h += `<div class="cells" style="margin-left:68px">${bl.map(([b, v]) => `<div class="cell ${K.on === an ? 'a' : ''}">${v}<small>${b}</small></div>`).join('')}</div>`;
+    });
+  });
+  $('#kt').innerHTML = h; $$('#kt [data-o]').forEach(b => b.onclick = () => { const o = b.dataset.o; K.open.has(o) ? K.open.delete(o) : K.open.add(o); drawK(); });
+}
+$('#kAll').onclick = () => { KEBUN.forEach(([kn, afs]) => K.open.add(kn)); drawK(); };
+$('#kGo').onclick = async () => {
+  K.tot = {}; let log = [];
+  for (const [kn, afs] of KEBUN) {
+    for (const [an, at, bl] of afs) { K.on = an; K.tot[an] = at; drawK(); log = [`total(${an}) = ${bl.length} daun (blok) dijumlahkan = ${fmt(at, 1)}`]; $('#kF').innerHTML = log.join('\n'); await sleep(500); }
+    K.on = kn; K.tot[kn] = tKebun([kn, afs]); drawK(); $('#kF').innerHTML = `total(${kn}) = ${afs.map(a => fmt(a[1], 1)).join(' + ')}\n= <span class="hl">${fmt(K.tot[kn], 1)} t</span>`; await sleep(1100);
+  }
+  K.on = 'BSL'; K.tot.BSL = KEBUN.reduce((a, kb) => a + tKebun(kb), 0); drawK();
+  $('#kF').innerHTML = `total(PT BSL) = ${KEBUN.map(kb => fmt(tKebun(kb), 1)).join(' + ')} = <span class="hl">${fmt(K.tot.BSL, 1)} t</span>\nUrutan: blok → afdeling → kebun → perusahaan (postorder). Tinggi pohon = 3.`;
+};
+isi([50, 30, 70, 20, 40, 60, 80]); say('BST awal dari sisipan 50, 30, 70, 20, 40, 60, 80. Coba sisip 65, lalu hapus 50 (dua anak).');
+K.tot = Object.fromEntries(KEBUN.find(k => k[0] === 'Kebun Kandis')[1].map(a => [a[0], a[1]])); drawK(); $('#kF').innerHTML = 'Afdeling Kebun Kandis sudah dihitung. Tekan "Hitung total secara rekursif" untuk menghitung semua tingkat.';
+quiz($('#quiz'), $('#qScore'), $('#qReset'), [
+  ['Sisip 50, 30, 70, 20, 40 ke BST kosong. Inorder-nya?', ['50, 30, 20, 40, 70', '20, 30, 40, 50, 70', '20, 40, 30, 70, 50', '50, 30, 70, 20, 40'], 1, 'Inorder pada BST selalu terurut naik.'],
+  ['Pohon biner setinggi 3 paling banyak berisi berapa simpul?', ['8', '15', '7', '16'], 1, '2⁴ − 1 = 15.'],
+  ['Tinggi minimum BST dengan 1.000 kunci?', ['9', '10', '999', '500'], 0, '⌈log₂ 1.001⌉ − 1 = 10 − 1 = 9.'],
+  ['Menghapus simpul dengan dua anak: penggantinya adalah …', ['anak kiri', 'terkecil di subpohon kanan', 'akar', 'daun mana saja'], 1, 'Penerus inorder menjaga sifat kiri < akar < kanan.'],
+  ['Mengapa total produksi paling alami ditulis rekursif?', ['Karena lebih cepat dari O(n)', 'Karena setiap cabang adalah pohon kecil dengan aturan yang sama', 'Karena Python mewajibkan', 'Karena pohon selalu seimbang'], 1, 'Total induk = jumlah total anak; aturan sama untuk afdeling, kebun, perusahaan.'],
+]);
+tabs();
+
+</script>
+
+<style>
+.ml-intro{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.ml-intro div{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.ml-intro .h{display:block;font-family:var(--f-display,inherit);margin-bottom:4px;color:var(--palm)}
+.ml-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.ml-box{min-width:64px;padding:8px 10px;border:2px solid var(--line);border-radius:8px;text-align:center;font-family:var(--f-mono,monospace);font-size:14px;background:var(--panel)}
+.ml-box.on{border-color:var(--amber);background:var(--amber-soft)}
+.ml-box.ok{border-color:var(--palm);background:var(--palm-soft)}
+.ml-box.no{border-color:var(--fruit);background:var(--fruit-soft);text-decoration:line-through}
+.ml-box small{display:block;font-size:11px;color:var(--muted)}
+.ml-t{border-collapse:collapse;font-size:14px}
+.ml-t th,.ml-t td{border:1px solid var(--line);padding:5px 9px;text-align:center}
+.ml-t th{background:var(--slot,var(--panel));font-size:12px}
+.ml-t tr.on td{background:var(--amber-soft)}
+.ml-t tr.ok td{background:var(--palm-soft)}
+.ml-say{background:var(--amber-soft);border-radius:8px;padding:10px 12px;min-height:44px}
+.ml-nav{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.ml-nav span{font-family:var(--f-mono,monospace);font-size:13px;color:var(--muted)}
+.ml-grid{display:grid;gap:3px}
+.ml-grid button{width:34px;height:34px;padding:0;border-radius:6px;border:1px solid var(--line);background:var(--slot,#eef2ee);color:var(--ink);font:700 12px var(--f-mono,monospace);min-height:0}
+.ml-grid button.px{background:#E07A2E;color:#fff}
+.ml-sl{display:grid;grid-template-columns:auto 1fr 64px;gap:6px 10px;align-items:center;max-width:520px}
+.ml-sl output{font-family:var(--f-mono,monospace);text-align:right}
+.ml-f{font-family:var(--f-mono,monospace);font-size:13.5px;white-space:pre-wrap;background:var(--panel);border:1px dashed var(--line);border-radius:8px;padding:10px}
+</style>
+<script>
+function mlStep(el, draw) {
+  el.innerHTML = '<button data-a="p" class="alt">‹ Sebelumnya</button><button data-a="n">Berikutnya ›</button><span></span>';
+  const S = { s: [], i: 0 }, sp = el.querySelector('span');
+  const go = i => { S.i = Math.max(0, Math.min(S.s.length - 1, i)); draw(S.s[S.i], S.i); sp.textContent = `langkah ${S.i + 1} / ${S.s.length}`; };
+  el.querySelector('[data-a=p]').onclick = () => go(S.i - 1);
+  el.querySelector('[data-a=n]').onclick = () => go(S.i + 1);
+  return { load(s) { S.s = s; go(0); }, go };
+}
+const q$ = s => document.querySelector(s), f2 = (x, d = 2) => Number(x).toLocaleString('id-ID', { minimumFractionDigits: d, maximumFractionDigits: d });
+(() => {
+  function pohon() {
+    const k = +q$('#mlK').value, b = +q$('#mlB').value; q$('#mlKo').textContent = f2(k); q$('#mlBo').textContent = b;
+    const a = k <= 0.30, c = !a && b <= 5, hasil = a ? 'mentah' : c ? 'matang' : 'lewat matang';
+    const N = (x, y, t, on, daun) => `<rect x="${x - 80}" y="${y - 22}" width="160" height="44" rx="10" style="fill:${on ? 'var(--amber-soft)' : 'var(--panel)'};stroke:${on ? 'var(--amber)' : 'var(--line)'};stroke-width:${on ? 3 : 1.5}"/><text x="${x}" y="${y + 5}" text-anchor="middle" style="fill:var(--ink);font-size:14px;font-weight:${daun ? 700 : 400}">${t}</text>`;
+    const L = (x1, y1, x2, y2, on, t) => `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" style="stroke:${on ? 'var(--amber)' : 'var(--line)'};stroke-width:${on ? 4 : 2}"/><text x="${(x1 + x2) / 2 + 6}" y="${(y1 + y2) / 2}" style="fill:var(--muted);font-size:12px">${t}</text>`;
+    q$('#mlTree').innerHTML = L(260, 50, 110, 130, a, 'ya') + L(260, 50, 380, 130, !a, 'tidak') + L(380, 130, 290, 215, c, 'ya') + L(380, 130, 450, 215, !a && !c, 'tidak') +
+      N(260, 40, 'kemerahan ≤ 0,30 ?', true) + N(110, 140, 'mentah', a, 1) + N(380, 140, 'brondolan ≤ 5 ?', !a) + N(290, 220, 'matang', c, 1) + N(440, 220, 'lewat matang', !a && !c, 1);
+    q$('#mlSay').textContent = `Jalur: kemerahan ${f2(k)} ${a ? '≤' : '>'} 0,30` + (a ? '' : `, brondolan ${b} ${c ? '≤' : '>'} 5`) + ` → ${hasil}. Jumlah pertanyaan = ${a ? 1 : 2} (paling banyak = tinggi pohon = 2).`;
+  }
+  function gini() {
+    const s = +q$('#mlS').value, t = +q$('#mlT').value, n = s + t; q$('#mlSo').textContent = s; q$('#mlTo').textContent = t;
+    if (!n) { q$('#mlG').textContent = 'Simpul kosong.'; return; }
+    const g = 1 - (s / n) ** 2 - (t / n) ** 2;
+    q$('#mlG').textContent = `Gini = 1 − (${s}/${n})² − (${t}/${n})² = ${f2(g, 3)}\n${g === 0 ? 'Murni: satu kelas saja, simpul ini menjadi daun.' : g >= 0.49 ? 'Sangat campur: perlu pertanyaan lagi.' : 'Masih campur.'}`;
+  }
+  ['#mlK', '#mlB'].forEach(s => q$(s).oninput = pohon); ['#mlS', '#mlT'].forEach(s => q$(s).oninput = gini); pohon(); gini();
+})();
+</script>
+<script>(function(){
+var d=document;
+function rgb(s){var m=s&&s.match(/rgba?\(([\d.]+),\s*([\d.]+),\s*([\d.]+)(?:,\s*([\d.]+))?/);return m?[+m[1],+m[2],+m[3],m[4]===undefined?1:+m[4]]:null}
+function lum(c){return [0,1,2].reduce(function(s,i,k){var v=c[i]/255;v=v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4);return s+v*[.2126,.7152,.0722][k]},0)}
+function ratio(a,b){var x=lum(a),y=lum(b);return (Math.max(x,y)+.05)/(Math.min(x,y)+.05)}
+function mix(a,b,t){return [0,1,2].map(function(i){return Math.round(a[i]+(b[i]-a[i])*t)})}
+function bgOf(el){var stack=[];for(var n=el;n&&n.nodeType===1;n=n.parentElement){var cs=getComputedStyle(n);if(cs.backgroundImage&&cs.backgroundImage!=='none')return null;var c=rgb(cs.backgroundColor);if(c&&c[3]>0){stack.push(c);if(c[3]>=1)break}}
+ var base=[255,255,255];for(var i=stack.length-1;i>=0;i--){var s=stack[i];base=mix(base,s,s[3])}return base}
+function own(el){for(var i=0;i<el.childNodes.length;i++){var t=el.childNodes[i];if(t.nodeType===3&&t.nodeValue.trim())return true}return false}
+function fix(el){var cs=getComputedStyle(el);if(cs.visibility==='hidden'||cs.display==='none')return;var fg=rgb(cs.color),bg=bgOf(el);if(!fg||!bg)return;
+ var op=1;for(var n=el;n&&n.nodeType===1;n=n.parentElement)op*=+getComputedStyle(n).opacity;if(op<.999){var q2=el;while(q2&&+getComputedStyle(q2).opacity>=.999)q2=q2.parentElement;var ef=mix(bg,fg,fg[3]*op);if(ratio(ef,bg)<4.6&&q2){q2.style.setProperty('opacity','1','important');return fix(el)}}fg=mix(bg,fg,fg[3]);var size=parseFloat(cs.fontSize),bold=+cs.fontWeight>=700,need=(size>=24||(bold&&size>=18.66))?3.1:4.6;
+ if(ratio(fg,bg)>=need)return;
+ var ob0=rgb(cs.backgroundColor);if(ob0&&ob0[3]>=1&&lum(fg)>.5){for(var j=1;j<=20;j++){var bb=mix(ob0,[0,0,0],j/20);if(ratio(fg,bb)>=need){el.style.setProperty('background-color','rgb('+bb.join(',')+')','important');return}}}
+ var best=null;[[0,0,0],[255,255,255]].forEach(function(t){for(var k=1;k<=20;k++){var c=mix(fg,t,k/20);if(ratio(c,bg)>=need){if(!best||k<best.k)best={c:c,k:k};break}}});
+ if(best){el.style.setProperty('color','rgb('+best.c.join(',')+')','important');return}
+ var ob=rgb(cs.backgroundColor);if(ob&&ob[3]>=1){var to=lum(fg)>.5?[0,0,0]:[255,255,255];for(var k=1;k<=20;k++){var b2=mix(ob,to,k/20);if(ratio(fg,b2)>=need){el.style.setProperty('background-color','rgb('+b2.join(',')+')','important');return}}}}
+function name(el){var t=el.getAttribute('placeholder')||el.getAttribute('title')||el.name||el.id||'';if(!t){var p=el.closest('tr,li,div,p,td');if(p){var tx=(p.innerText||'').trim().split('\n')[0];t=tx.slice(0,60)}}return t||'isian'}
+function run(){
+ if(!d.documentElement.lang)d.documentElement.lang='id';
+ if(!d.querySelector('main,[role=main]')){var big=null,ba=0;[].forEach.call(d.body.children,function(c){if(/^(SCRIPT|STYLE|HEADER|NAV|FOOTER|NOSCRIPT)$/.test(c.tagName))return;var a=c.offsetWidth*c.offsetHeight;if(a>ba){ba=a;big=c}});for(var g=0;big&&big.querySelector('header,footer,nav')&&g<4;g++){var nb=null,na=0;[].forEach.call(big.children,function(c){if(/^(SCRIPT|STYLE|HEADER|NAV|FOOTER)$/.test(c.tagName))return;var a=c.offsetWidth*c.offsetHeight;if(a>na){na=a;nb=c}});big=nb}if(big&&!big.getAttribute('role')&&!big.querySelector('header,footer,nav'))big.setAttribute('role','main')}
+ d.querySelectorAll('input:not([type=hidden]),select,textarea').forEach(function(el){if(el.labels&&el.labels.length)return;if(el.getAttribute('aria-label')||el.getAttribute('aria-labelledby'))return;if(/^(button|submit|reset)$/.test(el.type))return;el.setAttribute('aria-label',name(el))});
+ d.querySelectorAll('th').forEach(function(th){if(!(th.textContent||'').trim()&&!th.querySelector('img,svg,input,select')){var td=d.createElement('td');for(var i=0;i<th.attributes.length;i++)td.setAttribute(th.attributes[i].name,th.attributes[i].value);while(th.firstChild)td.appendChild(th.firstChild);th.replaceWith(td)}});
+ d.querySelectorAll('svg[role=img]').forEach(function(s){if(s.getAttribute('aria-label')||s.querySelector('title'))return;var f=s.closest('figure'),c=f&&f.querySelector('figcaption');s.setAttribute('aria-label',c?c.textContent.trim():'diagram')});
+ d.querySelectorAll('body *').forEach(function(el){if(own(el))fix(el)});
+ d.querySelectorAll('body *').forEach(function(el){var cs=getComputedStyle(el);if(/(auto|scroll)/.test(cs.overflowX+cs.overflowY)&&(el.scrollHeight>el.clientHeight||el.scrollWidth>el.clientWidth)&&!el.hasAttribute('tabindex')&&!el.querySelector('a,button,input,select,textarea,[tabindex]'))el.setAttribute('tabindex','0')});
+}
+var q=0;function later(){if(q)return;q=setTimeout(function(){q=0;obs.disconnect();run();obs.observe(d.body,{childList:true,subtree:true,attributes:true,attributeFilter:['class']})},600)}
+var obs=new MutationObserver(later);
+function start(){run();obs.observe(d.body,{childList:true,subtree:true,attributes:true,attributeFilter:['class']})}
+if(d.readyState==='loading')d.addEventListener('DOMContentLoaded',start);else start();
+})();</script>
+</body>
+</html>

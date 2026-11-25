@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>P14 · Rute Truk di Jalan Kebun</title>
+<meta name="description" content="Simulasi interaktif Pertemuan 14 mata kuliah Algoritma dan Struktur Data (STIP-1103): Rute Truk di Jalan Kebun. Prodi Sistem dan Teknologi Informasi, Institut Teknologi Sawit Indonesia.">
+<link rel="canonical" href="https://syrvrr.github.io/kuliah/algoritma-struktur-data/sim/p14.html">
+<link rel="icon" href="../../../favicon.svg" type="image/svg+xml">
+</head>
+<body>
+<title>Rute Truk di Jalan Kebun</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Seri latihan ASD: pita tab di atas, satu panggung interaktif per bab, panel rumus di samping (bertumpuk di ponsel). */
+:root{
+  --bg:#F3F6F2; --panel:#FFFFFF; --ink:#1B2A22; --muted:#5B6B62; --line:#D5DED7;
+  --palm:#1F6B45; --palm-soft:#DCEFE3; --fruit:#D2502A; --fruit-soft:#FBE3D9;
+  --amber:#E2A400; --amber-soft:#FFF2C7; --sky:#2B6CB0; --sky-soft:#DCE9F7; --road:#3C4744; --slot:#EEF2EE;
+  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"JetBrains Mono", ui-monospace, Consolas, monospace;
+  --r:10px;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#111915; --panel:#18231D; --ink:#E6EFE9; --muted:#9DB0A5; --line:#2C3B33;
+  --palm:#5CC08A; --palm-soft:#1E3A2B; --fruit:#F07A52; --fruit-soft:#3E2219;
+  --amber:#F2C443; --amber-soft:#3A3115; --sky:#6FA8E8; --sky-soft:#1C2C40; --road:#26302D; --slot:#1F2A24; color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#111915; --panel:#18231D; --ink:#E6EFE9; --muted:#9DB0A5; --line:#2C3B33;
+  --palm:#5CC08A; --palm-soft:#1E3A2B; --fruit:#F07A52; --fruit-soft:#3E2219;
+  --amber:#F2C443; --amber-soft:#3A3115; --sky:#6FA8E8; --sky-soft:#1C2C40; --road:#26302D; --slot:#1F2A24; color-scheme:dark }
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.55;
+  padding-left:max(16px, env(safe-area-inset-left,0px));padding-right:max(16px, env(safe-area-inset-right,0px));padding-block:20px 48px}
+.wrap{max-width:1120px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+h1,h2,h3{font-family:var(--f-display);margin:0;text-wrap:balance;line-height:1.15}
+h1{font-size:clamp(28px,4.4vw,44px);font-weight:800;letter-spacing:-.01em}
+h2{font-size:clamp(21px,3vw,27px);font-weight:800}
+h3{font-size:18px;font-weight:600}
+p{margin:0;max-width:68ch}
+code,.mono{font-family:var(--f-mono);font-size:.92em}
+header.top{display:flex;flex-direction:column;gap:8px}
+.eyebrow{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--palm);font-weight:700}
+.lead{color:var(--muted);font-size:17px}
+nav.tabs{display:flex;gap:6px;flex-wrap:wrap;border-bottom:2px solid var(--line)}
+nav.tabs a{padding:10px 14px;text-decoration:none;color:var(--muted);font-weight:700;border-radius:8px 8px 0 0;border:2px solid transparent;border-bottom:none;margin-bottom:-2px;font-size:15px}
+nav.tabs a .no{font-family:var(--f-mono);font-size:12px;margin-right:6px;opacity:.75}
+nav.tabs a[aria-current="page"]{color:var(--ink);background:var(--panel);border-color:var(--line)}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+section.bab{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:20px;align-items:start}
+@media (max-width:860px){section.bab{grid-template-columns:1fr}}
+.stage{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:18px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.side{display:flex;flex-direction:column;gap:14px;min-width:0}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.card.rumus{border-left:5px solid var(--palm)}
+.btns{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+button{font:inherit;font-weight:700;border-radius:8px;border:2px solid var(--palm);background:var(--palm);color:var(--panel);padding:8px 14px;cursor:pointer;min-height:40px}
+button.alt{background:transparent;color:var(--palm)}
+button.warn{background:var(--fruit);border-color:var(--fruit)}
+button:disabled{opacity:.45;cursor:not-allowed}
+.status{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font-family:var(--f-mono);font-size:13px;background:var(--slot);border:1px solid var(--line);border-radius:999px;padding:4px 10px;font-variant-numeric:tabular-nums}
+.chip b{font-weight:600;color:var(--palm)}
+.say{background:var(--amber-soft);border-radius:8px;padding:10px 12px;min-height:48px}
+.say.bad{background:var(--fruit-soft)}
+.say.good{background:var(--palm-soft)}
+.f{font-family:var(--f-mono);font-size:14.5px;background:var(--slot);border-radius:8px;padding:10px 12px;overflow-x:auto;white-space:pre-wrap;line-height:1.6}
+.f .hl,.hl{background:var(--amber-soft);color:var(--ink);border-radius:4px;padding:0 3px;font-weight:600}
+pre.kode{margin:0;font-family:var(--f-mono);font-size:13px;background:var(--slot);border-radius:8px;padding:10px 12px;overflow-x:auto;line-height:1.5}
+pre.kode span{display:block;padding:0 4px;border-radius:4px;white-space:pre}
+pre.kode span.on{background:var(--amber-soft);font-weight:600}
+ul.plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:4px}
+.small{font-size:14px;color:var(--muted)}
+input[type=number],input[type=text],select,textarea{font:inherit;padding:7px 10px;border-radius:8px;border:2px solid var(--line);background:var(--panel);color:var(--ink);min-width:0}
+input[type=number]{width:96px}
+input[type=range]{accent-color:var(--palm);max-width:100%}
+label.inl{display:inline-flex;align-items:center;gap:6px;font-size:14px;flex-wrap:wrap}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+@media (max-width:520px){.grid2{grid-template-columns:1fr}}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:6px}
+.stats div{background:var(--slot);border-radius:6px;padding:6px 8px;font-size:12px;color:var(--muted)}
+.stats b{display:block;font-family:var(--f-mono);font-size:17px;color:var(--ink);font-variant-numeric:tabular-nums}
+.stats div.alarm b{color:var(--fruit)}
+.scroll{overflow-x:auto;max-width:100%}
+table.t{border-collapse:collapse;font-size:14px;width:100%;font-variant-numeric:tabular-nums}
+table.t th{background:var(--palm);color:var(--panel);text-align:left;padding:6px 8px;font-weight:700}
+table.t td{border-bottom:1px solid var(--line);padding:5px 8px}
+table.t tr.on td{background:var(--amber-soft);font-weight:700}
+.cells{display:flex;gap:4px;flex-wrap:wrap}
+.cell{min-width:44px;border:2px solid var(--line);border-radius:6px;text-align:center;padding:5px 3px;font-family:var(--f-mono);font-weight:600;background:var(--panel);transition:background .25s,border-color .25s,transform .25s}
+.cell small{display:block;font-size:10px;color:var(--muted);font-weight:400}
+.cell.a{background:var(--amber-soft);border-color:var(--amber)}
+.cell.b{background:var(--fruit-soft);border-color:var(--fruit)}
+.cell.g{background:var(--palm-soft);border-color:var(--palm)}
+.cell.s{background:var(--sky-soft);border-color:var(--sky)}
+.cell.dim{opacity:.35}
+.legend{display:flex;flex-wrap:wrap;gap:12px;font-size:13px;color:var(--muted)}
+.legend i{display:inline-block;width:14px;height:14px;border-radius:4px;vertical-align:-2px;margin-right:4px;border:2px solid}
+svg.viz{width:100%;height:auto;display:block;max-width:100%}
+.stepbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.stepbar .ctr{font-family:var(--f-mono);font-size:13px;color:var(--muted)}
+.q{display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--line);padding-top:14px}
+.opts{display:flex;flex-direction:column;gap:6px}
+.opts button{background:var(--panel);color:var(--ink);border:2px solid var(--line);text-align:left;font-weight:400}
+.opts button.ok{border-color:var(--palm);background:var(--palm-soft);font-weight:700}
+.opts button.no{border-color:var(--fruit);background:var(--fruit-soft)}
+.fb{font-size:14px}
+.score{font-family:var(--f-display);font-size:22px;font-weight:800}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+
+
+#gSvg text,#dSvg text{font-family:var(--f-display)}
+#dSvg line{cursor:pointer}
+.qbox{display:flex;gap:4px;flex-wrap:wrap;min-height:40px;align-items:center}
+.mat{border-collapse:collapse;font-family:var(--f-mono);font-size:13px}
+.mat td,.mat th{border:1px solid var(--line);padding:4px 7px;text-align:center}
+.mat td.on{background:var(--palm-soft);font-weight:700}
+
+</style>
+<div class="wrap">
+  <header class="top">
+    <div class="eyebrow">Pertemuan 14 · Algoritma dan Struktur Data</div>
+    <h1>Rute Truk di Jalan Kebun</h1>
+    <p class="lead">Jalan kebun membentuk graf: simpang dan afdeling adalah simpul, ruas jalan adalah sisi berbobot (km). Telusuri graf dengan BFS dan DFS, cari rute terpendek dengan Dijkstra, lalu putuskan satu jembatan dan lihat rute penggantinya.</p>
+  </header>
+  <nav class="tabs" aria-label="Bab latihan"><a href="#telusur"><span class="no">1</span>BFS dan DFS</a><a href="#dijkstra"><span class="no">2</span>Dijkstra</a><a href="#simpan"><span class="no">3</span>Matrix vs list</a><a href="#ml"><span class="no">4</span>Kaitan ML sawit</a><a href="#kuis"><span class="no">5</span>Kuis</a></nav>
+<section class="bab" data-view="telusur" data-tab="BFS dan DFS">
+  <div class="stage">
+    <h2>Lebar dulu atau dalam dulu?</h2>
+    <div class="btns"><label class="inl" for="alg">Cara <select id="alg"><option value="bfs">BFS (antrean)</option><option value="dfs">DFS (tumpukan)</option></select></label><label class="inl" for="s0">mulai dari <select id="s0"></select></label></div>
+    <svg class="viz" id="gSvg" viewBox="0 0 640 330" role="img" aria-label="Graf jalan"></svg>
+    <div class="grid2"><div><b id="qLab">Antrean</b><div class="qbox cells" id="qb"></div></div><div><b>Urutan kunjungan</b><div class="qbox cells" id="ob"></div></div></div>
+    <div class="stepbar" id="tSt"></div>
+    <div class="say" id="tSay"></div>
+  </div>
+  <div class="side">
+    <div class="card rumus"><h3>Bukti O(V + E)</h3><div class="f">Σ derajat(v) = 2E   (lemma jabat tangan)
+setiap simpul diproses sekali  : V
+setiap tetangga diperiksa      : Σ derajat = 2E
+total                          : O(V + E)</div><p class="small">Graf ini: V = 7, E = 10, Σ derajat = 20 = 2 × 10.</p></div>
+    <div class="card"><h3>BFS</h3><pre class="kode">q = Antrean(); q.enqueue(awal)
+ditandai = {awal}
+while not q.kosong():
+    u = q.dequeue(); urutan.append(u)
+    for v in sorted(adj[u]):
+        if v not in ditandai:
+            ditandai.add(v); q.enqueue(v)</pre></div>
+  </div>
+</section>
+<section class="bab" data-view="dijkstra" data-tab="Dijkstra" hidden>
+  <div class="stage">
+    <h2>Rute terpendek ke PKS</h2>
+    <div class="btns"><label class="inl" for="da">asal <select id="da"></select></label><label class="inl" for="dt">tujuan <select id="dt"></select></label><button id="dGo">Hitung ulang</button><button id="dFix" class="alt">Perbaiki semua jalan</button></div>
+    <p class="small">Klik satu ruas jalan untuk memutusnya (jembatan rusak), lalu tekan Hitung ulang.</p>
+    <svg class="viz" id="dSvg" viewBox="0 0 640 330" role="img" aria-label="Graf berbobot"></svg>
+    <div class="stepbar" id="dSt"></div>
+    <div class="f" id="dF"></div>
+    <div class="scroll"><table class="t" id="dT"></table></div>
+    <div class="say" id="dSay"></div>
+  </div>
+  <div class="side">
+    <div class="card rumus"><h3>Rumus Dijkstra</h3><div class="f">awal  : d[asal] = 0, lainnya ∞
+pilih : u belum final dengan d[u] terkecil
+relaks: bila d[u] + w &lt; d[v]:
+          d[v] ← d[u] + w ; induk[v] ← u
+biaya : O((V + E) log V) dengan heap</div><p class="small"><b>Mengapa benar</b>: bobot tidak negatif, jadi jalur lain ke u yang lewat simpul belum final pasti ≥ d[u]. Bila ada bobot negatif, langkah ini gagal.</p></div>
+  </div>
+</section>
+<section class="bab" data-view="simpan" data-tab="Matrix vs list" hidden>
+  <div class="stage">
+    <h2>Dua cara menyimpan graf yang sama</h2>
+    <div class="scroll"><b>Adjacency matrix (V × V)</b><table class="mat" id="mx"></table></div><p></p><b>Adjacency list</b><div class="f" id="al"></div>
+    <div class="f" id="mF"></div>
+  </div>
+  <div class="side">
+    <div class="card rumus"><h3>Rumus memori</h3><div class="f">matrix: V² sel
+list  : V + 2E entri (graf tak berarah)
+cek sisi (u, v): matrix O(1), list O(derajat)</div><p class="small">Contoh: 100 simpul, 150 ruas → matrix 10.000 sel, list 400 entri. Jalan dan jaringan hampir selalu jarang, jadi pakai list.</p></div>
+  </div>
+</section>
+<section class="bab" data-view="ml" data-tab="Kaitan ML sawit" hidden>
+  <div class="stage">
+    <div class="ml-intro"><div><strong class="h">Apa itu machine learning?</strong>Komputer belajar dari banyak contoh yang sudah diberi jawaban (misalnya foto tandan yang sudah dinilai krani), lalu menebak jawaban untuk data baru.</div><div><strong class="h">Tugasnya di kasus sawit</strong><b>Ekstraksi fitur</b>: menghitung brondolan (butir lepas) di sekitar tandan dari foto. <b>Deep learning</b>: jaringan saraf menebak kematangan dari fitur atau langsung dari piksel.</div><div><strong class="h">Peran struktur data minggu ini</strong>Citra adalah <b>graf</b>: piksel = simpul, piksel bertetangga = sisi. BFS (antrean) menemukan setiap gumpalan oranye. Jaringan saraf juga graf: neuron = simpul, bobot = sisi berarah.</div></div>
+<h2>BFS menghitung brondolan</h2>
+<p class="small">Klik kotak untuk menandai piksel oranye (#). Tekan Berikutnya untuk menjalankan BFS langkah demi langkah.</p>
+<div class="btns"><button id="mlGo">Mulai BFS</button><button id="mlRe" class="alt">Contoh awal</button></div>
+<div class="ml-grid" id="mlGrid" style="grid-template-columns:repeat(8,34px)"></div>
+<div class="ml-nav" id="mlSt"></div>
+<div class="ml-f" id="mlQ"></div>
+<div class="ml-say" id="mlSay"></div>
+<h2>Jaringan saraf kecil sebagai graf berarah</h2>
+<div class="ml-sl"><label for="mlX1">x₁ kemerahan</label><input type="range" id="mlX1" min="0" max="1" step="0.1" value="0.6"><output id="mlX1o"></output><label for="mlX2">x₂ brondolan (0-1)</label><input type="range" id="mlX2" min="0" max="1" step="0.1" value="0.4"><output id="mlX2o"></output></div>
+<svg id="mlNN" viewBox="0 0 520 200" style="width:100%;max-width:620px" role="img" aria-label="Jaringan saraf 2-2-1"></svg>
+<div class="ml-f" id="mlNf"></div>
+  </div>
+  <div class="side"><div class="card rumus"><h3>BFS pada graf piksel</h3><div class="f">untuk setiap # yang belum dikunjungi:
+  antrean ← [#]
+  selama antrean tidak kosong:
+    p ← dequeue()
+    enqueue tetangga # baru
+  satu komponen = satu brondolan</div><p class="small">Biaya O(V + E) = O(jumlah piksel).</p></div><div class="card"><h3>ReLU</h3><div class="f">ReLU(z) = maks(0, z)</div><p class="small">Deep learning = graf seperti ini dengan banyak lapisan dan jutaan sisi. Bobotnya dipelajari dari data latih.</p></div></div>
+</section>
+<section class="bab" data-view="kuis" data-tab="Kuis" hidden>
+  <div class="stage" id="quiz"><h2>Uji pemahaman</h2><p class="small">Pilih satu jawaban. Penjelasan muncul langsung.</p></div>
+  <div class="side"><div class="card"><h3>Skor</h3><div class="score" id="qScore"></div><button id="qReset" class="alt">Ulang kuis</button></div>
+    <div class="card rumus"><h3>Ringkasan</h3><ul class="plain"><li>BFS antrean, DFS tumpukan: O(V + E).</li><li>Σ derajat = 2E.</li><li>Relaksasi d[v] ← d[u] + w.</li><li>Matrix V², list V + 2E.</li></ul></div></div>
+</section>
+</div>
+<script>
+/* Bantuan bersama seri latihan ASD */
+const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const sleep = ms => new Promise(r => setTimeout(r, RM ? 0 : ms));
+const fmt = (x, d = 0) => Number(x).toLocaleString('id-ID', { minimumFractionDigits: d, maximumFractionDigits: d });
+const onView = {};
+function tabs() {
+  const views = $$('section.bab').map(s => s.dataset.view);
+  function show() {
+    const v = views.includes(location.hash.slice(1)) ? location.hash.slice(1) : views[0];
+    $$('section.bab').forEach(s => s.hidden = s.dataset.view !== v);
+    $$('nav.tabs a').forEach(a => a.getAttribute('href') === '#' + v ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current'));
+    Object.entries(onView).forEach(([k, f]) => f(k === v));
+  }
+  addEventListener('hashchange', show); show();
+}
+/* Langkah demi langkah: steps = [{...state, say}], draw(step, i) menggambar */
+function Stepper(root, draw, ms = 900) {
+  const el = typeof root === 'string' ? $(root) : root;
+  el.innerHTML = '<button data-a="prev" class="alt">‹ Sebelumnya</button><button data-a="next">Berikutnya ›</button><button data-a="play" class="alt">Putar otomatis</button><span class="ctr"></span>';
+  const S = { steps: [], i: 0, timer: null };
+  const ctr = el.querySelector('.ctr'), bp = el.querySelector('[data-a=play]');
+  function go(i) { S.i = Math.max(0, Math.min(S.steps.length - 1, i)); draw(S.steps[S.i], S.i, S.steps); ctr.textContent = `langkah ${S.i + 1} / ${S.steps.length}`; }
+  function stop() { clearInterval(S.timer); S.timer = null; bp.textContent = 'Putar otomatis'; }
+  el.querySelector('[data-a=prev]').onclick = () => { stop(); go(S.i - 1); };
+  el.querySelector('[data-a=next]').onclick = () => { stop(); go(S.i + 1); };
+  bp.onclick = () => {
+    if (S.timer) return stop();
+    if (S.i >= S.steps.length - 1) go(0);
+    bp.textContent = 'Jeda';
+    S.timer = setInterval(() => { if (S.i >= S.steps.length - 1) return stop(); go(S.i + 1); }, RM ? 400 : ms);
+  };
+  return { load(steps, start = 0) { stop(); S.steps = steps; go(start); }, stop, get i() { return S.i; }, go };
+}
+/* Kuis: QUIZ = [[soal, [pilihan], indeksBenar, penjelasan]] */
+function quiz(box, scoreEl, resetBtn, QUIZ) {
+  const J = {};
+  function draw() {
+    box.querySelectorAll('.q').forEach(e => e.remove());
+    QUIZ.forEach(([t, ops, ok, ex], n) => {
+      const d = document.createElement('div'); d.className = 'q'; const j = J[n];
+      d.innerHTML = `<b>${n + 1}. ${t}</b><div class="opts">${ops.map((o, i) => `<button data-i="${i}" ${j !== undefined ? 'disabled' : ''} class="${j !== undefined && i === ok ? 'ok' : j === i ? 'no' : ''}">${o}</button>`).join('')}</div>` +
+        (j !== undefined ? `<div class="fb">${j === ok ? '<b>Benar.</b> ' : '<b>Belum tepat.</b> '}${ex}</div>` : '');
+      d.querySelectorAll('button').forEach(b => b.onclick = () => { J[n] = +b.dataset.i; draw(); });
+      box.appendChild(d);
+    });
+    scoreEl.textContent = `${Object.entries(J).filter(([n, j]) => QUIZ[n][2] === j).length} / ${QUIZ.length}`;
+  }
+  resetBtn.onclick = () => { Object.keys(J).forEach(k => delete J[k]); draw(); };
+  draw();
+}
+function kode(el, lines) { el.innerHTML = lines.map((l, i) => `<span data-l="${i}">${l.replace(/&/g, '&amp;').replace(/</g, '&lt;') || ' '}</span>`).join(''); return on => el.querySelectorAll('span').forEach(s => s.classList.toggle('on', (on || []).includes(+s.dataset.l))); }
+
+
+const V = { PKS1: [560, 165], 'Simp A': [400, 90], 'Simp B': [400, 245], 'Afd I': [230, 40], 'Afd II': [220, 165], 'Afd III': [230, 290], Desa: [70, 165] };
+let E0 = [['Afd I', 'Simp A', 3.1], ['Afd I', 'Afd II', 2.4], ['Afd II', 'Simp A', 4.0], ['Afd II', 'Simp B', 3.6], ['Afd III', 'Simp B', 2.2], ['Afd III', 'Afd II', 3.0], ['Simp A', 'PKS1', 4.5], ['Simp B', 'PKS1', 5.8], ['Simp A', 'Simp B', 2.5], ['Desa', 'Afd II', 6.2]];
+let PUTUS = new Set();
+const ek = e => e[0] + '|' + e[1];
+function adj() { const A = {}; Object.keys(V).forEach(v => A[v] = {}); E0.forEach(e => { if (PUTUS.has(ek(e))) return; A[e[0]][e[1]] = e[2]; A[e[1]][e[0]] = e[2]; }); return A; }
+function graf(svg, o = {}) {
+  let s = '';
+  E0.forEach(e => { const [x1, y1] = V[e[0]], [x2, y2] = V[e[1]], p = PUTUS.has(ek(e)), on = (o.path || []).some((v, i) => i && ((o.path[i - 1] === e[0] && v === e[1]) || (o.path[i - 1] === e[1] && v === e[0]))), rl = (o.relax || []).some(([a, b]) => (a === e[0] && b === e[1]) || (a === e[1] && b === e[0]));
+    s += `<line data-e="${ek(e)}" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${p ? 'var(--fruit)' : on ? 'var(--palm)' : rl ? 'var(--amber)' : 'var(--line)'}" stroke-width="${on || rl ? 6 : 4}" ${p ? 'stroke-dasharray="6 6"' : ''}/>` + (o.w ? `<text x="${(x1 + x2) / 2}" y="${(y1 + y2) / 2 - 6}" text-anchor="middle" font-size="13" font-weight="600" fill="${p ? 'var(--fruit)' : 'var(--muted)'}">${p ? '✕' : String(e[2]).replace('.', ',')}</text>` : ''); });
+  Object.entries(V).forEach(([n, [x, y]]) => { const st = (o.cur === n) ? ['var(--amber-soft)', 'var(--amber)'] : (o.done || []).includes(n) ? ['var(--palm-soft)', 'var(--palm)'] : (o.mark || []).includes(n) ? ['var(--sky-soft)', 'var(--sky)'] : ['var(--panel)', 'var(--line)'];
+    s += `<rect x="${x - 38}" y="${y - 17}" width="76" height="34" rx="17" fill="${st[0]}" stroke="${st[1]}" stroke-width="3"/><text x="${x}" y="${y + 5}" text-anchor="middle" font-size="13" font-weight="800" fill="var(--ink)">${n}</text>` + (o.d && o.d[n] !== undefined ? `<text x="${x}" y="${y + 33}" text-anchor="middle" font-size="12" font-weight="600" fill="var(--sky)">d = ${o.d[n] === Infinity ? '∞' : String(+o.d[n].toFixed(1)).replace('.', ',')}</text>` : ''); });
+  $(svg).innerHTML = s;
+}
+/* BFS / DFS */
+const TS = Stepper('#tSt', s => { graf('#gSvg', { cur: s.cur, done: s.order, mark: s.mark }); $('#qb').innerHTML = s.q.map(v => `<div class="cell s">${v}</div>`).join('') || '<span class="small">kosong</span>'; $('#ob').innerHTML = s.order.map(v => `<div class="cell g">${v}</div>`).join(''); $('#tSay').textContent = s.say; }, 1000);
+function telusur() {
+  const A = adj(), a0 = $('#s0').value, bfs = $('#alg').value === 'bfs', S = []; $('#qLab').textContent = bfs ? 'Antrean (depan di kiri)' : 'Tumpukan (puncak di kanan)';
+  if (bfs) { const q = [a0], mk = new Set([a0]), order = []; S.push({ q: q.slice(), order: [], mark: [...mk], say: `Masukkan ${a0} ke antrean dan tandai.` });
+    while (q.length) { const u = q.shift(); order.push(u); const baru = Object.keys(A[u]).sort().filter(v => !mk.has(v)); baru.forEach(v => { mk.add(v); q.push(v); }); S.push({ cur: u, q: q.slice(), order: order.slice(), mark: [...mk], say: `dequeue ${u}. Tetangga belum ditandai (abjad): ${baru.join(', ') || 'tidak ada'} → enqueue.` }); } }
+  else { const st = [a0], seen = new Set(), order = []; S.push({ q: st.slice(), order: [], mark: [], say: `push ${a0}.` });
+    while (st.length) { const u = st.pop(); if (seen.has(u)) { S.push({ q: st.slice(), order: order.slice(), mark: [...seen], say: `pop ${u}: sudah dikunjungi, lewati.` }); continue; } seen.add(u); order.push(u); const nb = Object.keys(A[u]).sort().reverse().filter(v => !seen.has(v)); nb.forEach(v => st.push(v)); S.push({ cur: u, q: st.slice(), order: order.slice(), mark: [...seen], say: `pop ${u}, kunjungi. push tetangga belum dikunjungi (abjad terbalik): ${nb.join(', ') || 'tidak ada'}.` }); } }
+  S.push({ q: [], order: S.at(-1).order, mark: [], say: `Selesai. Urutan ${bfs ? 'BFS' : 'DFS'}: ${S.at(-1).order.join(', ')}. Setiap simpul diproses sekali dan setiap sisi diperiksa dari kedua ujung: O(V + E).` });
+  TS.load(S);
+}
+/* Dijkstra */
+const DS = Stepper('#dSt', s => { graf('#dSvg', { w: 1, cur: s.cur, done: s.done, d: s.d, relax: s.relax, path: s.path }); $('#dF').innerHTML = s.f; $('#dSay').textContent = s.say;
+  $('#dT').innerHTML = '<tr><th>Simpul</th>' + Object.keys(V).map(v => `<th>${v}</th>`).join('') + '</tr><tr><td>d</td>' + Object.keys(V).map(v => `<td>${s.d[v] === Infinity ? '∞' : String(+s.d[v].toFixed(1)).replace('.', ',')}</td>`).join('') + '</tr><tr><td>induk</td>' + Object.keys(V).map(v => `<td>${s.ind[v] ?? '-'}</td>`).join('') + '</tr>';
+  $$('#dSvg line').forEach(l => l.onclick = () => { const k = l.dataset.e; PUTUS.has(k) ? PUTUS.delete(k) : PUTUS.add(k); dijkstra(); telusur(); });
+}, 1300);
+function dijkstra() {
+  const A = adj(), a0 = $('#da').value, tj = $('#dt').value, d = {}, ind = {}, done = [], S = []; Object.keys(V).forEach(v => { d[v] = Infinity; ind[v] = null; }); d[a0] = 0;
+  const r1 = x => String(+x.toFixed(1)).replace('.', ',');
+  S.push({ d: { ...d }, ind: { ...ind }, done: [], f: `d[${a0}] = 0, simpul lain ∞`, say: 'Mulai. Belum ada simpul yang final.' });
+  while (true) {
+    const cand = Object.keys(V).filter(v => !done.includes(v) && d[v] < Infinity); if (!cand.length) break;
+    const u = cand.sort((a, b) => d[a] - d[b])[0]; done.push(u); const rel = [], txt = [];
+    Object.entries(A[u]).forEach(([v, w]) => { if (done.includes(v)) return; const nd = d[u] + w; if (nd < d[v] - 1e-9) { txt.push(`${v}: ${r1(d[u])} + ${r1(w)} = ${r1(nd)} &lt; ${d[v] === Infinity ? '∞' : r1(d[v])} → <span class="hl">d[${v}] = ${r1(nd)}</span>`); d[v] = nd; ind[v] = u; rel.push([u, v]); } else txt.push(`${v}: ${r1(d[u])} + ${r1(w)} = ${r1(nd)} ≥ ${r1(d[v])}, tetap`); });
+    S.push({ cur: u, d: { ...d }, ind: { ...ind }, done: done.slice(), relax: rel, f: `ambil ${u} (d = ${r1(d[u])}, terkecil)\n` + (txt.join('\n') || 'tidak ada tetangga yang belum final'), say: `${u} final. Relaksasi setiap tetangga yang belum final.` });
+    if (u === tj) break;
+  }
+  const path = []; let x = tj; while (x) { path.unshift(x); x = ind[x]; }
+  S.push(d[tj] < Infinity ? { d: { ...d }, ind: { ...ind }, done: done.slice(), path, f: `jalur: ikuti induk dari ${tj}: ${path.slice().reverse().join(' ← ')}\njarak = <span class="hl">${r1(d[tj])} km</span>`, say: `Rute terpendek ${a0} ke ${tj}: ${path.join(' → ')} = ${r1(d[tj])} km.${PUTUS.size ? ' (dengan ' + PUTUS.size + ' ruas putus)' : ''}` }
+    : { d: { ...d }, ind: { ...ind }, done: done.slice(), f: `d[${tj}] = ∞`, say: `${tj} tidak bisa dicapai: graf terputus.` });
+  DS.load(S);
+}
+$('#dGo').onclick = dijkstra; $('#dFix').onclick = () => { PUTUS.clear(); dijkstra(); telusur(); };
+['#s0', '#da', '#dt'].forEach(s => $(s).innerHTML = Object.keys(V).map(v => `<option>${v}</option>`).join(''));
+$('#s0').value = 'Afd II'; $('#da').value = 'Desa'; $('#dt').value = 'PKS1';
+$('#s0').onchange = telusur; $('#alg').onchange = telusur; $('#da').onchange = dijkstra; $('#dt').onchange = dijkstra;
+/* matrix vs list */
+function simpan() {
+  const A = adj(), ns = Object.keys(V); let m = '<tr><th></th>' + ns.map(n => `<th>${n}</th>`).join('') + '</tr>';
+  ns.forEach(u => m += `<tr><th>${u}</th>` + ns.map(v => `<td class="${A[u][v] ? 'on' : ''}">${A[u][v] ? String(A[u][v]).replace('.', ',') : '·'}</td>`).join('') + '</tr>');
+  $('#mx').innerHTML = m; $('#al').textContent = ns.map(u => `${u.padEnd(7)}: ${Object.entries(A[u]).map(([v, w]) => `${v} (${String(w).replace('.', ',')})`).join(', ')}`).join('\n');
+  const Ev = Object.values(A).reduce((a, x) => a + Object.keys(x).length, 0) / 2;
+  $('#mF').innerHTML = `V = ${ns.length}, E = ${Ev}\nmatrix: V² = ${ns.length}² = <span class="hl">${ns.length ** 2}</span> sel (${ns.length ** 2 - 2 * Ev} sel kosong)\nlist  : V + 2E = ${ns.length} + ${2 * Ev} = <span class="hl">${ns.length + 2 * Ev}</span> entri`;
+}
+onView.simpan = v => v && simpan();
+telusur(); TS.go(3); dijkstra(); DS.go(3); simpan();
+quiz($('#quiz'), $('#qScore'), $('#qReset'), [
+  ['Graf tak berarah 10 simpul, 15 sisi. Jumlah semua derajat?', ['15', '30', '25', '150'], 1, 'Σ derajat = 2E = 30.'],
+  ['Struktur bantu BFS adalah …', ['tumpukan', 'antrean', 'heap', 'pohon'], 1, 'BFS mengunjungi tetangga terdekat dulu: yang masuk duluan, keluar duluan.'],
+  ['d[u] = 4, sisi (u, v) berbobot 3, d[v] = 9. Setelah relaksasi d[v] = ?', ['9', '7', '3', '12'], 1, '4 + 3 = 7 < 9, jadi d[v] = 7.'],
+  ['Memori adjacency matrix untuk 1.000 simpul?', ['1.000 sel', '1.000.000 sel', '2.000 sel', 'tergantung E'], 1, 'V² = 1.000² = 1.000.000.'],
+  ['Mengapa Dijkstra salah bila ada bobot negatif?', ['Karena heap tidak bisa menyimpan angka negatif', 'Karena simpul yang sudah final bisa mendapat jarak lebih pendek lewat sisi negatif', 'Karena BFS lebih baik', 'Dijkstra tetap benar'], 1, 'Jaminan "d[u] terkecil tidak bisa diperpendek" hanya berlaku bila semua bobot ≥ 0.'],
+]);
+tabs();
+
+</script>
+
+<style>
+.ml-intro{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.ml-intro div{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.ml-intro .h{display:block;font-family:var(--f-display,inherit);margin-bottom:4px;color:var(--palm)}
+.ml-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.ml-box{min-width:64px;padding:8px 10px;border:2px solid var(--line);border-radius:8px;text-align:center;font-family:var(--f-mono,monospace);font-size:14px;background:var(--panel)}
+.ml-box.on{border-color:var(--amber);background:var(--amber-soft)}
+.ml-box.ok{border-color:var(--palm);background:var(--palm-soft)}
+.ml-box.no{border-color:var(--fruit);background:var(--fruit-soft);text-decoration:line-through}
+.ml-box small{display:block;font-size:11px;color:var(--muted)}
+.ml-t{border-collapse:collapse;font-size:14px}
+.ml-t th,.ml-t td{border:1px solid var(--line);padding:5px 9px;text-align:center}
+.ml-t th{background:var(--slot,var(--panel));font-size:12px}
+.ml-t tr.on td{background:var(--amber-soft)}
+.ml-t tr.ok td{background:var(--palm-soft)}
+.ml-say{background:var(--amber-soft);border-radius:8px;padding:10px 12px;min-height:44px}
+.ml-nav{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.ml-nav span{font-family:var(--f-mono,monospace);font-size:13px;color:var(--muted)}
+.ml-grid{display:grid;gap:3px}
+.ml-grid button{width:34px;height:34px;padding:0;border-radius:6px;border:1px solid var(--line);background:var(--slot,#eef2ee);color:var(--ink);font:700 12px var(--f-mono,monospace);min-height:0}
+.ml-grid button.px{background:#E07A2E;color:#fff}
+.ml-sl{display:grid;grid-template-columns:auto 1fr 64px;gap:6px 10px;align-items:center;max-width:520px}
+.ml-sl output{font-family:var(--f-mono,monospace);text-align:right}
+.ml-f{font-family:var(--f-mono,monospace);font-size:13.5px;white-space:pre-wrap;background:var(--panel);border:1px dashed var(--line);border-radius:8px;padding:10px}
+</style>
+<script>
+function mlStep(el, draw) {
+  el.innerHTML = '<button data-a="p" class="alt">‹ Sebelumnya</button><button data-a="n">Berikutnya ›</button><span></span>';
+  const S = { s: [], i: 0 }, sp = el.querySelector('span');
+  const go = i => { S.i = Math.max(0, Math.min(S.s.length - 1, i)); draw(S.s[S.i], S.i); sp.textContent = `langkah ${S.i + 1} / ${S.s.length}`; };
+  el.querySelector('[data-a=p]').onclick = () => go(S.i - 1);
+  el.querySelector('[data-a=n]').onclick = () => go(S.i + 1);
+  return { load(s) { S.s = s; go(0); }, go };
+}
+const q$ = s => document.querySelector(s), f2 = (x, d = 2) => Number(x).toLocaleString('id-ID', { minimumFractionDigits: d, maximumFractionDigits: d });
+(() => {
+  const H = 5, W = 8, AW = ['........', '.##...#.', '.##...#.', '........', '#...##..'];
+  let g; const warna = ['#E07A2E', '#2B6CB0', '#6B46C1', '#1F6B45', '#B7791F', '#C53030', '#319795', '#805AD5'];
+  function awal() { g = AW.map(r => [...r].map(c => c === '#')); gridDraw({}); q$('#mlSay').textContent = 'Klik kotak untuk mengubah topeng, lalu tekan Mulai BFS.'; q$('#mlQ').textContent = ''; }
+  function gridDraw(lab, cur) {
+    q$('#mlGrid').innerHTML = g.map((r, y) => r.map((v, x) => { const L = lab[y + ',' + x];
+      return `<button data-y="${y}" data-x="${x}" class="${v ? 'px' : ''}" style="${L ? `background:${warna[(L - 1) % 8]};color:#fff;` : ''}${cur === y + ',' + x ? 'outline:3px solid var(--amber);' : ''}" aria-label="baris ${y} kolom ${x}">${L || (v ? '#' : '')}</button>`; }).join('')).join('');
+    q$('#mlGrid').querySelectorAll('button').forEach(b => b.onclick = () => { g[b.dataset.y][b.dataset.x] = !g[b.dataset.y][b.dataset.x]; gridDraw({}); });
+  }
+  const st = mlStep(q$('#mlSt'), s => { gridDraw(s.lab, s.cur); q$('#mlQ').textContent = `antrean: [${s.q.join('  ')}]`; q$('#mlSay').textContent = s.say; });
+  q$('#mlGo').onclick = () => {
+    const lab = {}, S = []; let k = 0;
+    for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
+      if (!g[y][x] || lab[y + ',' + x]) continue; k++; const q = [[y, x]]; lab[y + ',' + x] = k; let luas = 0;
+      S.push({ lab: { ...lab }, q: q.map(p => `(${p})`), cur: y + ',' + x, say: `Pindai menemukan # baru di (${y},${x}): mulai BFS komponen ${k}.` });
+      while (q.length) { const [a, b] = q.shift(); luas++;
+        for (const [dy, dx] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) { const ny = a + dy, nx = b + dx;
+          if (ny >= 0 && ny < H && nx >= 0 && nx < W && g[ny][nx] && !lab[ny + ',' + nx]) { lab[ny + ',' + nx] = k; q.push([ny, nx]); } }
+        S.push({ lab: { ...lab }, q: q.map(p => `(${p})`), cur: a + ',' + b, say: `dequeue (${a},${b}); tetangga # baru masuk antrean. Luas komponen ${k} sejauh ini ${luas}.` }); }
+    }
+    S.push({ lab: { ...lab }, q: [], say: `Selesai: ${k} komponen = ${k} brondolan. Angka ini menjadi satu fitur untuk klasifikasi.` });
+    st.load(S);
+  };
+  q$('#mlRe').onclick = awal; awal();
+  function nn() {
+    const x1 = +q$('#mlX1').value, x2 = +q$('#mlX2').value; q$('#mlX1o').textContent = f2(x1, 1); q$('#mlX2o').textContent = f2(x2, 1);
+    const z1 = x1 + x2 - 0.5, z2 = -x1 + 2 * x2 - 0.2, h1 = Math.max(0, z1), h2 = Math.max(0, z2), y = 2 * h1 + h2 - 0.4;
+    const P = { x1: [70, 50], x2: [70, 150], h1: [260, 50], h2: [260, 150], y: [450, 100] };
+    const E = [['x1', 'h1', 1], ['x2', 'h1', 1], ['x1', 'h2', -1], ['x2', 'h2', 2], ['h1', 'y', 2], ['h2', 'y', 1]];
+    let s = E.map(([a, b, w]) => `<line x1="${P[a][0]}" y1="${P[a][1]}" x2="${P[b][0]}" y2="${P[b][1]}" style="stroke:${w > 0 ? 'var(--palm)' : 'var(--fruit)'};stroke-width:${1 + Math.abs(w)}"/><text x="${P[a][0] + (P[b][0] - P[a][0]) * 0.28}" y="${P[a][1] + (P[b][1] - P[a][1]) * 0.28 - 6}" style="fill:var(--ink);font-size:12px">${w}</text>`).join('');
+    const V = { x1, x2, h1, h2, y };
+    for (const [k, [x, yy]] of Object.entries(P)) s += `<circle cx="${x}" cy="${yy}" r="28" style="fill:var(--panel);stroke:var(--ink);stroke-width:2"/><text x="${x}" y="${yy - 3}" text-anchor="middle" style="fill:var(--ink);font-size:12px">${k === 'y' ? 'skor' : k}</text><text x="${x}" y="${yy + 13}" text-anchor="middle" style="fill:var(--ink);font-size:13px;font-weight:700">${f2(V[k], 2)}</text>`;
+    q$('#mlNN').innerHTML = s;
+    q$('#mlNf').textContent = `h1 = ReLU(1·${f2(x1, 1)} + 1·${f2(x2, 1)} − 0,5) = ReLU(${f2(z1)}) = ${f2(h1)}\nh2 = ReLU(−1·${f2(x1, 1)} + 2·${f2(x2, 1)} − 0,2) = ReLU(${f2(z2)}) = ${f2(h2)}\nskor = 2·${f2(h1)} + 1·${f2(h2)} − 0,4 = ${f2(y)}   (skor > 0,5 dibaca "matang")`;
+  }
+  ['#mlX1', '#mlX2'].forEach(s => q$(s).oninput = nn); nn();
+})();
+</script>
+<script>(function(){
+var d=document;
+function rgb(s){var m=s&&s.match(/rgba?\(([\d.]+),\s*([\d.]+),\s*([\d.]+)(?:,\s*([\d.]+))?/);return m?[+m[1],+m[2],+m[3],m[4]===undefined?1:+m[4]]:null}
+function lum(c){return [0,1,2].reduce(function(s,i,k){var v=c[i]/255;v=v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4);return s+v*[.2126,.7152,.0722][k]},0)}
+function ratio(a,b){var x=lum(a),y=lum(b);return (Math.max(x,y)+.05)/(Math.min(x,y)+.05)}
+function mix(a,b,t){return [0,1,2].map(function(i){return Math.round(a[i]+(b[i]-a[i])*t)})}
+function bgOf(el){var stack=[];for(var n=el;n&&n.nodeType===1;n=n.parentElement){var cs=getComputedStyle(n);if(cs.backgroundImage&&cs.backgroundImage!=='none')return null;var c=rgb(cs.backgroundColor);if(c&&c[3]>0){stack.push(c);if(c[3]>=1)break}}
+ var base=[255,255,255];for(var i=stack.length-1;i>=0;i--){var s=stack[i];base=mix(base,s,s[3])}return base}
+function own(el){for(var i=0;i<el.childNodes.length;i++){var t=el.childNodes[i];if(t.nodeType===3&&t.nodeValue.trim())return true}return false}
+function fix(el){var cs=getComputedStyle(el);if(cs.visibility==='hidden'||cs.display==='none')return;var fg=rgb(cs.color),bg=bgOf(el);if(!fg||!bg)return;
+ var op=1;for(var n=el;n&&n.nodeType===1;n=n.parentElement)op*=+getComputedStyle(n).opacity;if(op<.999){var q2=el;while(q2&&+getComputedStyle(q2).opacity>=.999)q2=q2.parentElement;var ef=mix(bg,fg,fg[3]*op);if(ratio(ef,bg)<4.6&&q2){q2.style.setProperty('opacity','1','important');return fix(el)}}fg=mix(bg,fg,fg[3]);var size=parseFloat(cs.fontSize),bold=+cs.fontWeight>=700,need=(size>=24||(bold&&size>=18.66))?3.1:4.6;
+ if(ratio(fg,bg)>=need)return;
+ var ob0=rgb(cs.backgroundColor);if(ob0&&ob0[3]>=1&&lum(fg)>.5){for(var j=1;j<=20;j++){var bb=mix(ob0,[0,0,0],j/20);if(ratio(fg,bb)>=need){el.style.setProperty('background-color','rgb('+bb.join(',')+')','important');return}}}
+ var best=null;[[0,0,0],[255,255,255]].forEach(function(t){for(var k=1;k<=20;k++){var c=mix(fg,t,k/20);if(ratio(c,bg)>=need){if(!best||k<best.k)best={c:c,k:k};break}}});
+ if(best){el.style.setProperty('color','rgb('+best.c.join(',')+')','important');return}
+ var ob=rgb(cs.backgroundColor);if(ob&&ob[3]>=1){var to=lum(fg)>.5?[0,0,0]:[255,255,255];for(var k=1;k<=20;k++){var b2=mix(ob,to,k/20);if(ratio(fg,b2)>=need){el.style.setProperty('background-color','rgb('+b2.join(',')+')','important');return}}}}
+function name(el){var t=el.getAttribute('placeholder')||el.getAttribute('title')||el.name||el.id||'';if(!t){var p=el.closest('tr,li,div,p,td');if(p){var tx=(p.innerText||'').trim().split('\n')[0];t=tx.slice(0,60)}}return t||'isian'}
+function run(){
+ if(!d.documentElement.lang)d.documentElement.lang='id';
+ if(!d.querySelector('main,[role=main]')){var big=null,ba=0;[].forEach.call(d.body.children,function(c){if(/^(SCRIPT|STYLE|HEADER|NAV|FOOTER|NOSCRIPT)$/.test(c.tagName))return;var a=c.offsetWidth*c.offsetHeight;if(a>ba){ba=a;big=c}});for(var g=0;big&&big.querySelector('header,footer,nav')&&g<4;g++){var nb=null,na=0;[].forEach.call(big.children,function(c){if(/^(SCRIPT|STYLE|HEADER|NAV|FOOTER)$/.test(c.tagName))return;var a=c.offsetWidth*c.offsetHeight;if(a>na){na=a;nb=c}});big=nb}if(big&&!big.getAttribute('role')&&!big.querySelector('header,footer,nav'))big.setAttribute('role','main')}
+ d.querySelectorAll('input:not([type=hidden]),select,textarea').forEach(function(el){if(el.labels&&el.labels.length)return;if(el.getAttribute('aria-label')||el.getAttribute('aria-labelledby'))return;if(/^(button|submit|reset)$/.test(el.type))return;el.setAttribute('aria-label',name(el))});
+ d.querySelectorAll('th').forEach(function(th){if(!(th.textContent||'').trim()&&!th.querySelector('img,svg,input,select')){var td=d.createElement('td');for(var i=0;i<th.attributes.length;i++)td.setAttribute(th.attributes[i].name,th.attributes[i].value);while(th.firstChild)td.appendChild(th.firstChild);th.replaceWith(td)}});
+ d.querySelectorAll('svg[role=img]').forEach(function(s){if(s.getAttribute('aria-label')||s.querySelector('title'))return;var f=s.closest('figure'),c=f&&f.querySelector('figcaption');s.setAttribute('aria-label',c?c.textContent.trim():'diagram')});
+ d.querySelectorAll('body *').forEach(function(el){if(own(el))fix(el)});
+ d.querySelectorAll('body *').forEach(function(el){var cs=getComputedStyle(el);if(/(auto|scroll)/.test(cs.overflowX+cs.overflowY)&&(el.scrollHeight>el.clientHeight||el.scrollWidth>el.clientWidth)&&!el.hasAttribute('tabindex')&&!el.querySelector('a,button,input,select,textarea,[tabindex]'))el.setAttribute('tabindex','0')});
+}
+var q=0;function later(){if(q)return;q=setTimeout(function(){q=0;obs.disconnect();run();obs.observe(d.body,{childList:true,subtree:true,attributes:true,attributeFilter:['class']})},600)}
+var obs=new MutationObserver(later);
+function start(){run();obs.observe(d.body,{childList:true,subtree:true,attributes:true,attributeFilter:['class']})}
+if(d.readyState==='loading')d.addEventListener('DOMContentLoaded',start);else start();
+})();</script>
+</body>
+</html>
