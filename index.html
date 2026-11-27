@@ -1,1444 +1,244 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <meta
-      name="google-site-verification"
-      content="Ja7imkMYbNAyh3ExCd-OHAOpyno_Jr07vNS2_WNpz3w"
-    />
-    <title>Ir. Andi Prayogi, S.Kom., M.Kom. · Dosen dan Kepala IT ITSI</title>
-    <meta
-      name="description"
-      content="Profil Ir. Andi Prayogi, S.Kom., M.Kom., dosen Sistem dan Teknologi Informasi dan Kepala IT Institut Teknologi Sawit Indonesia: riset machine learning dan IoT sawit, publikasi, dan materi perkuliahan."
-    />
-    <link rel="canonical" href="https://syrvrr.github.io/" />
-    <meta name="color-scheme" content="light dark" />
-    <meta
-      name="theme-color"
-      content="#faf8f3"
-      media="(prefers-color-scheme: light)"
-    />
-    <meta
-      name="theme-color"
-      content="#0f151d"
-      media="(prefers-color-scheme: dark)"
-    />
-    <meta property="og:type" content="website" />
-    <meta property="og:locale" content="id_ID" />
-    <meta
-      property="og:title"
-      content="Ir. Andi Prayogi, S.Kom., M.Kom. · Dosen dan Kepala IT ITSI"
-    />
-    <meta
-      property="og:description"
-      content="Profil Ir. Andi Prayogi, S.Kom., M.Kom., dosen Sistem dan Teknologi Informasi dan Kepala IT Institut Teknologi Sawit Indonesia: riset machine learning dan IoT sawit, publikasi, dan materi perkuliahan."
-    />
-    <meta property="og:url" content="https://syrvrr.github.io/" />
-    <meta
-      property="og:image"
-      content="https://syrvrr.github.io/assets/andi-prayogi-640.jpg"
-    />
-    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
-    <link
-      rel="preload"
-      as="image"
-      fetchpriority="high"
-      href="assets/andi-prayogi-640.avif"
-      imagesrcset="assets/andi-prayogi-320.avif 320w, assets/andi-prayogi-480.avif 480w, assets/andi-prayogi-640.avif 640w"
-      imagesizes="(min-width:820px) 300px, 78vw"
-      type="image/avif"
-    />
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "Person",
-        "name": "Ir. Andi Prayogi, S.Kom., M.Kom.",
-        "jobTitle": "Dosen dan Kepala IT",
-        "email": "mailto:andiprayogi@itsi.ac.id",
-        "image": "https://syrvrr.github.io/assets/andi-prayogi-640.jpg",
-        "url": "https://syrvrr.github.io/",
-        "worksFor": {
-          "@type": "CollegeOrUniversity",
-          "name": "Institut Teknologi Sawit Indonesia (ITSI)"
-        },
-        "alumniOf": [
-          "Universitas Negeri Medan",
-          "Universitas Sumatera Utara",
-          "Universitas Pembangunan Panca Budi"
-        ],
-        "knowsAbout": [
-          "Machine learning dan visi komputer untuk perkebunan kelapa sawit",
-          "Internet of Things untuk kebun, gudang, dan logistik TBS",
-          "Sistem informasi dan ERP agribisnis"
-        ],
-        "sameAs": [
-          "https://scholar.google.com/citations?user=OBUMfnYAAAAJ",
-          "https://sinta.kemdiktisaintek.go.id/authors/profile/6851561",
-          "https://pddikti.kemdiktisaintek.go.id/detail-dosen/fpWNbRXq565zEybN6d0D4PH82TvW-FnX5xA5i1Ib0t7erH4ffq2GqJwIYrZMvnE5gii-Zg==",
-          "https://garuda.kemdiktisaintek.go.id/author/view/7036120",
-          "https://github.com/syrvrr",
-          "https://www.linkedin.com/in/andi-prayogi-2a8a11157/"
-        ]
-      }
-    </script>
-    <style>
-      :root {
-        --bg: #faf8f3;
-        --panel: #fff;
-        --ink: #14213a;
-        --muted: #545e6e;
-        --line: #e4dfd4;
-        --accent: #1d6a4c;
-        --accent-ink: #fff;
-        --soft: #eef3ee;
-        --gold: #8a6a1f;
-        --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia,
-          "Times New Roman", serif;
-        --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
-          Arial, sans-serif;
-      }
-      @media (prefers-color-scheme: dark) {
-        :root {
-          --bg: #0f151d;
-          --panel: #151d27;
-          --ink: #e7eaef;
-          --muted: #a7b0bd;
-          --line: #26313e;
-          --accent: #79d1a6;
-          --accent-ink: #0d1a14;
-          --soft: #17241e;
-          --gold: #e0c27a;
-        }
-      }
-      *,
-      *::before,
-      *::after {
-        box-sizing: border-box;
-      }
-      html {
-        -webkit-text-size-adjust: 100%;
-      }
-      body {
-        margin: 0;
-        background: var(--bg);
-        color: var(--ink);
-        font: 400 1.0625rem/1.65 var(--sans);
-        text-rendering: optimizeLegibility;
-      }
-      a {
-        color: var(--accent);
-        text-underline-offset: 0.18em;
-        text-decoration-thickness: 1px;
-      }
-      a:hover {
-        text-decoration-thickness: 2px;
-      }
-      a:focus-visible {
-        outline: 3px solid var(--accent);
-        outline-offset: 2px;
-        border-radius: 3px;
-      }
-      img {
-        max-width: 100%;
-        height: auto;
-        display: block;
-      }
-      h1,
-      h2,
-      h3 {
-        font-family: var(--serif);
-        font-weight: 600;
-        line-height: 1.2;
-        letter-spacing: -0.01em;
-        margin: 0;
-      }
-      h1 {
-        font-size: clamp(2rem, 1.2rem + 3.4vw, 3.1rem);
-      }
-      h2 {
-        font-size: clamp(1.45rem, 1.1rem + 1.3vw, 1.9rem);
-        margin-bottom: 1.1rem;
-      }
-      h3 {
-        font-size: 1.12rem;
-        margin-bottom: 0.25rem;
-      }
-      p {
-        margin: 0 0 1rem;
-      }
-      .skip {
-        position: absolute;
-        left: -999px;
-        top: 0;
-        background: var(--ink);
-        color: var(--bg);
-        padding: 0.6rem 1rem;
-        z-index: 9;
-      }
-      .skip:focus {
-        left: 1rem;
-        top: 1rem;
-      }
-      .wrap {
-        width: min(1080px, 100% - 2rem);
-        margin-inline: auto;
-      }
-      header.top {
-        border-bottom: 1px solid var(--line);
-        background: var(--bg);
-      }
-      header.top .wrap {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 1rem;
-        min-height: 64px;
-        flex-wrap: wrap;
-      }
-      .brand {
-        font-family: var(--serif);
-        font-size: 1.15rem;
-        font-weight: 600;
-        color: var(--ink);
-        text-decoration: none;
-      }
-      .brand span {
-        color: var(--muted);
-        font-family: var(--sans);
-        font-size: 0.82rem;
-        font-weight: 400;
-        margin-left: 0.5rem;
-      }
-      nav ul {
-        display: flex;
-        gap: 0.25rem;
-        list-style: none;
-        margin: 0;
-        padding: 0;
-        flex-wrap: wrap;
-      }
-      nav a {
-        display: block;
-        padding: 0.55rem 0.8rem;
-        border-radius: 8px;
-        color: var(--ink);
-        text-decoration: none;
-        font-size: 0.95rem;
-      }
-      nav a:hover {
-        background: var(--soft);
-      }
-      nav a[aria-current="page"] {
-        background: var(--soft);
-        color: var(--accent);
-        font-weight: 600;
-      }
-      main {
-        display: block;
-      }
-      section {
-        padding: 3.2rem 0;
-        border-bottom: 1px solid var(--line);
-      }
-      section:last-of-type {
-        border-bottom: 0;
-      }
-      .kicker {
-        font-size: 0.8rem;
-        letter-spacing: 0.14em;
-        text-transform: uppercase;
-        color: var(--gold);
-        font-weight: 600;
-        margin-bottom: 0.8rem;
-      }
-      .hero > * {
-        min-width: 0;
-      }
-      h1 {
-        overflow-wrap: break-word;
-      }
-      .hero {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr);
-        gap: 2rem;
-        align-items: center;
-        padding: 3rem 0 3.4rem;
-      }
-      @media (min-width: 820px) {
-        .hero {
-          grid-template-columns: 1.35fr 0.65fr;
-          gap: 3.5rem;
-        }
-      }
-      .hero .role {
-        font-size: 1.08rem;
-        color: var(--muted);
-        margin: 0.8rem 0 1.2rem;
-      }
-      .hero .role strong {
-        color: var(--ink);
-        font-weight: 600;
-      }
-      .lead {
-        font-size: 1.08rem;
-        max-width: 62ch;
-      }
-      .photo {
-        justify-self: center;
-        width: min(300px, 78vw);
-      }
-      .photo img {
-        border-radius: 18px;
-        aspect-ratio: 4/5;
-        object-fit: cover;
-        box-shadow: 0 1px 0 var(--line),
-          0 18px 40px -22px rgba(20, 33, 58, 0.45);
-      }
-      .photo figcaption {
-        font-size: 0.82rem;
-        color: var(--muted);
-        margin-top: 0.6rem;
-        text-align: center;
-      }
-      .btns {
-        display: flex;
-        gap: 0.7rem;
-        flex-wrap: wrap;
-        margin-top: 1.4rem;
-      }
-      .btn {
-        display: inline-block;
-        padding: 0.75rem 1.2rem;
-        border-radius: 10px;
-        border: 1px solid var(--accent);
-        background: var(--accent);
-        color: var(--accent-ink);
-        text-decoration: none;
-        font-weight: 600;
-        font-size: 0.97rem;
-      }
-      .btn.ghost {
-        background: transparent;
-        color: var(--accent);
-      }
-      .btn:hover {
-        filter: brightness(1.06);
-      }
-      .stats {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 1px;
-        background: var(--line);
-        border: 1px solid var(--line);
-        border-radius: 14px;
-        overflow: hidden;
-        margin: 0;
-      }
-      @media (min-width: 700px) {
-        .stats {
-          grid-template-columns: repeat(4, minmax(0, 1fr));
-        }
-      }
-      .stats div {
-        background: var(--panel);
-        padding: 1.1rem 1.2rem;
-      }
-      .stats dt {
-        font-family: var(--serif);
-        font-size: 2rem;
-        font-weight: 600;
-        line-height: 1.1;
-      }
-      .stats dd {
-        margin: 0.2rem 0 0;
-        color: var(--muted);
-        font-size: 0.9rem;
-      }
-      .cols {
-        display: grid;
-        gap: 2.2rem;
-      }
-      @media (min-width: 820px) {
-        .cols {
-          grid-template-columns: 1fr 1fr;
-          gap: 3rem;
-        }
-      }
-      .tl {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-      }
-      .tl li {
-        position: relative;
-        padding: 0 0 1.35rem 1.4rem;
-        border-left: 2px solid var(--line);
-      }
-      .tl li:last-child {
-        padding-bottom: 0;
-      }
-      .tl li::before {
-        content: "";
-        position: absolute;
-        left: -7px;
-        top: 0.45rem;
-        width: 12px;
-        height: 12px;
-        border-radius: 50%;
-        background: var(--bg);
-        border: 2px solid var(--accent);
-      }
-      .tl .when {
-        font-size: 0.85rem;
-        color: var(--gold);
-        font-weight: 600;
-        letter-spacing: 0.03em;
-      }
-      .tl p {
-        color: var(--muted);
-        font-size: 0.97rem;
-        margin: 0.2rem 0 0;
-      }
-      .tags {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.5rem;
-        list-style: none;
-        padding: 0;
-        margin: 0;
-      }
-      .tags li {
-        border: 1px solid var(--line);
-        background: var(--panel);
-        border-radius: 999px;
-        padding: 0.4rem 0.85rem;
-        font-size: 0.93rem;
-      }
-      .pubs {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-        counter-reset: p;
-      }
-      .pubs li {
-        padding: 1rem 0;
-        border-top: 1px solid var(--line);
-      }
-      .pubs li:first-child {
-        border-top: 0;
-        padding-top: 0;
-      }
-      .pubs a {
-        font-weight: 600;
-        color: var(--ink);
-        text-decoration-color: var(--line);
-      }
-      .pubs a:hover {
-        color: var(--accent);
-      }
-      .meta {
-        display: block;
-        color: var(--muted);
-        font-size: 0.92rem;
-        margin-top: 0.25rem;
-      }
-      .badge {
-        display: inline-block;
-        font-size: 0.75rem;
-        font-weight: 600;
-        padding: 0.1rem 0.5rem;
-        border-radius: 6px;
-        background: var(--soft);
-        color: var(--accent);
-        margin-left: 0.35rem;
-        vertical-align: 0.08em;
-      }
-      .grid {
-        display: grid;
-        gap: 1rem;
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-      }
-      .card {
-        display: block;
-        background: var(--panel);
-        border: 1px solid var(--line);
-        border-radius: 14px;
-        padding: 1.15rem 1.2rem;
-        color: var(--ink);
-        text-decoration: none;
-        transition: border-color 0.15s;
-      }
-      .card:hover {
-        border-color: var(--accent);
-      }
-      .card .meta {
-        margin-top: 0.4rem;
-      }
-      .sem {
-        margin-bottom: 2.2rem;
-      }
-      .sem:last-child {
-        margin-bottom: 0;
-      }
-      .sem .lbl {
-        font-family: var(--sans);
-        font-size: 0.85rem;
-        font-weight: 600;
-        letter-spacing: 0.12em;
-        text-transform: uppercase;
-        color: var(--muted);
-        margin-bottom: 0.8rem;
-      }
-      .card .ct {
-        font-family: var(--serif);
-        font-size: 1.12rem;
-        font-weight: 600;
-        line-height: 1.25;
-        margin: 0;
-      }
-      .box {
-        background: var(--panel);
-        border: 1px solid var(--line);
-        border-radius: 14px;
-        padding: 1.3rem 1.4rem;
-      }
-      .box + .box {
-        margin-top: 1rem;
-      }
-      .box p:last-child {
-        margin: 0;
-      }
-      .year {
-        font-family: var(--sans);
-        font-size: 0.85rem;
-        letter-spacing: 0.12em;
-        color: var(--gold);
-        margin: 2rem 0 0.4rem;
-      }
-      .year:first-of-type {
-        margin-top: 0;
-      }
-      .links {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.6rem;
-        list-style: none;
-        padding: 0;
-        margin: 0;
-      }
-      .links a {
-        display: inline-block;
-        border: 1px solid var(--line);
-        background: var(--panel);
-        border-radius: 10px;
-        padding: 0.55rem 0.95rem;
-        text-decoration: none;
-        color: var(--ink);
-        font-weight: 500;
-      }
-      .links a:hover {
-        border-color: var(--accent);
-        color: var(--accent);
-      }
-      .crumb {
-        font-size: 0.9rem;
-        color: var(--muted);
-        margin-bottom: 0.9rem;
-      }
-      .crumb a {
-        color: var(--muted);
-      }
-      .pt {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-        border: 1px solid var(--line);
-        border-radius: 14px;
-        overflow: hidden;
-        background: var(--panel);
-      }
-      .pt li {
-        display: grid;
-        grid-template-columns: 3.2rem 1fr auto;
-        align-items: center;
-        gap: 0.8rem;
-        padding: 0.85rem 1.1rem;
-        border-top: 1px solid var(--line);
-      }
-      .pt li:first-child {
-        border-top: 0;
-      }
-      .pt .no {
-        font-family: var(--serif);
-        font-weight: 600;
-        color: var(--gold);
-        font-size: 1.05rem;
-      }
-      .pt a.t {
-        color: var(--ink);
-        font-weight: 600;
-        text-decoration: none;
-      }
-      .pt a.t:hover {
-        color: var(--accent);
-        text-decoration: underline;
-      }
-      .pt .go {
-        font-size: 0.85rem;
-        color: var(--muted);
-        white-space: nowrap;
-      }
-      .pt li.exam {
-        background: var(--soft);
-      }
-      .pt li.exam .no {
-        color: var(--muted);
-      }
-      .pt li.exam .t {
-        font-weight: 500;
-        color: var(--muted);
-      }
-      @media (max-width: 520px) {
-        .pt li {
-          grid-template-columns: 2.4rem 1fr;
-        }
-        .pt .go {
-          display: none;
-        }
-      }
-      footer {
-        padding: 2.2rem 0 3rem;
-        color: var(--muted);
-        font-size: 0.9rem;
-        border-top: 1px solid var(--line);
-      }
-      footer a {
-        display: inline-block;
-        padding: 0.45rem 0;
-      }
-      footer .wrap {
-        display: flex;
-        justify-content: space-between;
-        gap: 1rem;
-        flex-wrap: wrap;
-      }
-      .cv {
-        content-visibility: auto;
-        contain-intrinsic-size: auto 900px;
-      }
-      @media (prefers-reduced-motion: reduce) {
-        * {
-          transition: none !important;
-        }
-      }
-      :root {
-        --sky: #2a5f8f;
-      }
-      @media (prefers-color-scheme: dark) {
-        :root {
-          --sky: #8cbbe6;
-        }
-      }
-      .peta {
-        display: grid;
-        gap: 2.4rem;
-        align-items: start;
-      }
-      @media (min-width: 900px) {
-        .peta {
-          grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
-          gap: 3rem;
-        }
-      }
-      .peta figure {
-        margin: 0;
-      }
-      .peta svg {
-        width: 100%;
-        height: auto;
-        display: block;
-        overflow: visible;
-      }
-      .peta figcaption {
-        font-size: 0.88rem;
-        color: var(--muted);
-        margin-top: 0.6rem;
-      }
-      .peta .ring {
-        fill-opacity: 0.07;
-        stroke-width: 2.2;
-        stroke-dasharray: 1200;
-        stroke-dashoffset: 1200;
-        animation: gambar 1.6s ease-out forwards;
-      }
-      .peta .r-ai {
-        fill: var(--gold);
-        stroke: var(--gold);
-      }
-      .peta .r-ml {
-        fill: var(--accent);
-        stroke: var(--accent);
-        animation-delay: 0.35s;
-      }
-      .peta .r-iot {
-        fill: var(--sky);
-        stroke: var(--sky);
-        animation-delay: 0.7s;
-      }
-      .peta .lbl {
-        font: 600 18px var(--sans);
-        fill: var(--ink);
-      }
-      .peta .sub {
-        font: 400 14px var(--sans);
-        fill: var(--muted);
-      }
-      .peta .big {
-        font: 600 21px var(--serif);
-        fill: var(--ink);
-      }
-      .peta .link {
-        fill: none;
-        stroke: var(--muted);
-        stroke-width: 1.6;
-        stroke-dasharray: 5 7;
-        animation: alir 1.4s linear infinite;
-      }
-      .peta .pill rect {
-        fill: var(--panel);
-        stroke: var(--line);
-        stroke-width: 1.4;
-      }
-      .peta .me {
-        fill: var(--accent);
-      }
-      .peta .pulse {
-        fill: none;
-        stroke: var(--accent);
-        stroke-width: 2;
-        transform-box: fill-box;
-        transform-origin: center;
-        animation: denyut 2.2s ease-out infinite;
-      }
-      .peta .tag rect {
-        fill: var(--ink);
-      }
-      .peta .tag text {
-        font: 600 13px var(--sans);
-        fill: var(--bg);
-      }
-      .peta .muncul {
-        opacity: 0;
-        animation: muncul 0.6s ease-out forwards;
-      }
-      .d1 {
-        animation-delay: 1.1s !important;
-      }
-      .d2 {
-        animation-delay: 1.5s !important;
-      }
-      .d3 {
-        animation-delay: 1.9s !important;
-      }
-      @keyframes gambar {
-        to {
-          stroke-dashoffset: 0;
-        }
-      }
-      @keyframes alir {
-        to {
-          stroke-dashoffset: -24;
-        }
-      }
-      @keyframes muncul {
-        to {
-          opacity: 1;
-        }
-      }
-      @keyframes denyut {
-        0% {
-          transform: scale(1);
-          opacity: 0.9;
-        }
-        100% {
-          transform: scale(3.2);
-          opacity: 0;
-        }
-      }
-      @media (prefers-reduced-motion: reduce) {
-        .peta .ring,
-        .peta .link,
-        .peta .pulse,
-        .peta .muncul {
-          animation: none;
-          stroke-dashoffset: 0;
-          opacity: 1;
-        }
-      }
-      .bidang {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-        display: grid;
-        gap: 1px;
-        background: var(--line);
-        border: 1px solid var(--line);
-        border-radius: 14px;
-        overflow: hidden;
-      }
-      .bidang li {
-        background: var(--panel);
-        padding: 0.95rem 1.1rem;
-      }
-      .bidang h3 {
-        font-family: var(--sans);
-        font-size: 1rem;
-        display: flex;
-        align-items: center;
-        gap: 0.55rem;
-      }
-      .bidang h3::before {
-        content: "";
-        width: 0.7rem;
-        height: 0.7rem;
-        border-radius: 50%;
-        background: var(--c, var(--muted));
-        flex: none;
-      }
-      .bidang p {
-        margin: 0.25rem 0 0;
-        font-size: 0.93rem;
-        color: var(--muted);
-      }
-      .bidang p a {
-        color: var(--accent);
-      }
-    </style>
-  </head>
-  <body>
-    <a class="skip" href="#isi">Langsung ke isi</a>
-    <header class="top">
-      <div class="wrap">
-        <a class="brand" href="index.html">Andi Prayogi<span>ITSI</span></a>
-        <nav aria-label="Navigasi utama">
-          <ul>
-            <li><a href="index.html" aria-current="page">Beranda</a></li>
-            <li><a href="publikasi/index.html">Publikasi</a></li>
-            <li><a href="kuliah/index.html">Perkuliahan</a></li>
-          </ul>
-        </nav>
-      </div>
-    </header>
-    <main id="isi">
-      <div class="wrap">
-        <div class="hero">
-          <div>
-            <p class="kicker">Dosen · Peneliti · Praktisi TI</p>
-            <h1>Ir. Andi Prayogi, S.Kom., M.Kom.</h1>
-            <p class="role">
-              <strong>Dosen Tetap Prodi Sistem dan Teknologi Informasi</strong>
-              dan <strong>Kepala IT</strong>, Institut Teknologi Sawit Indonesia
-              (ITSI). Jabatan fungsional Asisten Ahli. Medan, Sumatera Utara.
-            </p>
-            <p class="lead">
-              Saya mengajar pemrograman, ERP, jaringan saraf tiruan, dan tata
-              kelola TI di Prodi Sistem dan Teknologi Informasi ITSI, sekaligus
-              mengelola infrastruktur TI kampus sebagai Kepala IT. Penelitian
-              saya membawa machine learning, visi komputer, dan IoT ke kebun dan
-              pabrik kelapa sawit: deteksi Ganoderma dengan YOLO, kematangan TBS
-              dari citra, sistem pengawasan tangki berbasis IoT dan GPS dan
-              Pemantauan Pekerja kebun dengan ciptakan Helm Pintar berbasis IoT.
-            </p>
-            <div class="btns">
-              <a class="btn" href="kuliah/index.html">Materi perkuliahan</a
-              ><a class="btn ghost" href="publikasi/index.html"
-                >Publikasi dan riset</a
-              >
-            </div>
-          </div>
-          <figure class="photo">
-            <picture>
-              <source
-                type="image/avif"
-                srcset="
-                  assets/andi-prayogi-320.avif 320w,
-                  assets/andi-prayogi-480.avif 480w,
-                  assets/andi-prayogi-640.avif 640w
-                "
-                sizes="(min-width:820px) 300px, 78vw"
-              />
-              <source
-                type="image/webp"
-                srcset="
-                  assets/andi-prayogi-320.webp 320w,
-                  assets/andi-prayogi-480.webp 480w,
-                  assets/andi-prayogi-640.webp 640w
-                "
-                sizes="(min-width:820px) 300px, 78vw"
-              />
-              <img
-                src="assets/andi-prayogi-640.jpg"
-                width="640"
-                height="800"
-                alt="Foto Ir. Andi Prayogi, S.Kom., M.Kom."
-                fetchpriority="high"
-                decoding="async"
-              />
-            </picture>
-          </figure>
-        </div>
-        <dl class="stats">
-          <div>
-            <dt>70</dt>
-            <dd>sitasi Google Scholar</dd>
-          </div>
-          <div>
-            <dt>5</dt>
-            <dd>h-index Google Scholar</dd>
-          </div>
-          <div>
-            <dt>437</dt>
-            <dd>SINTA Score keseluruhan</dd>
-          </div>
-          <div>
-            <dt>40</dt>
-            <dd>artikel dan karya pengabdian</dd>
-          </div>
-        </dl>
-      </div>
-
-      <section class="cv" aria-labelledby="h-peta">
-        <div class="wrap">
-          <h2 id="h-peta">Peta keahlian</h2>
-          <p class="lead">
-            Riset saya berada di irisan machine learning dan Internet of Things,
-            keduanya bagian dari kecerdasan buatan. Data science, cloud
-            computing, dan jaringan menopang irisan itu, dan keenam bidang ini
-            saya ajarkan lewat mata kuliah di Prodi STI.
-          </p>
-          <div class="peta">
-            <figure>
-              <svg
-                viewBox="0 0 600 490"
-                role="img"
-                aria-labelledby="peta-t peta-d"
-              >
-                <title id="peta-t">Peta keahlian Andi Prayogi</title>
-                <desc id="peta-d">
-                  Lingkaran kecerdasan buatan memuat lingkaran machine learning
-                  dan bersinggungan dengan lingkaran Internet of Things. Posisi
-                  Andi Prayogi berada di irisan machine learning dan IoT, yaitu
-                  AIoT untuk kelapa sawit. Data science terhubung ke machine
-                  learning, cloud computing ke IoT dan kecerdasan buatan, dan
-                  networking ke IoT.
-                </desc>
-                <path class="link" d="M112 420 C130 385 150 360 168 336" />
-                <path class="link" d="M500 74 C470 105 445 128 425 151" />
-                <path class="link" d="M420 56 C400 62 385 75 372 92" />
-                <path class="link" d="M500 412 C490 395 475 378 458 357" />
-                <circle class="ring r-ai" cx="262" cy="232" r="165" />
-                <circle class="ring r-ml" cx="225" cy="250" r="105" />
-                <circle class="ring r-iot" cx="415" cy="258" r="108" />
-                <text class="big" x="262" y="120" text-anchor="middle">
-                  Kecerdasan Buatan
-                </text>
-                <text class="lbl" x="200" y="232" text-anchor="middle">
-                  Machine
-                </text>
-                <text class="lbl" x="200" y="254" text-anchor="middle">
-                  Learning
-                </text>
-                <text class="sub" x="200" y="278" text-anchor="middle">
-                  YOLO · JST · KNN
-                </text>
-                <text class="lbl" x="472" y="244" text-anchor="middle">
-                  IoT
-                </text>
-                <text class="sub" x="472" y="268" text-anchor="middle">
-                  sensor · GPS
-                </text>
-                <text class="sub" x="472" y="287" text-anchor="middle">
-                  Arduino
-                </text>
-                <g class="muncul d1">
-                  <circle class="pulse" cx="318" cy="252" r="9" />
-                  <circle class="me" cx="318" cy="252" r="9" />
-                  <g class="tag">
-                    <rect x="248" y="302" width="140" height="44" rx="8" />
-                    <text x="318" y="320" text-anchor="middle">
-                      Posisi saya
-                    </text>
-                    <text
-                      x="318"
-                      y="337"
-                      text-anchor="middle"
-                      style="font-weight: 400;"
-                    >
-                      AIoT kelapa sawit
-                    </text>
-                  </g>
-                  <path
-                    d="M318 264 V302"
-                    stroke="var(--ink)"
-                    stroke-width="1.5"
-                  />
-                </g>
-                <g class="pill muncul d2">
-                  <rect x="30" y="420" width="164" height="40" rx="20" />
-                  <text
-                    class="lbl"
-                    x="112"
-                    y="446"
-                    text-anchor="middle"
-                    style="font-size: 15px;"
-                  >
-                    Data Science
-                  </text>
-                </g>
-                <g class="pill muncul d2">
-                  <rect x="420" y="34" width="168" height="40" rx="20" />
-                  <text
-                    class="lbl"
-                    x="504"
-                    y="60"
-                    text-anchor="middle"
-                    style="font-size: 15px;"
-                  >
-                    Cloud Computing
-                  </text>
-                </g>
-                <g class="pill muncul d3">
-                  <rect x="432" y="412" width="148" height="40" rx="20" />
-                  <text
-                    class="lbl"
-                    x="506"
-                    y="438"
-                    text-anchor="middle"
-                    style="font-size: 15px;"
-                  >
-                    Networking
-                  </text>
-                </g>
-              </svg>
-              <figcaption>
-                Lingkaran menunjukkan bidang inti; garis putus-putus menunjukkan
-                bidang penopang.
-              </figcaption>
-            </figure>
-            <ul class="bidang">
-              <li style="--c: var(--accent);">
-                <h3>Machine Learning</h3>
-                <p>
-                  Deteksi dini Ganoderma dengan YOLOv9 sampai YOLOv11,
-                  kematangan TBS dari citra, dan KNN untuk pengenalan wajah
-                  (tesis). Kuliah:
-                  <a href="kuliah/jaringan-saraf-tiruan/index.html"
-                    >Jaringan Saraf Tiruan</a
-                  >.
-                </p>
-              </li>
-              <li style="--c: var(--gold);">
-                <h3>Kecerdasan Buatan</h3>
-                <p>
-                  Backpropagation untuk penentuan jurusan (skripsi), ANFIS untuk
-                  pengenalan tajwid, dan buku
-                  <i>Memahami Machine Learning melalui Jaringan Saraf Tiruan</i
-                  >. Kuliah:
-                  <a href="kuliah/algoritma-struktur-data/index.html"
-                    >Algoritma dan Struktur Data</a
-                  >.
-                </p>
-              </li>
-              <li style="--c: var(--sky);">
-                <h3>Internet of Things</h3>
-                <p>
-                  Helm pintar keselamatan kerja kebun, pengawasan tangki CPO
-                  dengan GPS, CCTV pendeteksi wajah, dan pengering kopi fuzzy
-                  berbasis Arduino. Kuliah:
-                  <a href="kuliah/mikroprosesor/index.html">Mikroprosesor</a>,
-                  <a href="kuliah/sistem-digital/index.html">Sistem Digital</a>,
-                  <a href="kuliah/arsitektur-komputer/index.html"
-                    >Arsitektur Komputer</a
-                  >.
-                </p>
-              </li>
-              <li>
-                <h3>Data Science</h3>
-                <p>
-                  Python, NumPy, dan Pandas untuk mengolah data produksi, lalu
-                  pembersihan data sebelum migrasi ERP. Kuliah:
-                  <a href="kuliah/pemrograman-1/index.html">Pemrograman I</a>,
-                  <a href="kuliah/erp-1/index.html">ERP I</a>,
-                  <a href="kuliah/erp-2/index.html">ERP II</a>.
-                </p>
-              </li>
-              <li>
-                <h3>Cloud Computing</h3>
-                <p>
-                  Mengelola server situs ITSI, situs jurnal, dan layanan
-                  shortlink kampus. Kuliah:
-                  <a href="kuliah/cloud-computing/index.html">Cloud Computing</a
-                  >,
-                  <a href="kuliah/pemrograman-2/index.html">Pemrograman II</a>,
-                  <a href="kuliah/pemrograman-berbasis-web/index.html"
-                    >Pemrograman Berbasis Web</a
-                  >.
-                </p>
-              </li>
-              <li>
-                <h3>Networking</h3>
-                <p>
-                  Jaringan kampus ITSI, WiFi enterprise untuk klien sejak 2018,
-                  dan load balancing MikroTik dengan algoritma Dijkstra. Kuliah:
-                  <a href="kuliah/tata-kelola-infrastruktur-sti/index.html"
-                    >Tata Kelola Infrastruktur STI</a
-                  >.
-                </p>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
-
-
-      <section class="cv" aria-labelledby="h-riset">
-        <div class="wrap cols">
-          <div>
-            <h2 id="h-riset">Bidang riset</h2>
-            <ul class="tags">
-              <li>
-                Machine learning dan visi komputer untuk perkebunan kelapa sawit
-              </li>
-              <li>Internet of Things untuk kebun, gudang, dan logistik TBS</li>
-              <li>Sistem informasi dan ERP agribisnis</li>
-            </ul>
-            <h2 style="margin-top: 2.4rem;">Pendidikan</h2>
-            <ol class="tl">
-              <li>
-                <span class="when">2023</span>
-                <h3>Insinyur (Ir.), Program Profesi</h3>
-                <p>Universitas Negeri Medan</p>
-              </li>
-              <li>
-                <span class="when">2022</span>
-                <h3>Magister Komputer (M.Kom.)</h3>
-                <p>
-                  Universitas Sumatera Utara. Tesis: analisis kinerja K-Nearest
-                  Neighbors untuk identifikasi dan pengenalan wajah
-                </p>
-              </li>
-              <li>
-                <span class="when">2019</span>
-                <h3>Sarjana Komputer (S.Kom.)</h3>
-                <p>
-                  Universitas Pembangunan Panca Budi. Skripsi: jaringan saraf
-                  tiruan backpropagation untuk penentuan jurusan SMK
-                </p>
-              </li>
-            </ol>
-          </div>
-          <div>
-            <h2>Pengalaman</h2>
-            <ol class="tl">
-              <li>
-                <span class="when">2025–sekarang</span>
-                <h3>Kepala IT, Institut Teknologi Sawit Indonesia</h3>
-                <p>
-                  Membangun situs web ITSI, situs jurnal, dan layanan shortlink
-                  kampus; mengamankan server; mengelola jaringan dan pengadaan
-                  perangkat.
-                </p>
-              </li>
-              <li>
-                <span class="when">2023–sekarang</span>
-                <h3>Dosen Tetap Prodi Sistem dan Teknologi Informasi, ITSI</h3>
-                <p>
-                  Mengajar dan menyusun materi serta simulasi interaktif untuk
-                  14 mata kuliah STI; membimbing skripsi, antara lain sistem
-                  pengawasan kebocoran tangki CPO berbasis IoT dan GPS serta
-                  helm pintar IoT untuk keselamatan kerja di kebun.
-                </p>
-              </li>
-              <li>
-                <span class="when">2020–2023</span>
-                <h3>Software Engineer dan CEO, MUJAKA (CV Mujio Punakawan)</h3>
-                <p>
-                  Konsultan konten digital, jaringan, dan perangkat lunak.
-                  Proyek jaringan dan sistem informasi untuk CMS SISKEUDES dan
-                  Bank SumselBabel, RSI Malahayati Medan, serta KKP Medan
-                  Wilayah 1 Belawan.
-                </p>
-              </li>
-              <li>
-                <span class="when">2018–2019</span>
-                <h3>Konsultan jaringan dan web</h3>
-                <p>
-                  Arsitektur jaringan dan WiFi enterprise PT Laris Cargo (Medan
-                  dan Ancol), WiFi Puskesmas Binjai, serta situs web dan
-                  e-learning SMK Negeri 1 Tanjung Morawa.
-                </p>
-              </li>
-              <li>
-                <span class="when">2013</span>
-                <h3>Teknisi IT warung internet di Medan</h3>
-                <p>
-                  Mengelola jaringan warnet sejak masih bersekolah di SMK
-                  jurusan Teknik Komputer dan Jaringan.
-                </p>
-              </li>
-            </ol>
-          </div>
-        </div>
-      </section>
-      <section class="cv" aria-labelledby="h-pub">
-        <div class="wrap cols">
-          <div>
-            <h2 id="h-pub">Publikasi paling banyak dikutip</h2>
-            <ol class="pubs">
-              <li>
-                <a href="https://doi.org/10.55537/jistr.v3i1.769" rel="noopener"
-                  >Low-Cost CCTV for Home Security With Face Detection Base on
-                  IoT</a
-                ><span class="meta"
-                  >Journal of Information Systems and Technology Research, 3(1),
-                  20–29, 2024 · dikutip 14 kali</span
-                >
-              </li>
-              <li>
-                <a
-                  href="https://doi.org/10.29207/resti.v10i2.7479"
-                  rel="noopener"
-                  >Performance Evaluation of YOLOv9, YOLOv10, and YOLOv11 for
-                  Real-Time Early Detection of Ganoderma Boninense in Oil
-                  Palm</a
-                ><span class="meta"
-                  >Jurnal RESTI (Rekayasa Sistem dan Teknologi Informasi),
-                  10(2), 429–440, 2026 · dikutip 9 kali</span
-                >
-              </li>
-              <li>
-                <a
-                  href="https://doi.org/10.33480/jitk.v10i3.6166"
-                  rel="noopener"
-                  >Design of Control System and Temperature in Coffee Dryer
-                  Arduino Based Automatic Using Fuzzy</a
-                ><span class="meta"
-                  >JITK (Jurnal Ilmu Pengetahuan dan Teknologi Komputer), 10(3),
-                  634–642, 2025 · dikutip 9 kali</span
-                >
-              </li>
-              <li>
-                <a
-                  href="https://scholar.google.com/scholar?q=%22Identification%20of%20Tajweed%20Recognition%20using%20Wavelet%20Packet%20Adaptive%20Network%20based%20on%20Fuzzy%20Inference%20Systems%20%28WPANFIS%29%22"
-                  rel="noopener"
-                  >Identification of Tajweed Recognition using Wavelet Packet
-                  Adaptive Network based on Fuzzy Inference Systems (WPANFIS)</a
-                ><span class="meta"
-                  >Internet of Things and Artificial Intelligence Journal, 4(1),
-                  32–41, 2024 · dikutip 7 kali</span
-                >
-              </li>
-              <li>
-                <a
-                  href="https://scholar.google.com/scholar?q=%22Enhancing%20Network%20Performance%20Load%20Balancing%20in%20Cyber%20Cafe%20Networks%20with%20Dijkstra%20Algorithm%20on%20MikroTik%22"
-                  rel="noopener"
-                  >Enhancing Network Performance Load Balancing in Cyber Cafe
-                  Networks with Dijkstra Algorithm on MikroTik</a
-                ><span class="meta"
-                  >Jurnal Teknik Informatika (JUTIF), 5(1), 253–261, 2024 ·
-                  dikutip 5 kali</span
-                >
-              </li>
-            </ol>
-            <p style="margin-top: 1.2rem;">
-              <a href="publikasi/index.html"
-                >Semua 40 publikasi, hibah, dan HKI</a
-              >
-            </p>
-          </div>
-          <div>
-            <h2>Buku</h2>
-            <ol class="tl">
-              <li>
-                <span class="when">2026 · Buku referensi</span>
-                <h3>Memahami Machine Learning melalui Jaringan Saraf Tiruan</h3>
-                <p>PT Penerbit Buku Sonpedia, Jambi · ISBN 978-634-345-009-2</p>
-              </li>
-              <li>
-                <span class="when">2025 · Buku referensi</span>
-                <h3>
-                  Memahami Komputer Sebentar Saja: Buku Pegangan yang Baru
-                  Belajar Tata Kelola Hardware dan Software
-                </h3>
-                <p>
-                  Green Pustaka Indonesia, Yogyakarta · ISBN 978-634-7197-38-2
-                </p>
-              </li>
-              <li>
-                <span class="when">2024 · Buku ajar</span>
-                <h3>Perangkat Lunak dalam Rekayasa</h3>
-                <p>Future Science, Malang · ISBN 978-623-8665-29-7</p>
-              </li>
-            </ol>
-          </div>
-        </div>
-      </section>
-      <section class="cv" aria-labelledby="h-kuliah">
-        <div class="wrap">
-          <h2 id="h-kuliah">Perkuliahan</h2>
-          <p class="lead">
-            Setiap mata kuliah memiliki 14 simulasi interaktif, satu per
-            pertemuan. Simulasi berjalan langsung di peramban tanpa akun dan
-            bisa dibuka dari ponsel.
-          </p>
-          <div class="sem">
-            <h3 class="lbl">Semester ganjil</h3>
-            <div class="grid">
-              <a class="card" href="kuliah/algoritma-struktur-data/index.html"
-                ><h4 class="ct">Algoritma dan Struktur Data</h4>
-                <span class="meta"
-                  >STIP-1103 · 3 SKS · Semester 1 · 14 simulasi</span
-                ></a
-              ><a class="card" href="kuliah/arsitektur-komputer/index.html"
-                ><h4 class="ct">Arsitektur Komputer</h4>
-                <span class="meta"
-                  >STIP-1104 · 3 SKS · Semester 1 · 14 simulasi</span
-                ></a
-              ><a class="card" href="kuliah/sistem-digital/index.html"
-                ><h4 class="ct">Sistem Digital</h4>
-                <span class="meta"
-                  >STIP-1102 · 2 SKS · Semester 1 · 14 simulasi</span
-                ></a
-              ><a class="card" href="kuliah/technopreneur/index.html"
-                ><h4 class="ct">Digital Creative dan Technopreneur</h4>
-                <span class="meta"
-                  >STIP-2111 · 2 SKS · Semester 3 · 14 simulasi</span
-                ></a
-              ><a class="card" href="kuliah/mikroprosesor/index.html"
-                ><h4 class="ct">Mikroprosesor</h4>
-                <span class="meta"
-                  >STIP-3132 · 3 SKS · Semester 5 · 14 simulasi</span
-                ></a
-              ><a class="card" href="kuliah/pemrograman-1/index.html"
-                ><h4 class="ct">Pemrograman I</h4>
-                <span class="meta"
-                  >STIP-3133 · 3 SKS · Semester 5 · 14 simulasi</span
-                ></a
-              ><a class="card" href="kuliah/cloud-computing/index.html"
-                ><h4 class="ct">Cloud Computing</h4>
-                <span class="meta"
-                  >STIP-4158 · 3 SKS · Semester 7 · 14 simulasi</span
-                ></a
-              ><a class="card" href="kuliah/erp-2/index.html"
-                ><h4 class="ct">Enterprise Resource Planning II</h4>
-                <span class="meta"
-                  >STIP-4156 · 3 SKS · Semester 7 · 14 simulasi</span
-                ></a
-              ><a class="card" href="kuliah/pemrograman-2/index.html"
-                ><h4 class="ct">Pemrograman II</h4>
-                <span class="meta"
-                  >STIP-4161 · 3 SKS · Semester 7 · 14 simulasi</span
-                ></a
-              ><a
-                class="card"
-                href="kuliah/tata-kelola-infrastruktur-sti/index.html"
-                ><h4 class="ct">Tata Kelola Infrastruktur STI</h4>
-                <span class="meta"
-                  >STIP-4165 · 3 SKS · Semester 7 · 14 simulasi</span
-                ></a
-              >
-            </div>
-          </div>
-          <div class="sem">
-            <h3 class="lbl">Semester genap</h3>
-            <div class="grid">
-              <a class="card" href="kuliah/pemrograman-berbasis-web/index.html"
-                ><h4 class="ct">Pemrograman Berbasis Web</h4>
-                <span class="meta"
-                  >STIP-2218 · 3 SKS · Semester 4 · 14 simulasi</span
-                ></a
-              ><a class="card" href="kuliah/erp-1/index.html"
-                ><h4 class="ct">Enterprise Resource Planning I</h4>
-                <span class="meta"
-                  >STIP-3242 · 2 SKS · Semester 6 · 14 simulasi</span
-                ></a
-              ><a class="card" href="kuliah/evolusi-perangkat-lunak/index.html"
-                ><h4 class="ct">Evolusi Perangkat Lunak</h4>
-                <span class="meta"
-                  >STIP-3252 · 3 SKS · Semester 6 · 14 simulasi</span
-                ></a
-              ><a class="card" href="kuliah/jaringan-saraf-tiruan/index.html"
-                ><h4 class="ct">Jaringan Saraf Tiruan</h4>
-                <span class="meta"
-                  >STIP-3247 · 3 SKS · Semester 6 · 14 simulasi</span
-                ></a
-              >
-            </div>
-          </div>
-        </div>
-      </section>
-      
-      <section aria-labelledby="h-kontak">
-        <div class="wrap">
-          <h2 id="h-kontak">Profil dan kontak</h2>
-          <ul class="links">
-            <li>
-              <a
-                href="https://scholar.google.com/citations?user=OBUMfnYAAAAJ"
-                rel="noopener"
-                >Google Scholar</a
-              >
-            </li>
-            <li>
-              <a
-                href="https://sinta.kemdiktisaintek.go.id/authors/profile/6851561"
-                rel="noopener"
-                >SINTA</a
-              >
-            </li>
-            <li>
-              <a
-                href="https://pddikti.kemdiktisaintek.go.id/detail-dosen/fpWNbRXq565zEybN6d0D4PH82TvW-FnX5xA5i1Ib0t7erH4ffq2GqJwIYrZMvnE5gii-Zg=="
-                rel="noopener"
-                >PDDikti</a
-              >
-            </li>
-            <li>
-              <a
-                href="https://garuda.kemdiktisaintek.go.id/author/view/7036120"
-                rel="noopener"
-                >Garuda</a
-              >
-            </li>
-            <li>
-              <a href="https://github.com/syrvrr" rel="noopener">GitHub</a>
-            </li>
-            <li>
-              <a
-                href="https://www.linkedin.com/in/andi-prayogi-2a8a11157/"
-                rel="noopener"
-                >LinkedIn</a
-              >
-            </li>
-            <li>
-              <a href="mailto:andiprayogi@itsi.ac.id">andiprayogi@itsi.ac.id</a>
-            </li>
-          </ul>
-        </div>
-      </section>
-    </main>
-    <footer>
-      <div class="wrap">
-        <p>
-          © 2026 Ir. Andi Prayogi, S.Kom., M.Kom. · Institut Teknologi Sawit
-          Indonesia (ITSI)
-        </p>
-        <p>
-          <a href="mailto:andiprayogi@itsi.ac.id">andiprayogi@itsi.ac.id</a>
-        </p>
-      </div>
-    </footer>
-  </body>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="google-site-verification" content="Ja7imkMYbNAyh3ExCd-OHAOpyno_Jr07vNS2_WNpz3w" />
+<title>Ir. Andi Prayogi, S.Kom., M.Kom. · Dosen dan Kepala IT ITSI</title>
+<meta name="description" content="Profil Ir. Andi Prayogi, S.Kom., M.Kom., dosen Sistem dan Teknologi Informasi dan Kepala IT Institut Teknologi Sawit Indonesia: riset machine learning dan IoT sawit, publikasi, dan materi perkuliahan.">
+<link rel="canonical" href="https://syrvrr.github.io/">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#faf8f3" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0f151d" media="(prefers-color-scheme: dark)">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="id_ID">
+<meta property="og:title" content="Ir. Andi Prayogi, S.Kom., M.Kom. · Dosen dan Kepala IT ITSI">
+<meta property="og:description" content="Profil Ir. Andi Prayogi, S.Kom., M.Kom., dosen Sistem dan Teknologi Informasi dan Kepala IT Institut Teknologi Sawit Indonesia: riset machine learning dan IoT sawit, publikasi, dan materi perkuliahan.">
+<meta property="og:url" content="https://syrvrr.github.io/">
+<meta property="og:image" content="https://syrvrr.github.io/assets/andi-prayogi-640.jpg">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preload" as="image" fetchpriority="high" href="assets/andi-prayogi-640.avif" imagesrcset="assets/andi-prayogi-320.avif 320w, assets/andi-prayogi-480.avif 480w, assets/andi-prayogi-640.avif 640w" imagesizes="(min-width:820px) 300px, 78vw" type="image/avif">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Person", "name": "Ir. Andi Prayogi, S.Kom., M.Kom.", "jobTitle": "Dosen dan Kepala IT", "email": "mailto:andiprayogi@itsi.ac.id", "image": "https://syrvrr.github.io/assets/andi-prayogi-640.jpg", "url": "https://syrvrr.github.io/", "worksFor": {"@type": "CollegeOrUniversity", "name": "Institut Teknologi Sawit Indonesia (ITSI)"}, "alumniOf": ["Universitas Negeri Medan", "Universitas Sumatera Utara", "Universitas Pembangunan Panca Budi"], "knowsAbout": ["Machine learning dan visi komputer untuk perkebunan kelapa sawit", "Internet of Things untuk kebun, gudang, dan logistik TBS", "Sistem informasi dan ERP agribisnis"], "sameAs": ["https://scholar.google.com/citations?user=OBUMfnYAAAAJ", "https://sinta.kemdiktisaintek.go.id/authors/profile/6851561", "https://pddikti.kemdiktisaintek.go.id/detail-dosen/fpWNbRXq565zEybN6d0D4PH82TvW-FnX5xA5i1Ib0t7erH4ffq2GqJwIYrZMvnE5gii-Zg==", "https://garuda.kemdiktisaintek.go.id/author/view/7036120", "https://github.com/syrvrr", "https://www.linkedin.com/in/andi-prayogi-2a8a11157/"]}</script>
+<style>:root{--bg:#faf8f3;--panel:#fff;--ink:#14213a;--muted:#545e6e;--line:#e4dfd4;--accent:#1d6a4c;--accent-ink:#fff;--soft:#eef3ee;--gold:#8a6a1f;--serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;--sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}@media (prefers-color-scheme:dark){:root{--bg:#0f151d;--panel:#151d27;--ink:#e7eaef;--muted:#a7b0bd;--line:#26313e;--accent:#79d1a6;--accent-ink:#0d1a14;--soft:#17241e;--gold:#e0c27a}}*,*::before,*::after{box-sizing:border-box}html{-webkit-text-size-adjust:100%}body{margin:0;background:var(--bg);color:var(--ink);font:400 1.0625rem/1.65 var(--sans);text-rendering:optimizeLegibility}a{color:var(--accent);text-underline-offset:.18em;text-decoration-thickness:1px}a:hover{text-decoration-thickness:2px}a:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:3px}img{max-width:100%;height:auto;display:block}h1,h2,h3{font-family:var(--serif);font-weight:600;line-height:1.2;letter-spacing:-.01em;margin:0}h1{font-size:clamp(2rem,1.2rem + 3.4vw,3.1rem)}h2{font-size:clamp(1.45rem,1.1rem + 1.3vw,1.9rem);margin-bottom:1.1rem}h3{font-size:1.12rem;margin-bottom:.25rem}p{margin:0 0 1rem}.skip{position:absolute;left:-999px;top:0;background:var(--ink);color:var(--bg);padding:.6rem 1rem;z-index:9}.skip:focus{left:1rem;top:1rem}.wrap{width:min(1080px,100% - 2rem);margin-inline:auto}header.top{border-bottom:1px solid var(--line);background:var(--bg)}header.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:1rem;min-height:64px;flex-wrap:wrap}.brand{font-family:var(--serif);font-size:1.15rem;font-weight:600;color:var(--ink);text-decoration:none}.brand span{color:var(--muted);font-family:var(--sans);font-size:.82rem;font-weight:400;margin-left:.5rem}nav ul{display:flex;gap:.25rem;list-style:none;margin:0;padding:0;flex-wrap:wrap}nav a{display:block;padding:.55rem .8rem;border-radius:8px;color:var(--ink);text-decoration:none;font-size:.95rem}nav a:hover{background:var(--soft)}nav a[aria-current=page]{background:var(--soft);color:var(--accent);font-weight:600}main{display:block}section{padding:3.2rem 0;border-bottom:1px solid var(--line)}section:last-of-type{border-bottom:0}.kicker{font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:.8rem}.hero>*{min-width:0}h1{overflow-wrap:break-word}.hero{display:grid;grid-template-columns:minmax(0,1fr);gap:2rem;align-items:center;padding:3rem 0 3.4rem}@media (min-width:820px){.hero{grid-template-columns:1.35fr .65fr;gap:3.5rem}}.hero .role{font-size:1.08rem;color:var(--muted);margin:.8rem 0 1.2rem}.hero .role strong{color:var(--ink);font-weight:600}.lead{font-size:1.08rem;max-width:62ch}.photo{justify-self:center;width:min(300px,78vw)}.photo img{border-radius:18px;aspect-ratio:4/5;object-fit:cover;box-shadow:0 1px 0 var(--line),0 18px 40px -22px rgba(20,33,58,.45)}.photo figcaption{font-size:.82rem;color:var(--muted);margin-top:.6rem;text-align:center}.btns{display:flex;gap:.7rem;flex-wrap:wrap;margin-top:1.4rem}.btn{display:inline-block;padding:.75rem 1.2rem;border-radius:10px;border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink);text-decoration:none;font-weight:600;font-size:.97rem}.btn.ghost{background:transparent;color:var(--accent)}.btn:hover{filter:brightness(1.06)}.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden;margin:0}@media (min-width:700px){.stats{grid-template-columns:repeat(4,minmax(0,1fr))}}.stats div{background:var(--panel);padding:1.1rem 1.2rem}.stats dt{font-family:var(--serif);font-size:2rem;font-weight:600;line-height:1.1}.stats dd{margin:.2rem 0 0;color:var(--muted);font-size:.9rem}.cols{display:grid;gap:2.2rem}@media (min-width:820px){.cols{grid-template-columns:1fr 1fr;gap:3rem}}.tl{list-style:none;margin:0;padding:0}.tl li{position:relative;padding:0 0 1.35rem 1.4rem;border-left:2px solid var(--line)}.tl li:last-child{padding-bottom:0}.tl li::before{content:"";position:absolute;left:-7px;top:.45rem;width:12px;height:12px;border-radius:50%;background:var(--bg);border:2px solid var(--accent)}.tl .when{font-size:.85rem;color:var(--gold);font-weight:600;letter-spacing:.03em}.tl p{color:var(--muted);font-size:.97rem;margin:.2rem 0 0}.tags{display:flex;flex-wrap:wrap;gap:.5rem;list-style:none;padding:0;margin:0}.tags li{border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:.4rem .85rem;font-size:.93rem}.pubs{list-style:none;margin:0;padding:0;counter-reset:p}.pubs li{padding:1rem 0;border-top:1px solid var(--line)}.pubs li:first-child{border-top:0;padding-top:0}.pubs a{font-weight:600;color:var(--ink);text-decoration-color:var(--line)}.pubs a:hover{color:var(--accent)}.meta{display:block;color:var(--muted);font-size:.92rem;margin-top:.25rem}.badge{display:inline-block;font-size:.75rem;font-weight:600;padding:.1rem .5rem;border-radius:6px;background:var(--soft);color:var(--accent);margin-left:.35rem;vertical-align:.08em}.grid{display:grid;gap:1rem;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}.card{display:block;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:1.15rem 1.2rem;color:var(--ink);text-decoration:none;transition:border-color .15s}.card:hover{border-color:var(--accent)}.card .meta{margin-top:.4rem}.sem{margin-bottom:2.2rem}.sem:last-child{margin-bottom:0}.sem .lbl{font-family:var(--sans);font-size:.85rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:.8rem}.card .ct{font-family:var(--serif);font-size:1.12rem;font-weight:600;line-height:1.25;margin:0}.box{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:1.3rem 1.4rem}.box+.box{margin-top:1rem}.box p:last-child{margin:0}.year{font-family:var(--sans);font-size:.85rem;letter-spacing:.12em;color:var(--gold);margin:2rem 0 .4rem}.year:first-of-type{margin-top:0}.links{display:flex;flex-wrap:wrap;gap:.6rem;list-style:none;padding:0;margin:0}.links a{display:inline-block;border:1px solid var(--line);background:var(--panel);border-radius:10px;padding:.55rem .95rem;text-decoration:none;color:var(--ink);font-weight:500}.links a:hover{border-color:var(--accent);color:var(--accent)}.crumb{font-size:.9rem;color:var(--muted);margin-bottom:.9rem}.crumb a{color:var(--muted)}.pt{list-style:none;margin:0;padding:0;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--panel)}.pt li{display:grid;grid-template-columns:3.2rem 1fr auto;align-items:center;gap:.8rem;padding:.85rem 1.1rem;border-top:1px solid var(--line)}.pt li:first-child{border-top:0}.pt .no{font-family:var(--serif);font-weight:600;color:var(--gold);font-size:1.05rem}.pt a.t{color:var(--ink);font-weight:600;text-decoration:none}.pt a.t:hover{color:var(--accent);text-decoration:underline}.pt .go{font-size:.85rem;color:var(--muted);white-space:nowrap}.pt li.exam{background:var(--soft)}.pt li.exam .no{color:var(--muted)}.pt li.exam .t{font-weight:500;color:var(--muted)}@media (max-width:520px){.pt li{grid-template-columns:2.4rem 1fr}.pt .go{display:none}}footer{padding:2.2rem 0 3rem;color:var(--muted);font-size:.9rem;border-top:1px solid var(--line)}footer a{display:inline-block;padding:.45rem 0}footer .wrap{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}.cv{content-visibility:auto;contain-intrinsic-size:auto 900px}@media (prefers-reduced-motion:reduce){*{transition:none!important}}:root{--sky:#2a5f8f}@media (prefers-color-scheme:dark){:root{--sky:#8cbbe6}}
+.peta{display:grid;gap:2.4rem;align-items:start}@media (min-width:900px){.peta{grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:3rem}}
+.peta figure{margin:0}.peta svg{width:100%;height:auto;display:block;overflow:visible}
+.peta figcaption{font-size:.88rem;color:var(--muted);margin-top:.6rem}
+.peta .ring{fill-opacity:.07;stroke-width:2.2;stroke-dasharray:1200;stroke-dashoffset:1200;animation:gambar 1.6s ease-out forwards}
+.peta .r-ai{fill:var(--gold);stroke:var(--gold)}.peta .r-ml{fill:var(--accent);stroke:var(--accent);animation-delay:.35s}.peta .r-iot{fill:var(--sky);stroke:var(--sky);animation-delay:.7s}
+.peta .lbl{font:600 18px var(--sans);fill:var(--ink)}.peta .sub{font:400 14px var(--sans);fill:var(--muted)}
+.peta .big{font:600 21px var(--serif);fill:var(--ink)}
+.peta .link{fill:none;stroke:var(--muted);stroke-width:1.6;stroke-dasharray:5 7;animation:alir 1.4s linear infinite}
+.peta .pill rect{fill:var(--panel);stroke:var(--line);stroke-width:1.4}
+.peta .me{fill:var(--accent)}.peta .pulse{fill:none;stroke:var(--accent);stroke-width:2;transform-box:fill-box;transform-origin:center;animation:denyut 2.2s ease-out infinite}
+.peta .tag rect{fill:var(--ink)}.peta .tag text{font:600 13px var(--sans);fill:var(--bg)}
+.peta .muncul{opacity:0;animation:muncul .6s ease-out forwards}.d1{animation-delay:1.1s!important}.d2{animation-delay:1.5s!important}.d3{animation-delay:1.9s!important}
+@keyframes gambar{to{stroke-dashoffset:0}}@keyframes alir{to{stroke-dashoffset:-24}}@keyframes muncul{to{opacity:1}}
+@keyframes denyut{0%{transform:scale(1);opacity:.9}100%{transform:scale(3.2);opacity:0}}
+@media (prefers-reduced-motion:reduce){.peta .ring,.peta .link,.peta .pulse,.peta .muncul{animation:none;stroke-dashoffset:0;opacity:1}}
+.bidang{list-style:none;margin:0;padding:0;display:grid;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.bidang li{background:var(--panel);padding:.95rem 1.1rem}
+.bidang h3{font-family:var(--sans);font-size:1rem;display:flex;align-items:center;gap:.55rem}
+.bidang h3::before{content:"";width:.7rem;height:.7rem;border-radius:50%;background:var(--c,var(--muted));flex:none}
+.bidang p{margin:.25rem 0 0;font-size:.93rem;color:var(--muted)}
+.bidang p a{color:var(--accent)}#latar{position:fixed;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none;opacity:.9;transition:opacity .6s ease}#latar.redup{opacity:.45}</style>
+</head>
+<body>
+<a class="skip" href="#isi">Langsung ke isi</a>
+<header class="top"><div class="wrap">
+<a class="brand" href="index.html">Andi Prayogi<span>ITSI</span></a>
+<nav aria-label="Navigasi utama"><ul><li><a href="index.html" aria-current=page>Beranda</a></li><li><a href="publikasi/index.html">Publikasi</a></li><li><a href="kuliah/index.html">Perkuliahan</a></li></ul></nav>
+</div></header>
+<main id="isi">
+<div class="wrap">
+<div class="hero">
+<div>
+<p class="kicker">Dosen · Peneliti · Praktisi TI</p>
+<h1>Ir. Andi Prayogi, S.Kom., M.Kom.</h1>
+<p class="role"><strong>Dosen Tetap Prodi Sistem dan Teknologi Informasi</strong> dan <strong>Kepala IT</strong>, Institut Teknologi Sawit Indonesia (ITSI). Jabatan fungsional Asisten Ahli. Medan, Sumatera Utara.</p>
+<p class="lead">Saya mengajar pemrograman, ERP, jaringan saraf tiruan, dan tata kelola TI di Prodi Sistem dan Teknologi Informasi ITSI, sekaligus mengelola infrastruktur TI kampus sebagai Kepala IT. Penelitian saya membawa machine learning, visi komputer, dan IoT ke kebun dan pabrik kelapa sawit: deteksi Ganoderma dengan YOLO, kematangan TBS dari citra, sistem pengawasan tangki berbasis IoT dan GPS dan Pemantauan Pekerja kebun dengan ciptakan Helm Pintar berbasis IoT.</p>
+<div class="btns"><a class="btn" href="kuliah/index.html">Materi perkuliahan</a><a class="btn ghost" href="publikasi/index.html">Publikasi dan riset</a></div>
+</div>
+<figure class="photo"><picture>
+<source type="image/avif" srcset="assets/andi-prayogi-320.avif 320w, assets/andi-prayogi-480.avif 480w, assets/andi-prayogi-640.avif 640w" sizes="(min-width:820px) 300px, 78vw">
+<source type="image/webp" srcset="assets/andi-prayogi-320.webp 320w, assets/andi-prayogi-480.webp 480w, assets/andi-prayogi-640.webp 640w" sizes="(min-width:820px) 300px, 78vw">
+<img src="assets/andi-prayogi-640.jpg" width="640" height="800" alt="Foto Ir. Andi Prayogi, S.Kom., M.Kom." fetchpriority="high" decoding="async">
+</picture></figure>
+</div>
+<dl class="stats"><div><dt>70</dt><dd>sitasi Google Scholar</dd></div><div><dt>5</dt><dd>h-index Google Scholar</dd></div><div><dt>437</dt><dd>SINTA Score keseluruhan</dd></div><div><dt>40</dt><dd>artikel dan karya pengabdian</dd></div></dl>
+</div>
+<section class="cv" aria-labelledby="h-riset"><div class="wrap cols">
+<div><h2 id="h-riset">Bidang riset</h2><ul class="tags"><li>Machine learning dan visi komputer untuk perkebunan kelapa sawit</li><li>Internet of Things untuk kebun, gudang, dan logistik TBS</li><li>Sistem informasi dan ERP agribisnis</li></ul>
+<h2 style="margin-top:2.4rem">Pendidikan</h2><ol class="tl"><li><span class="when">2023</span><h3>Insinyur (Ir.), Program Profesi</h3><p>Universitas Negeri Medan</p></li><li><span class="when">2022</span><h3>Magister Komputer (M.Kom.)</h3><p>Universitas Sumatera Utara. Tesis: analisis kinerja K-Nearest Neighbors untuk identifikasi dan pengenalan wajah</p></li><li><span class="when">2019</span><h3>Sarjana Komputer (S.Kom.)</h3><p>Universitas Pembangunan Panca Budi. Skripsi: jaringan saraf tiruan backpropagation untuk penentuan jurusan SMK</p></li></ol></div>
+<div><h2>Pengalaman</h2><ol class="tl"><li><span class="when">2025–sekarang</span><h3>Kepala IT, Institut Teknologi Sawit Indonesia</h3><p>Membangun situs web ITSI, situs jurnal, dan layanan shortlink kampus; mengamankan server; mengelola jaringan dan pengadaan perangkat.</p></li><li><span class="when">2023–sekarang</span><h3>Dosen Tetap Prodi Sistem dan Teknologi Informasi, ITSI</h3><p>Mengajar dan menyusun materi serta simulasi interaktif untuk 14 mata kuliah STI; membimbing skripsi, antara lain sistem pengawasan kebocoran tangki CPO berbasis IoT dan GPS serta helm pintar IoT untuk keselamatan kerja di kebun.</p></li><li><span class="when">2020–2023</span><h3>Software Engineer dan CEO, MUJAKA (CV Mujio Punakawan)</h3><p>Konsultan konten digital, jaringan, dan perangkat lunak. Proyek jaringan dan sistem informasi untuk CMS SISKEUDES dan Bank SumselBabel, RSI Malahayati Medan, serta KKP Medan Wilayah 1 Belawan.</p></li><li><span class="when">2018–2019</span><h3>Konsultan jaringan dan web</h3><p>Arsitektur jaringan dan WiFi enterprise PT Laris Cargo (Medan dan Ancol), WiFi Puskesmas Binjai, serta situs web dan e-learning SMK Negeri 1 Tanjung Morawa.</p></li><li><span class="when">2013</span><h3>Teknisi IT warung internet di Medan</h3><p>Mengelola jaringan warnet sejak masih bersekolah di SMK jurusan Teknik Komputer dan Jaringan.</p></li></ol></div>
+</div></section>
+<section class="cv" aria-labelledby="h-pub"><div class="wrap cols">
+<div><h2 id="h-pub">Publikasi paling banyak dikutip</h2><ol class="pubs"><li><a href="https://doi.org/10.55537/jistr.v3i1.769" rel="noopener">Low-Cost CCTV for Home Security With Face Detection Base on IoT</a><span class="meta">Journal of Information Systems and Technology Research, 3(1), 20–29, 2024 · dikutip 14 kali</span></li><li><a href="https://doi.org/10.29207/resti.v10i2.7479" rel="noopener">Performance Evaluation of YOLOv9, YOLOv10, and YOLOv11 for Real-Time Early Detection of Ganoderma Boninense in Oil Palm</a><span class="meta">Jurnal RESTI (Rekayasa Sistem dan Teknologi Informasi), 10(2), 429–440, 2026 · dikutip 9 kali</span></li><li><a href="https://doi.org/10.33480/jitk.v10i3.6166" rel="noopener">Design of Control System and Temperature in Coffee Dryer Arduino Based Automatic Using Fuzzy</a><span class="meta">JITK (Jurnal Ilmu Pengetahuan dan Teknologi Komputer), 10(3), 634–642, 2025 · dikutip 9 kali</span></li><li><a href="https://scholar.google.com/scholar?q=%22Identification%20of%20Tajweed%20Recognition%20using%20Wavelet%20Packet%20Adaptive%20Network%20based%20on%20Fuzzy%20Inference%20Systems%20%28WPANFIS%29%22" rel="noopener">Identification of Tajweed Recognition using Wavelet Packet Adaptive Network based on Fuzzy Inference Systems (WPANFIS)</a><span class="meta">Internet of Things and Artificial Intelligence Journal, 4(1), 32–41, 2024 · dikutip 7 kali</span></li><li><a href="https://scholar.google.com/scholar?q=%22Enhancing%20Network%20Performance%20Load%20Balancing%20in%20Cyber%20Cafe%20Networks%20with%20Dijkstra%20Algorithm%20on%20MikroTik%22" rel="noopener">Enhancing Network Performance Load Balancing in Cyber Cafe Networks with Dijkstra Algorithm on MikroTik</a><span class="meta">Jurnal Teknik Informatika (JUTIF), 5(1), 253–261, 2024 · dikutip 5 kali</span></li></ol>
+<p style="margin-top:1.2rem"><a href="publikasi/index.html">Semua 40 publikasi, hibah, dan HKI</a></p></div>
+<div><h2>Buku</h2><ol class="tl"><li><span class="when">2026 · Buku referensi</span><h3>Memahami Machine Learning melalui Jaringan Saraf Tiruan</h3><p>PT Penerbit Buku Sonpedia, Jambi · ISBN 978-634-345-009-2</p></li><li><span class="when">2025 · Buku referensi</span><h3>Memahami Komputer Sebentar Saja: Buku Pegangan yang Baru Belajar Tata Kelola Hardware dan Software</h3><p>Green Pustaka Indonesia, Yogyakarta · ISBN 978-634-7197-38-2</p></li><li><span class="when">2024 · Buku ajar</span><h3>Perangkat Lunak dalam Rekayasa</h3><p>Future Science, Malang · ISBN 978-623-8665-29-7</p></li></ol></div>
+</div></section>
+<section class="cv" aria-labelledby="h-kuliah"><div class="wrap">
+<h2 id="h-kuliah">Perkuliahan</h2>
+<p class="lead">Setiap mata kuliah memiliki 14 simulasi interaktif, satu per pertemuan. Simulasi berjalan langsung di peramban tanpa akun dan bisa dibuka dari ponsel.</p>
+<div class="sem"><h3 class="lbl">Semester ganjil</h3><div class="grid"><a class="card" href="kuliah/algoritma-struktur-data/index.html"><h4 class="ct">Algoritma dan Struktur Data</h4><span class="meta">STIP-1103 · 3 SKS · Semester 1 · 14 simulasi</span></a><a class="card" href="kuliah/arsitektur-komputer/index.html"><h4 class="ct">Arsitektur Komputer</h4><span class="meta">STIP-1104 · 3 SKS · Semester 1 · 14 simulasi</span></a><a class="card" href="kuliah/sistem-digital/index.html"><h4 class="ct">Sistem Digital</h4><span class="meta">STIP-1102 · 2 SKS · Semester 1 · 14 simulasi</span></a><a class="card" href="kuliah/technopreneur/index.html"><h4 class="ct">Digital Creative dan Technopreneur</h4><span class="meta">STIP-2111 · 2 SKS · Semester 3 · 14 simulasi</span></a><a class="card" href="kuliah/mikroprosesor/index.html"><h4 class="ct">Mikroprosesor</h4><span class="meta">STIP-3132 · 3 SKS · Semester 5 · 14 simulasi</span></a><a class="card" href="kuliah/pemrograman-1/index.html"><h4 class="ct">Pemrograman I</h4><span class="meta">STIP-3133 · 3 SKS · Semester 5 · 14 simulasi</span></a><a class="card" href="kuliah/cloud-computing/index.html"><h4 class="ct">Cloud Computing</h4><span class="meta">STIP-4158 · 3 SKS · Semester 7 · 14 simulasi</span></a><a class="card" href="kuliah/erp-2/index.html"><h4 class="ct">Enterprise Resource Planning II</h4><span class="meta">STIP-4156 · 3 SKS · Semester 7 · 14 simulasi</span></a><a class="card" href="kuliah/pemrograman-2/index.html"><h4 class="ct">Pemrograman II</h4><span class="meta">STIP-4161 · 3 SKS · Semester 7 · 14 simulasi</span></a><a class="card" href="kuliah/tata-kelola-infrastruktur-sti/index.html"><h4 class="ct">Tata Kelola Infrastruktur STI</h4><span class="meta">STIP-4165 · 3 SKS · Semester 7 · 14 simulasi</span></a></div></div><div class="sem"><h3 class="lbl">Semester genap</h3><div class="grid"><a class="card" href="kuliah/pemrograman-berbasis-web/index.html"><h4 class="ct">Pemrograman Berbasis Web</h4><span class="meta">STIP-2218 · 3 SKS · Semester 4 · 14 simulasi</span></a><a class="card" href="kuliah/erp-1/index.html"><h4 class="ct">Enterprise Resource Planning I</h4><span class="meta">STIP-3242 · 2 SKS · Semester 6 · 14 simulasi</span></a><a class="card" href="kuliah/evolusi-perangkat-lunak/index.html"><h4 class="ct">Evolusi Perangkat Lunak</h4><span class="meta">STIP-3252 · 3 SKS · Semester 6 · 14 simulasi</span></a><a class="card" href="kuliah/jaringan-saraf-tiruan/index.html"><h4 class="ct">Jaringan Saraf Tiruan</h4><span class="meta">STIP-3247 · 3 SKS · Semester 6 · 14 simulasi</span></a></div></div>
+</div></section>
+<section class="cv" aria-labelledby="h-peta"><div class="wrap">
+<h2 id="h-peta">Peta keahlian</h2>
+<p class="lead">Riset saya berada di irisan machine learning dan Internet of Things, keduanya bagian dari kecerdasan buatan. Data science, cloud computing, dan jaringan menopang irisan itu, dan keenam bidang ini saya ajarkan lewat mata kuliah di Prodi STI.</p>
+<div class="peta">
+<figure>
+<svg viewBox="0 0 600 490" role="img" aria-labelledby="peta-t peta-d"><title id="peta-t">Peta keahlian Andi Prayogi</title><desc id="peta-d">Lingkaran kecerdasan buatan memuat lingkaran machine learning dan bersinggungan dengan lingkaran Internet of Things. Posisi Andi Prayogi berada di irisan machine learning dan IoT, yaitu AIoT untuk kelapa sawit. Data science terhubung ke machine learning, cloud computing ke IoT dan kecerdasan buatan, dan networking ke IoT.</desc>
+<path class="link" d="M112 420 C130 385 150 360 168 336"/>
+<path class="link" d="M500 74 C470 105 445 128 425 151"/>
+<path class="link" d="M420 56 C400 62 385 75 372 92"/>
+<path class="link" d="M500 412 C490 395 475 378 458 357"/>
+<circle class="ring r-ai" cx="262" cy="232" r="165"/>
+<circle class="ring r-ml" cx="225" cy="250" r="105"/>
+<circle class="ring r-iot" cx="415" cy="258" r="108"/>
+<text class="big" x="262" y="120" text-anchor="middle">Kecerdasan Buatan</text>
+<text class="lbl" x="200" y="232" text-anchor="middle">Machine</text><text class="lbl" x="200" y="254" text-anchor="middle">Learning</text>
+<text class="sub" x="200" y="278" text-anchor="middle">YOLO · JST · KNN</text>
+<text class="lbl" x="472" y="244" text-anchor="middle">IoT</text>
+<text class="sub" x="472" y="268" text-anchor="middle">sensor · GPS</text>
+<text class="sub" x="472" y="287" text-anchor="middle">Arduino</text>
+<g class="muncul d1"><circle class="pulse" cx="318" cy="252" r="9"/><circle class="me" cx="318" cy="252" r="9"/>
+<g class="tag"><rect x="248" y="302" width="140" height="44" rx="8"/><text x="318" y="320" text-anchor="middle">Posisi saya</text><text x="318" y="337" text-anchor="middle" style="font-weight:400">AIoT kelapa sawit</text></g>
+<path d="M318 264 V302" stroke="var(--ink)" stroke-width="1.5"/></g>
+<g class="pill muncul d2"><rect x="30" y="420" width="164" height="40" rx="20"/><text class="lbl" x="112" y="446" text-anchor="middle" style="font-size:15px">Data Science</text></g>
+<g class="pill muncul d2"><rect x="420" y="34" width="168" height="40" rx="20"/><text class="lbl" x="504" y="60" text-anchor="middle" style="font-size:15px">Cloud Computing</text></g>
+<g class="pill muncul d3"><rect x="432" y="412" width="148" height="40" rx="20"/><text class="lbl" x="506" y="438" text-anchor="middle" style="font-size:15px">Networking</text></g>
+</svg>
+<figcaption>Lingkaran menunjukkan bidang inti; garis putus-putus menunjukkan bidang penopang.</figcaption>
+</figure>
+<ul class="bidang">
+<li style="--c:var(--accent)"><h3>Machine Learning</h3><p>Deteksi dini Ganoderma dengan YOLOv9 sampai YOLOv11, kematangan TBS dari citra, dan KNN untuk pengenalan wajah (tesis). Kuliah: <a href="kuliah/jaringan-saraf-tiruan/index.html">Jaringan Saraf Tiruan</a>.</p></li>
+<li style="--c:var(--gold)"><h3>Kecerdasan Buatan</h3><p>Backpropagation untuk penentuan jurusan (skripsi), ANFIS untuk pengenalan tajwid, dan buku <i>Memahami Machine Learning melalui Jaringan Saraf Tiruan</i>. Kuliah: <a href="kuliah/algoritma-struktur-data/index.html">Algoritma dan Struktur Data</a>.</p></li>
+<li style="--c:var(--sky)"><h3>Internet of Things</h3><p>Helm pintar keselamatan kerja kebun, pengawasan tangki CPO dengan GPS, CCTV pendeteksi wajah, dan pengering kopi fuzzy berbasis Arduino. Kuliah: <a href="kuliah/mikroprosesor/index.html">Mikroprosesor</a>, <a href="kuliah/sistem-digital/index.html">Sistem Digital</a>, <a href="kuliah/arsitektur-komputer/index.html">Arsitektur Komputer</a>.</p></li>
+<li><h3>Data Science</h3><p>Python, NumPy, dan Pandas untuk mengolah data produksi, lalu pembersihan data sebelum migrasi ERP. Kuliah: <a href="kuliah/pemrograman-1/index.html">Pemrograman I</a>, <a href="kuliah/erp-1/index.html">ERP I</a>, <a href="kuliah/erp-2/index.html">ERP II</a>.</p></li>
+<li><h3>Cloud Computing</h3><p>Mengelola server situs ITSI, situs jurnal, dan layanan shortlink kampus. Kuliah: <a href="kuliah/cloud-computing/index.html">Cloud Computing</a>, <a href="kuliah/pemrograman-2/index.html">Pemrograman II</a>, <a href="kuliah/pemrograman-berbasis-web/index.html">Pemrograman Berbasis Web</a>.</p></li>
+<li><h3>Networking</h3><p>Jaringan kampus ITSI, WiFi enterprise untuk klien sejak 2018, dan load balancing MikroTik dengan algoritma Dijkstra. Kuliah: <a href="kuliah/tata-kelola-infrastruktur-sti/index.html">Tata Kelola Infrastruktur STI</a>.</p></li>
+</ul>
+</div>
+</div></section>
+<section aria-labelledby="h-kontak"><div class="wrap">
+<h2 id="h-kontak">Profil dan kontak</h2>
+<ul class="links"><li><a href="https://scholar.google.com/citations?user=OBUMfnYAAAAJ" rel="noopener">Google Scholar</a></li><li><a href="https://sinta.kemdiktisaintek.go.id/authors/profile/6851561" rel="noopener">SINTA</a></li><li><a href="https://pddikti.kemdiktisaintek.go.id/detail-dosen/fpWNbRXq565zEybN6d0D4PH82TvW-FnX5xA5i1Ib0t7erH4ffq2GqJwIYrZMvnE5gii-Zg==" rel="noopener">PDDikti</a></li><li><a href="https://garuda.kemdiktisaintek.go.id/author/view/7036120" rel="noopener">Garuda</a></li><li><a href="https://github.com/syrvrr" rel="noopener">GitHub</a></li><li><a href="https://www.linkedin.com/in/andi-prayogi-2a8a11157/" rel="noopener">LinkedIn</a></li><li><a href="mailto:andiprayogi@itsi.ac.id">andiprayogi@itsi.ac.id</a></li></ul>
+</div></section>
+</main>
+<footer><div class="wrap"><p>© 2026 Ir. Andi Prayogi, S.Kom., M.Kom. · Institut Teknologi Sawit Indonesia (ITSI)</p><p><a href="mailto:andiprayogi@itsi.ac.id">andiprayogi@itsi.ac.id</a></p></div></footer>
+<canvas id="latar" aria-hidden="true"></canvas>
+<script>
+/* Latar beranda: jaringan sensor kebun sawit yang melatih model secara federasi.
+   Simpul hijau = perangkat tepi (edge), biru = sensor IoT, emas = server agregasi.
+   Paket bergerak dari simpul ke server (pembaruan model lokal), server berdenyut
+   (agregasi), lalu model global dikirim balik ke simpul. Drone memindai kebun dari udara dan
+   mengirim data citra ke server terdekat. Ikon melayang: chip, pohon sawit, TBS,
+   sensor IoT, visi komputer, cloud, dan satelit. */
+(function(){
+var c=document.getElementById('latar');if(!c||!c.getContext)return;
+var x=c.getContext('2d'),W=0,H=0,R=1,N=[],P=[],G=[],DR=[],IK=[],mouse=null,warna={},t0=0,last=0,
+diam=window.matchMedia('(prefers-reduced-motion: reduce)'),gelap=window.matchMedia('(prefers-color-scheme: dark)');
+function baca(){var s=getComputedStyle(document.documentElement);
+ warna={hijau:s.getPropertyValue('--accent').trim()||'#1d6a4c',emas:s.getPropertyValue('--gold').trim()||'#8a6a1f',
+ biru:s.getPropertyValue('--sky').trim()||'#2a5f8f',a:gelap.matches?1:.85};}
+function rgba(h,a){h=h.replace('#','');if(h.length==3)h=h.replace(/./g,'$&$&');var n=parseInt(h,16);
+ return 'rgba('+(n>>16&255)+','+(n>>8&255)+','+(n&255)+','+(a*warna.a).toFixed(3)+')';}
+function ukur(){R=Math.min(window.devicePixelRatio||1,1.5);W=innerWidth;H=innerHeight;
+ c.width=W*R|0;c.height=H*R|0;x.setTransform(R,0,0,R,0,0);bangun();}
+function bangun(){var jml=Math.max(28,Math.min(78,W*H/17000|0)),hub=W<700?2:3;N=[];P=[];G=[];
+ for(var i=0;i<jml;i++){var j=i<hub?'hub':(Math.random()<.45?'sensor':'edge');
+  N.push({x:i<hub?W*(i+.5)/hub+(Math.random()-.5)*W*.12:Math.random()*W,y:i<hub?H*(.3+Math.random()*.4):Math.random()*H,
+  vx:(Math.random()-.5)*(j=='hub'?.06:.22),vy:(Math.random()-.5)*(j=='hub'?.06:.22),j:j,r:j=='hub'?3.6:(j=='edge'?2.3:1.7),f:Math.random()*6.3});}
+ IK=[];var jenis=['sawit','chip','iot','tbs','kamera','awan','satelit','sawit','chip','iot'],ni=W<700?5:(W<1100?7:10);
+ for(i=0;i<ni;i++)IK.push({j:jenis[i],x:W*(i+.2+Math.random()*.6)/ni,y:H*(.1+Math.random()*.8),vx:(Math.random()-.5)*.12,vy:(Math.random()-.5)*.1,
+  f:Math.random()*6.3,s:(W<700?1:1.35)*(.9+Math.random()*.2),kirim:(Math.random()*200)|0});
+ DR=[];var nd=W<700?1:2;for(i=0;i<nd;i++)DR.push({x:Math.random()*W,y0:H*(.18+.55*i/Math.max(1,nd-1||1))+(nd==1?H*.1:0),y:0,v:(.35+Math.random()*.15)*(i%2?-1:1),f:Math.random()*6.3,rot:0,kirim:0});}
+function hubTerdekat(n){var b=null,d=1e9;for(var i=0;i<N.length;i++){var h=N[i];if(h.j!='hub')continue;
+ var e=(h.x-n.x)*(h.x-n.x)+(h.y-n.y)*(h.y-n.y);if(e<d){d=e;b=h;}}return b;}
+function kirim(){var n=N[(Math.random()*N.length)|0];if(n.j=='hub')return;var h=hubTerdekat(n);if(!h)return;
+ P.push({a:n,b:h,s:0,v:.004+Math.random()*.004,naik:true});}
+function siar(h){G.push({h:h,s:0});var k=0;for(var i=0;i<N.length&&k<4;i++){var n=N[(Math.random()*N.length)|0];
+ if(n.j!='hub'&&hubTerdekat(n)===h){P.push({a:h,b:n,s:0,v:.006,naik:false});k++;}}}
+function drone(d,t){var s=W<700?.8:1,k=warna.biru;x.save();x.translate(d.x,d.y);x.scale(s,s);x.rotate(Math.sin(t/2400+d.f)*.12);
+ x.strokeStyle=rgba(k,.22);x.setLineDash([3,4]);x.lineWidth=1;x.beginPath();x.arc(0,0,30+6*Math.sin(t/700+d.f),0,6.283);x.stroke();x.setLineDash([]);
+ x.strokeStyle=rgba(k,.8);x.lineWidth=1.6;x.beginPath();x.moveTo(-11,-11);x.lineTo(11,11);x.moveTo(11,-11);x.lineTo(-11,11);x.stroke();
+ x.fillStyle=rgba(k,.85);x.beginPath();x.rect(-4,-4,8,8);x.fill();x.fillStyle=rgba(warna.hijau,.95);x.beginPath();x.arc(0,5.5,1.4,0,6.283);x.fill();
+ for(var a=0;a<4;a++){var px=a<2?-11:11,py=a%2?11:-11;x.strokeStyle=rgba(k,.55);x.lineWidth=1;x.beginPath();x.arc(px,py,6,0,6.283);x.stroke();
+  var r=d.rot*(a%2?-1:1);x.strokeStyle=rgba(k,.8);x.lineWidth=1.3;x.beginPath();x.moveTo(px+Math.cos(r)*5.5,py+Math.sin(r)*5.5);x.lineTo(px-Math.cos(r)*5.5,py-Math.sin(r)*5.5);x.stroke();}
+ x.restore();}
+function ikon(o,t){var u=t/1000+o.f,g=warna.hijau,e=warna.emas,b=warna.biru,i,a;x.save();x.translate(o.x,o.y);x.scale(o.s,o.s);x.lineCap='round';x.lineJoin='round';
+ if(o.j=='chip'){x.rotate(Math.sin(u*.4)*.08);x.strokeStyle=rgba(b,.6);x.lineWidth=1.4;x.strokeRect(-10,-10,20,20);x.strokeRect(-5,-5,10,10);
+  var on=(u*4|0)%16;for(i=0;i<16;i++){var sd=i>>2,k=(i&3)*5-7.5,p=[[k,-10,k,-15],[10,k,15,k],[k,10,k,15],[-10,k,-15,k]][sd];
+   x.strokeStyle=rgba(i==on?g:b,i==on?.95:.5);x.lineWidth=i==on?2:1.2;x.beginPath();x.moveTo(p[0],p[1]);x.lineTo(p[2],p[3]);x.stroke();}
+  x.fillStyle=rgba(g,.5+.4*Math.sin(u*3));x.beginPath();x.arc(0,0,1.8,0,6.283);x.fill();}
+ else if(o.j=='sawit'){x.strokeStyle=rgba(g,.6);x.lineWidth=2;x.beginPath();x.moveTo(1,20);x.quadraticCurveTo(-2,8,0,-6);x.stroke();
+  x.lineWidth=.8;for(i=0;i<4;i++){x.beginPath();x.moveTo(-2,16-i*5.5);x.lineTo(2,14-i*5.5);x.stroke();}
+  var sw=Math.sin(u*1.3)*.12;x.lineWidth=1.4;for(i=0;i<7;i++){a=-2.9+i*.48+sw;var L=15+(i%2)*3,cx=Math.cos(a)*L*.6,cy=-6+Math.sin(a)*L*.6-5,ex=Math.cos(a)*L,ey=-6+Math.sin(a)*L+(Math.abs(Math.cos(a))*7);
+   x.strokeStyle=rgba(g,.62);x.beginPath();x.moveTo(0,-6);x.quadraticCurveTo(cx,cy,ex,ey);x.stroke();}
+  x.fillStyle=rgba(e,.75);for(i=0;i<4;i++){x.beginPath();x.arc(-2+(i%2)*4,-3+(i>>1)*3,1.6,0,6.283);x.fill();}}
+ else if(o.j=='tbs'){x.rotate(Math.sin(u*.6)*.15);x.strokeStyle=rgba(g,.55);x.lineWidth=1.3;x.beginPath();x.moveTo(0,-14);x.lineTo(0,-9);x.stroke();
+  var r=[[0,-6],[-4,-3],[4,-3],[-6,1],[0,0],[6,1],[-4,5],[4,5],[0,8],[-2,-8.5],[2,3]];
+  for(i=0;i<r.length;i++){var m=.55+.35*Math.max(0,Math.sin(u*1.5-i*.5));x.fillStyle=rgba(i%3?e:warna.hijau,m);x.beginPath();x.arc(r[i][0],r[i][1],2.6,0,6.283);x.fill();}}
+ else if(o.j=='iot'){x.strokeStyle=rgba(g,.65);x.lineWidth=1.4;x.strokeRect(-7,0,14,10);x.beginPath();x.moveTo(0,0);x.lineTo(0,-6);x.stroke();
+  x.fillStyle=rgba(g,.85);x.beginPath();x.arc(0,-7,1.6,0,6.283);x.fill();x.fillStyle=rgba(b,.6+.35*Math.sin(u*5));x.fillRect(-4,4,3,3);
+  for(i=0;i<3;i++){var ph=((u*.9+i/3)%1);x.strokeStyle=rgba(g,(1-ph)*.7);x.lineWidth=1.2;x.beginPath();x.arc(0,-7,4+ph*12,-2.4,-.74);x.stroke();}}
+ else if(o.j=='kamera'){var sc=(Math.sin(u*1.2)+1)/2;x.strokeStyle=rgba(e,.75);x.lineWidth=1.5;var w=12+sc*3;
+  [[-1,-1],[1,-1],[1,1],[-1,1]].forEach(function(q){x.beginPath();x.moveTo(q[0]*w,q[1]*(w-5));x.lineTo(q[0]*w,q[1]*w);x.lineTo(q[0]*(w-5),q[1]*w);x.stroke();});
+  x.strokeStyle=rgba(b,.6);x.lineWidth=1.2;x.beginPath();x.arc(0,0,5,0,6.283);x.stroke();x.fillStyle=rgba(b,.7);x.beginPath();x.arc(0,0,2,0,6.283);x.fill();
+  x.strokeStyle=rgba(g,.45);x.lineWidth=.8;var yy=-w+sc*2*w;x.beginPath();x.moveTo(-w+2,yy);x.lineTo(w-2,yy);x.stroke();
+  x.fillStyle=rgba(e,.8);x.fillRect(-w,-w-6,12,4);}
+ else if(o.j=='awan'){x.strokeStyle=rgba(b,.6);x.lineWidth=1.4;x.beginPath();x.moveTo(-12,6);x.arc(-8,1,5,1.57,4.4);x.arc(0,-3,7,3.6,6.0);x.arc(8,2,5,4.9,1.57);x.closePath();x.stroke();
+  var ph=(u*.8)%1;x.strokeStyle=rgba(g,.75);x.lineWidth=1.3;x.beginPath();x.moveTo(-3,16-ph*8);x.lineTo(-3,9-ph*8);x.moveTo(-5,11-ph*8);x.lineTo(-3,9-ph*8);x.lineTo(-1,11-ph*8);x.stroke();
+  x.strokeStyle=rgba(e,.75);x.beginPath();x.moveTo(3,9+ph*8);x.lineTo(3,16+ph*8);x.moveTo(1,14+ph*8);x.lineTo(3,16+ph*8);x.lineTo(5,14+ph*8);x.stroke();}
+ else if(o.j=='satelit'){x.rotate(-.6+Math.sin(u*.5)*.25);x.strokeStyle=rgba(b,.65);x.lineWidth=1.3;x.strokeRect(-4,-4,8,8);
+  for(i=-1;i<=1;i+=2){x.strokeRect(i*6+(i<0?-10:0),-3.5,10,7);x.beginPath();x.moveTo(i*6+(i<0?-5:5),-3.5);x.lineTo(i*6+(i<0?-5:5),3.5);x.stroke();x.beginPath();x.moveTo(i*4,0);x.lineTo(i*6,0);x.stroke();}
+  x.beginPath();x.moveTo(0,4);x.lineTo(0,8);x.stroke();for(i=0;i<2;i++){var ph=((u*.7+i/2)%1);x.strokeStyle=rgba(g,(1-ph)*.65);x.beginPath();x.arc(0,8,3+ph*9,.5,2.64);x.stroke();}}
+ x.restore();}
+function server(a,z){var k=warna.emas,w=z*2.6,h=z*3.2;x.fillStyle=rgba(k,.12);x.beginPath();x.arc(a.x,a.y,z*4,0,6.283);x.fill();
+ x.fillStyle=rgba(k,.85);x.beginPath();if(x.roundRect)x.roundRect(a.x-w/2,a.y-h/2,w,h,2);else x.rect(a.x-w/2,a.y-h/2,w,h);x.fill();
+ x.fillStyle=gelap.matches?'rgba(15,21,29,.85)':'rgba(250,248,243,.9)';
+ for(var i=0;i<3;i++){x.fillRect(a.x-w/2+2,a.y-h/2+2.2+i*(h-3)/3,w-4,1.1);}
+ x.fillStyle=rgba(warna.hijau,1);x.beginPath();x.arc(a.x+w/2-2.6,a.y+h/2-2.4,.9,0,6.283);x.fill();}
+function gambar(t){x.clearRect(0,0,W,H);var D=Math.min(170,Math.max(110,W/9)),D2=D*D,i,j,a,b,dx,dy,d;
+ for(i=0;i<N.length;i++){a=N[i];for(j=i+1;j<N.length;j++){b=N[j];dx=a.x-b.x;dy=a.y-b.y;d=dx*dx+dy*dy;
+  if(d<D2){x.strokeStyle=rgba(a.j=='hub'||b.j=='hub'?warna.emas:warna.hijau,(1-Math.sqrt(d)/D)*.28);
+  x.lineWidth=a.j=='hub'||b.j=='hub'?.9:.6;x.beginPath();x.moveTo(a.x,a.y);x.lineTo(b.x,b.y);x.stroke();}}
+  if(mouse){dx=a.x-mouse.x;dy=a.y-mouse.y;d=dx*dx+dy*dy;if(d<D2*1.4){x.strokeStyle=rgba(warna.biru,(1-Math.sqrt(d)/(D*1.18))*.4);
+  x.lineWidth=.7;x.beginPath();x.moveTo(a.x,a.y);x.lineTo(mouse.x,mouse.y);x.stroke();}}}
+ for(i=G.length-1;i>=0;i--){var g=G[i];g.s+=.012;if(g.s>=1){G.splice(i,1);continue;}
+  x.strokeStyle=rgba(warna.emas,(1-g.s)*.55);x.lineWidth=1.2;x.beginPath();x.arc(g.h.x,g.h.y,4+g.s*42,0,6.283);x.stroke();}
+ for(i=0;i<N.length;i++){a=N[i];var k=a.j=='hub'?warna.emas:(a.j=='edge'?warna.hijau:warna.biru),
+  z=a.r*(1+.18*Math.sin(t/900+a.f));
+  if(a.j=='hub'){server(a,z);continue;}
+  x.fillStyle=rgba(k,a.j=='sensor'?.55:.75);x.beginPath();
+  if(a.j=='sensor'){x.rect(a.x-z,a.y-z,z*2,z*2);}else{x.arc(a.x,a.y,z,0,6.283);}x.fill();}
+ for(i=P.length-1;i>=0;i--){var p=P[i];if(p.s>=1){P.splice(i,1);if(p.naik&&Math.random()<.5)siar(p.b);continue;}
+  var px=p.a.x+(p.b.x-p.a.x)*p.s,py=p.a.y+(p.b.y-p.a.y)*p.s,q=p.naik?warna.hijau:warna.emas;
+  x.fillStyle=rgba(q,.18);x.beginPath();x.arc(px,py,5,0,6.283);x.fill();
+  x.fillStyle=rgba(q,.9);x.beginPath();x.arc(px,py,1.8,0,6.283);x.fill();}
+ for(i=0;i<IK.length;i++)ikon(IK[i],t);
+ for(i=0;i<DR.length;i++)drone(DR[i],t);}
+function gerak(){for(var i=0;i<N.length;i++){var n=N[i];n.x+=n.vx;n.y+=n.vy;
+ if(n.x<-20)n.x=W+20;else if(n.x>W+20)n.x=-20;if(n.y<-20)n.y=H+20;else if(n.y>H+20)n.y=-20;}
+ for(var j=0;j<P.length;j++)P[j].s+=P[j].v;
+ for(j=0;j<IK.length;j++){var o=IK[j];o.x+=o.vx;o.y+=o.vy;if(o.x<-30)o.x=W+30;else if(o.x>W+30)o.x=-30;if(o.y<-30)o.y=H+30;else if(o.y>H+30)o.y=-30;
+  if(/iot|kamera|satelit|chip/.test(o.j)&&++o.kirim>220){o.kirim=0;var hh=hubTerdekat(o);if(hh)P.push({a:{x:o.x,y:o.y},b:hh,s:0,v:.006,naik:true});}}
+ for(j=0;j<DR.length;j++){var d=DR[j];d.x+=d.v;d.rot+=.9;d.f+=.004;d.y=d.y0+Math.sin(d.f*3)*H*.08;
+  if(d.x>W+40)d.x=-40;else if(d.x<-40)d.x=W+40;
+  if(++d.kirim>70){d.kirim=0;var h=hubTerdekat(d);if(h)P.push({a:{x:d.x,y:d.y},b:h,s:0,v:.007,naik:true});}}}
+function putar(t){if(document.hidden){t0=0;return;}t0=requestAnimationFrame(putar);
+ if(t-last<33)return;last=t;gerak();if(Math.random()<.05&&P.length<14)kirim();gambar(t);}
+function mulai(){for(var i=0;i<DR.length;i++)DR[i].y=DR[i].y0;cancelAnimationFrame(t0);t0=0;if(diam.matches){gambar(0);}else{t0=requestAnimationFrame(putar);}}
+function init(){baca();ukur();mulai();
+ var tunda;addEventListener('resize',function(){clearTimeout(tunda);tunda=setTimeout(function(){ukur();if(diam.matches)gambar(0);},200);},{passive:true});
+ addEventListener('scroll',function(){c.classList.toggle('redup',scrollY>innerHeight*.55);},{passive:true});
+ addEventListener('pointermove',function(e){if(e.pointerType=='mouse')mouse={x:e.clientX,y:e.clientY};},{passive:true});
+ document.addEventListener('pointerleave',function(){mouse=null;});
+ document.addEventListener('visibilitychange',function(){if(!document.hidden&&!t0)mulai();});
+ var ubah=function(){baca();if(diam.matches)gambar(0);};
+ if(gelap.addEventListener){gelap.addEventListener('change',ubah);diam.addEventListener('change',mulai);}}
+function nanti(){(window.requestIdleCallback||function(f){setTimeout(f,300);})(init,{timeout:1500});}
+if(document.readyState=='complete')nanti();else addEventListener('load',nanti);
+})();
+</script>
+</body>
 </html>
